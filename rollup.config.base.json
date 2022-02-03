@@ -1,0 +1,7 @@
+{
+	"output": {
+		"format": "iife",
+		"indent": false,
+		"extend": true
+	}
+}
