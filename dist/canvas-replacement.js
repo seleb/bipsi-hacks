@@ -4,7 +4,7 @@
 @summary WebGLazy bipsi integration
 @license MIT
 @author Sean S. LeBlanc
-@version 1.0.0
+@version 1.0.1
 
 
 @description
@@ -47,7 +47,7 @@ var hackOptions = {
 		scaleMode: 'MULTIPLES', // use "FIT" if you prefer size to pixel accuracy
 		allowDownscaling: true,
 		disableFeedbackTexture: true, // set this to false if you want to use the feedback texture
-		fragment: ``, // set this to use a fragment shader
+		fragment: undefined, // set this to use a fragment shader
 	},
 	init: function (glazy) {
 		// you can set up any custom uniforms you have here if needed
