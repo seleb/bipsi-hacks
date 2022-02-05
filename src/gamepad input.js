@@ -12,7 +12,7 @@ Directional input is mapped to the left and right analog sticks, the dpad, and t
 The start + select/back buttons are mapped to Enter so they can also progress dialogue.
 
 HOW TO USE:
-Copy-paste this script into a bipsi plugin's javascript field
+Import plugin in bipsi
 */
 import { Axes, Buttons, Gamepads } from 'input-gamepads.js';
 

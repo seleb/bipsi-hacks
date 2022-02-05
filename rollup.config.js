@@ -5,7 +5,6 @@ import commonjs from "rollup-plugin-commonjs";
 import base from "./rollup.config.base.json";
 
 import headerComment from "./HeaderCommentPlugin";
-import topLevelOptions from "./TopLevelOptionsPlugin";
 import readme from "./ReadmePlugin";
 import getHacks from "./getHacks";
 
@@ -16,7 +15,6 @@ const sharedOptions = {
 		commonjs(),
 		readme(),
 		headerComment(),
-		topLevelOptions(),
 	],
 };
 
