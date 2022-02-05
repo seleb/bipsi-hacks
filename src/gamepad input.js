@@ -16,7 +16,7 @@ Import plugin in bipsi
 */
 import { Axes, Buttons, Gamepads } from 'input-gamepads.js';
 
-var gamepads = new Gamepads();
+const gamepads = new Gamepads();
 
 function triggerKeyEvent(name, key, code) {
 	document.dispatchEvent(new KeyboardEvent(name, { key, code, repeat: false }));
@@ -34,7 +34,7 @@ function move(dpad, face, axis, axis2, axispast, axisdir, key, code) {
 	}
 }
 
-wrap.before(BipsiPlayback.prototype, 'update', function () {
+wrap.before(BipsiPlayback.prototype, 'update', () => {
 	move(Buttons.DPAD_LEFT, Buttons.X, Axes.LSTICK_H, Axes.RSTICK_H, -0.5, -1, 'ArrowLeft', 37);
 	move(Buttons.DPAD_RIGHT, Buttons.B, Axes.LSTICK_H, Axes.RSTICK_H, 0.5, 1, 'ArrowRight', 39);
 	move(Buttons.DPAD_UP, Buttons.Y, Axes.LSTICK_V, Axes.RSTICK_V, -0.5, -1, 'ArrowUp', 38);
@@ -47,6 +47,6 @@ wrap.before(BipsiPlayback.prototype, 'update', function () {
 		triggerKeyEvent('keyup', 'Enter', 13);
 	}
 });
-wrap.after(BipsiPlayback.prototype, 'update', function () {
+wrap.after(BipsiPlayback.prototype, 'update', () => {
 	gamepads.update();
 });

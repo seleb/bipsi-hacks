@@ -22,22 +22,22 @@ See https://github.com/seleb/WebGLazy#configuration for documentation on `glazy-
 */
 import WebGLazy from 'webglazy';
 
-export var hackOptions = {};
+export const hackOptions = {};
 
 hackOptions.glazyOptions = FIELD(CONFIG, 'glazyOptions', 'json') ?? {};
 hackOptions.init = Function('glazy', FIELD(CONFIG, 'init', 'javascript') ?? '');
 hackOptions.update = Function('glazy', FIELD(CONFIG, 'update', 'javascript') ?? '');
 hackOptions.glazyOptions.fragment = FIELD(CONFIG, 'fragment', 'text') ?? undefined;
 
-var glazy;
-wrap.before(BipsiPlayback.prototype, 'start', function () {
+let glazy;
+wrap.before(BipsiPlayback.prototype, 'start', () => {
 	glazy = new WebGLazy(hackOptions.glazyOptions);
 	if (hackOptions.init) {
 		hackOptions.init(glazy);
 	}
 });
 
-wrap.after(BipsiPlayback.prototype, 'update', function () {
+wrap.after(BipsiPlayback.prototype, 'update', () => {
 	if (hackOptions.update) {
 		hackOptions.update(glazy);
 	}
