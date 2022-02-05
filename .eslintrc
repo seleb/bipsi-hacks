@@ -4,16 +4,23 @@
 		"browser": true
 	},
 	"parserOptions": {
-		"ecmaVersion": 2017,
+		"ecmaVersion": "latest",
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"modules": true
 		}
 	},
+	"globals": {
+		"FIELD": "readonly",
+		"CONFIG": "readonly",
+		"BipsiPlayback": "readonly",
+		"wrap": "readonly"
+	},
 	"rules": {
 		"indent": "off", // prettier handles indentation
 		"max-len": "off", // just apply common-sense
 		"no-param-reassign": "off", // necessary for most hacks
+		"no-new-func": "off", // necessary for custom function implementations via plugin options
 
 		// for dev accessibility
 		// e.g. helpers from body called in hackOptions,
@@ -31,15 +38,6 @@
 		"import/prefer-default-export": "off",
 		"import/no-default-export": "error",
 		"import/no-mutable-exports": "off",
-		"prefer-rest-params": "off",
-		"no-var": "off",
-		"prefer-arrow-callback": "off",
-		"func-names": "off",
-		"prefer-destructuring": "off",
-		"prefer-spread": "off",
-		"prefer-object-spread": "off",
-		"prefer-template": "off",
-		"object-shorthand": "off",
 
 		// i just like using these 🤷‍♀️
 		"no-multi-assign": "off",
