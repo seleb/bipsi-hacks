@@ -4,7 +4,7 @@
 @summary HTML5 gamepad support
 @license MIT
 @author Sean S. LeBlanc
-@version 1.0.1
+@version 2.0.0
 
 
 @description
@@ -14,7 +14,7 @@ Directional input is mapped to the left and right analog sticks, the dpad, and t
 The start + select/back buttons are mapped to Enter so they can also progress dialogue.
 
 HOW TO USE:
-Copy-paste this script into a bipsi plugin's javascript field
+Import plugin in bipsi
 */
 (function () {
 'use strict';
@@ -351,7 +351,7 @@ var Gamepads = /** @class */ (function () {
 
 
 
-var gamepads = new Gamepads();
+const gamepads = new Gamepads();
 
 function triggerKeyEvent(name, key, code) {
 	document.dispatchEvent(new KeyboardEvent(name, { key, code, repeat: false }));
@@ -369,7 +369,7 @@ function move(dpad, face, axis, axis2, axispast, axisdir, key, code) {
 	}
 }
 
-wrap.before(BipsiPlayback.prototype, 'update', function () {
+wrap.before(BipsiPlayback.prototype, 'update', () => {
 	move(Buttons.DPAD_LEFT, Buttons.X, Axes.LSTICK_H, Axes.RSTICK_H, -0.5, -1, 'ArrowLeft', 37);
 	move(Buttons.DPAD_RIGHT, Buttons.B, Axes.LSTICK_H, Axes.RSTICK_H, 0.5, 1, 'ArrowRight', 39);
 	move(Buttons.DPAD_UP, Buttons.Y, Axes.LSTICK_V, Axes.RSTICK_V, -0.5, -1, 'ArrowUp', 38);
@@ -382,7 +382,7 @@ wrap.before(BipsiPlayback.prototype, 'update', function () {
 		triggerKeyEvent('keyup', 'Enter', 13);
 	}
 });
-wrap.after(BipsiPlayback.prototype, 'update', function () {
+wrap.after(BipsiPlayback.prototype, 'update', () => {
 	gamepads.update();
 });
 

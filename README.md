@@ -12,4 +12,8 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 ## How to use
 
-todo
+1. Download and save the script you want to use (make sure it's the version from the [`dist`](./dist) folder, not `src`)
+2. Inside bipsi, under the `edit events` tab, select `import plugin`
+   ![plugin import example](./readme-plugin-import-example.png)
+3. Find and select the downloaded script
+4. If a script has additional options, they will show up inside bipsi as editable fields on the new plugin event
