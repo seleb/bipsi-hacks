@@ -1,3 +1,9 @@
+# [Unreleased]
+
+### Added
+
+* tall character plugin
+
 # [2.0.0](https://github.com/seleb/bipsi-hacks/compare/v1.0.1...v2.0.0) (2022-02-06)
 
 
