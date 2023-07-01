@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/seleb/bipsi-hacks/compare/v2.0.0...v2.1.0) (2023-07-01)
+
+
+### Features
+
+* add tall character plugin ([1b02309](https://github.com/seleb/bipsi-hacks/commit/1b023098ff9006dad05fae2d504e7bf025b3b6a3)), closes [#1](https://github.com/seleb/bipsi-hacks/issues/1)
+
 # [2.0.0](https://github.com/seleb/bipsi-hacks/compare/v1.0.1...v2.0.0) (2022-02-06)
 
 
