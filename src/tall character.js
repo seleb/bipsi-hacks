@@ -29,9 +29,9 @@ wrap.before(BipsiPlayback.prototype, 'render', () => {
 	const avatar = getEventById(playback.data, playback.avatarId);
 	const head = findEventByTag(playback.data, 'is-head');
 	const pos = getLocationOfEvent(playback.data, avatar);
-	const new_pos = {
+	const newPos = {
 		room: pos.room,
 		position: [pos.position[0] + hackOptions.direction[0], pos.position[1] + hackOptions.direction[1]],
 	};
-	moveEvent(playback.data, head, new_pos);
+	moveEvent(playback.data, head, newPos);
 });
