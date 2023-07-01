@@ -11,6 +11,11 @@ Extends the player one tile up.
 HOW TO USE:
 Import plugin in bipsi and add the "is-head" tag to this event.
 Add a "graphic" tag as well.
+
+//!CONFIG is-head (tag) ""
+//!CONFIG direction (text) "up"
+//!CONFIG graphic (tile) 0
+//!CONFIG colors (colors) { "bg": 1, "fg": 3 }
 */
 
 export const hackOptions = {};
