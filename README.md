@@ -9,7 +9,6 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 - 😴 [canvas replacement](/dist/canvas-replacement.js): WebGLazy bipsi integration
 - 🎮 [gamepad input](/dist/gamepad-input.js): HTML5 gamepad support
-- 👪 [tall character](/dist/tall-character.js): Make the character taller
 
 ## How to use
 
