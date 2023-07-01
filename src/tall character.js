@@ -22,7 +22,7 @@ const directions = {
 	right: [1, 0],
 };
 
-hackOptions.direction = directions[FIELD(CONFIG, 'direction', 'text') ?? 'up'];
+hackOptions.direction = directions[FIELD(CONFIG, 'direction', 'text') || 'up'] || directions.up;
 
 wrap.before(BipsiPlayback.prototype, 'render', () => {
 	const playback = window.PLAYBACK;
