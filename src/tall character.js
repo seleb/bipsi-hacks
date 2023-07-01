@@ -9,8 +9,9 @@
 Extends the player one tile up.
 
 HOW TO USE:
-Import plugin in bipsi and add the "is-head" tag to this event.
-Add a "graphic" tag as well.
+1. Import plugin in bipsi
+2. Modify "graphic" and "colors" field on this event to change appearance
+3. Modify "direction" to change position relative to player (options: "up", "down", "left", "right")
 
 //!CONFIG is-head (tag) ""
 //!CONFIG direction (text) "up"
