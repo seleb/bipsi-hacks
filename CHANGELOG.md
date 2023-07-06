@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/seleb/bipsi-hacks/compare/v2.1.0...v2.2.0) (2023-07-06)
+
+
+### Features
+
+* add "mirrored events" and "speech portraits" hacks ([7f8f647](https://github.com/seleb/bipsi-hacks/commit/7f8f6479b0e797d55625b584b34b9e7ff044d4fe))
+
 # [2.1.0](https://github.com/seleb/bipsi-hacks/compare/v2.0.0...v2.1.0) (2023-07-01)
 
 

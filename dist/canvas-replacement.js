@@ -4,7 +4,7 @@
 @summary WebGLazy bipsi integration
 @license MIT
 @author Sean S. LeBlanc
-@version 2.1.0
+@version 2.2.0
 
 
 @description
