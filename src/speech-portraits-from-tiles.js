@@ -168,7 +168,7 @@ wrap.after(DialoguePlayback.prototype, 'render', () => {
 	if (portraitVars.currentFgColorIndex > 0) {
 		// Draw the portrait from frame-canvas to tint-canvas (flipped if necessary)
 		const frameCanvas = window.PLAYBACK.stateManager.resources.get(window.PLAYBACK.data.tileset).canvas;
-		const tileFrameIds = window.PLAYBACK.data.tiles[portraitVars.currentPortraitId - 1].frames;
+		const tileFrameIds = window.PLAYBACK.data.tiles.find(i => i.id === portraitVars.currentPortraitId).frames;
 		const animationStep = window.PLAYBACK.frameCount % tileFrameIds.length;
 		const frameId = tileFrameIds[animationStep];
 		portraitVars.TINT_CANVAS_CONTEXT.globalCompositeOperation = 'source-over';
