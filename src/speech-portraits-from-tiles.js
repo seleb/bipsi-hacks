@@ -1,7 +1,7 @@
 /**
 🖼
 @file Speech portraits from tiles
-@summary Visual-novel-style portraits drawn over the speech panel.  A portrait is one of the game's tiles, scaled up.
+@summary Add VN-style portraits to dialogues via tiles
 @license MIT
 @author Violgamba (Jon Heard)
 @version 1.0.0

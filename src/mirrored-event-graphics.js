@@ -1,13 +1,14 @@
 /**
 🪞
 @file Mirrored event graphics
-@summary A new event field: mirrored (tag).  When present, the event is drawn flipped on the x axis.
+@summary Flip events with the "mirrored" tag
 @license MIT
 @author Violgamba (Jon Heard)
 @version 1.0.0
 
 @description
-A new event field: mirrored (tag).  When present, the event is drawn flipped on the x axis.
+A new event field: mirrored (tag).
+When present, the event is drawn flipped on the x axis.
 
 HOW TO USE:
 1. Import plugin in bipsi
