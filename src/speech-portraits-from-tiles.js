@@ -78,21 +78,11 @@ wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 	portraitVars.currentEvent = event;
 });
 
-/// ////////////////////////////////
-// PROCESS TEXT FOR PORTRAIT IDS //
-/// ////////////////////////////////
-if (!portraitVars.orig_parseFakeDown) {
-	portraitVars.orig_parseFakeDown = window.parseFakedown;
-}
-window.parseFakedown = function parseFakedownPortrait(text) {
-	// Original logic
-	text = portraitVars.orig_parseFakeDown(text);
-
-	// Portrait logic
-	text = portraitFakedownToTag(text);
-
-	return text;
-};
+// PROCESS TEXT FOR PORTRAIT IDS
+wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {
+	script = portraitFakedownToTag(script);
+	return original.call(this, script, options);
+});
 
 wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 	// Portrait logic
