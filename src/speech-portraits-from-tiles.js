@@ -93,15 +93,10 @@ window.parseFakedown = function parseFakedownPortrait(text) {
 
 	return text;
 };
-if (!portraitVars.orig_dialoguePlayback_applyStyle) {
-	portraitVars.orig_dialoguePlayback_applyStyle = DialoguePlayback.prototype.applyStyle;
-}
-DialoguePlayback.prototype.applyStyle = function applyStylePortrait() {
-	// Original logic
-	portraitVars.orig_dialoguePlayback_applyStyle.bind(this)();
 
+wrap.after(DialoguePlayback.prototype, 'applyStyle', () => {
 	// Portrait logic
-	this.currentPage.glyphs.forEach((glyph, i) => {
+	window.PLAYBACK.dialoguePlayback.currentPage.glyphs.forEach((glyph, i) => {
 		if (glyph.styles.has('portrait')) {
 			const args = glyph.styles.get('portrait').split(',');
 			portraitVars.currentPortraitId = parseInt(args[0], 10);
@@ -128,7 +123,7 @@ DialoguePlayback.prototype.applyStyle = function applyStylePortrait() {
 			}
 		}
 	});
-};
+});
 portraitVars.portraitFakedownToTag = function portraitFakedownToTag(text) {
 	// Make sure the "@@"s are properly paired
 	if ((text.match(/@@/g) ?? []).length % 2 !== 0) {
