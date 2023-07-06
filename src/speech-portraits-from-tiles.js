@@ -73,19 +73,10 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 	portraitVars.DEFAULT_SIDE = 0;
 }
 
-/// ////////////////////////////////
-// TRACK THE CURRENTLY RUN EVENT //
-/// ////////////////////////////////
-if (!portraitVars.orig_bipsiPlayback_runJS) {
-	portraitVars.orig_bipsiPlayback_runJS = window.BipsiPlayback.prototype.runJS;
-}
-window.BipsiPlayback.prototype.runJS = async function runJSPortrait(event, js, debug = false) {
-	// Original logic
-	portraitVars.orig_bipsiPlayback_runJS.bind(this)(event, js, debug);
-
-	// Portrait logic
+// TRACK THE CURRENTLY RUN EVENT
+wrap.after(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 	portraitVars.currentEvent = event;
-};
+});
 
 /// ////////////////////////////////
 // PROCESS TEXT FOR PORTRAIT IDS //
