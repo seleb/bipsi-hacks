@@ -89,7 +89,7 @@ window.parseFakedown = function parseFakedownPortrait(text) {
 	text = portraitVars.orig_parseFakeDown(text);
 
 	// Portrait logic
-	text = portraitVars.portraitFakedownToTag(text);
+	text = portraitFakedownToTag(text);
 
 	return text;
 };
@@ -124,7 +124,7 @@ wrap.after(DialoguePlayback.prototype, 'applyStyle', () => {
 		}
 	});
 });
-portraitVars.portraitFakedownToTag = function portraitFakedownToTag(text) {
+function portraitFakedownToTag(text) {
 	// Make sure the "@@"s are properly paired
 	if ((text.match(/@@/g) ?? []).length % 2 !== 0) {
 		return text;
@@ -145,7 +145,7 @@ portraitVars.portraitFakedownToTag = function portraitFakedownToTag(text) {
 	}
 
 	return text;
-};
+}
 
 /// ////////////////
 // DRAW PORTRAIT //
