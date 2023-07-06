@@ -74,7 +74,7 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 }
 
 // TRACK THE CURRENTLY RUN EVENT
-wrap.after(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
+wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 	portraitVars.currentEvent = event;
 });
 
@@ -94,7 +94,7 @@ window.parseFakedown = function parseFakedownPortrait(text) {
 	return text;
 };
 
-wrap.after(DialoguePlayback.prototype, 'applyStyle', () => {
+wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 	// Portrait logic
 	window.PLAYBACK.dialoguePlayback.currentPage.glyphs.forEach((glyph, i) => {
 		if (glyph.styles.has('portrait')) {
@@ -147,39 +147,31 @@ function portraitFakedownToTag(text) {
 	return text;
 }
 
-/// ////////////////
-// DRAW PORTRAIT //
-/// ////////////////
-if (!portraitVars.orig_dialoguePlayback_render) {
-	portraitVars.orig_dialoguePlayback_render = DialoguePlayback.prototype.render;
-}
-DialoguePlayback.prototype.render = function renderPortrait() {
+// DRAW PORTRAIT
+wrap.before(DialoguePlayback.prototype, 'render', () => {
 	// No portrait? do original logic only
-	if (portraitVars.currentPortraitId < 0) {
-		portraitVars.orig_dialoguePlayback_render.bind(this)();
-		return;
-	}
-
+	if (portraitVars.currentPortraitId < 0) return;
 	// Always show dialogue at bottom
-	this.options.anchorY = 1;
-
-	// Original logic
-	portraitVars.orig_dialoguePlayback_render.bind(this)();
+	window.PLAYBACK.dialoguePlayback.options.anchorY = 1;
+});
+wrap.after(DialoguePlayback.prototype, 'render', () => {
+	// No portrait? do original logic only
+	if (portraitVars.currentPortraitId < 0) return;
 
 	// Determine where to draw the portrait AND with what colors
 	const portraitLoc = [portraitVars.currentSide === 1 ? portraitVars.OFFSET_X_RIGHT - 12 * portraitVars.SCALE : portraitVars.OFFSET_X_LEFT, portraitVars.OFFSET_Y - 12 * portraitVars.SCALE];
-	const options = this.getOptions(this.currentPage.options);
+	const options = window.PLAYBACK.dialoguePlayback.getOptions(window.PLAYBACK.dialoguePlayback.currentPage.options);
 	const palette = window.PLAYBACK.getActivePalette();
 	const borderColor = portraitVars.currentBorderColorIndex === 0 ? options.panelColor : palette.colors[portraitVars.currentBorderColorIndex];
 
 	// Draw a panel border
-	this.dialogueRendering.fillStyle = borderColor;
-	this.dialogueRendering.fillRect(portraitLoc[0] + 0 * portraitVars.SCALE, portraitLoc[1] + 0 * portraitVars.SCALE, 12 * portraitVars.SCALE, 12 * portraitVars.SCALE);
+	window.PLAYBACK.dialoguePlayback.dialogueRendering.fillStyle = borderColor;
+	window.PLAYBACK.dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 0 * portraitVars.SCALE, portraitLoc[1] + 0 * portraitVars.SCALE, 12 * portraitVars.SCALE, 12 * portraitVars.SCALE);
 
 	// Draw a background rectangle behind the portrait
 	if (portraitVars.currentBgColorIndex > 0) {
-		this.dialogueRendering.fillStyle = palette.colors[portraitVars.currentBgColorIndex];
-		this.dialogueRendering.fillRect(portraitLoc[0] + 1 * portraitVars.SCALE, portraitLoc[1] + 1 * portraitVars.SCALE, 10 * portraitVars.SCALE, 10 * portraitVars.SCALE);
+		window.PLAYBACK.dialoguePlayback.dialogueRendering.fillStyle = palette.colors[portraitVars.currentBgColorIndex];
+		window.PLAYBACK.dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 1 * portraitVars.SCALE, portraitLoc[1] + 1 * portraitVars.SCALE, 10 * portraitVars.SCALE, 10 * portraitVars.SCALE);
 	}
 
 	// Draw the portrait
@@ -202,7 +194,7 @@ DialoguePlayback.prototype.render = function renderPortrait() {
 		}
 
 		// Draw the portrait from tint-canvas to screen
-		this.dialogueRendering.drawImage(
+		window.PLAYBACK.dialoguePlayback.dialogueRendering.drawImage(
 			portraitVars.TINT_CANVAS,
 			0,
 			0,
@@ -214,4 +206,4 @@ DialoguePlayback.prototype.render = function renderPortrait() {
 			8 * portraitVars.SCALE
 		);
 	}
-};
+});
