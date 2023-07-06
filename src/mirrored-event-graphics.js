@@ -17,18 +17,20 @@ HOW TO USE:
 4. Run the game and note that the event now shows up mirrored.
 */
 
-drawEventLayer = function (destination, tileset, tileToFrame, palette, events) {
-	drawRecolorLayer(destination, (backg, color, tiles) => {
+window.drawEventLayer = (destination, tileset, tileToFrame, palette, events) => {
+	window.drawRecolorLayer(destination, (backg, color, tiles) => {
 		events.forEach(event => {
 			const [tx, ty] = event.position;
-			const graphicField = oneField(event, 'graphic', 'tile');
+			const graphicField = window.oneField(event, 'graphic', 'tile');
 			if (graphicField) {
-				let { fg, bg } = FIELD(event, 'colors', 'colors') ?? { bg: 1, fg: 3 };
+				const colors = FIELD(event, 'colors', 'colors') ?? { bg: 1, fg: 3 };
+				const { fg } = colors;
+				let { bg } = colors;
 
 				const frameIndex = tileToFrame.get(graphicField.data) ?? 0;
-				const { x, y, size } = getTileCoords(tileset.canvas, frameIndex);
+				const { x, y, size } = window.getTileCoords(tileset.canvas, frameIndex);
 
-				if (eventIsTagged(event, 'transparent')) {
+				if (window.eventIsTagged(event, 'transparent')) {
 					bg = 0;
 				}
 
