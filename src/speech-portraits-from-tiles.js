@@ -143,7 +143,7 @@ function portraitFakedownToTag(text) {
 if (!portraitVars.orig_dialoguePlayback_render) {
 	portraitVars.orig_dialoguePlayback_render = DialoguePlayback.prototype.render;
 }
-DialoguePlayback.prototype.render = function () {
+DialoguePlayback.prototype.render = function renderPortrait() {
 	// No portrait? do original logic only
 	if (portraitVars.currentPortraitId < 0) {
 		// Original logic
