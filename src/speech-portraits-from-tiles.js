@@ -1,6 +1,6 @@
 /**
 🖼
-@file Speech portraits from tiles
+@file speech portraits from tiles
 @summary Add VN-style portraits to dialogues via tiles
 @license MIT
 @author Violgamba (Jon Heard)
