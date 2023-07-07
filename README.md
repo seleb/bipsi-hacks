@@ -9,8 +9,8 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 - 😴 [canvas replacement](/dist/canvas-replacement.js): WebGLazy bipsi integration
 - 🎮 [gamepad input](/dist/gamepad-input.js): HTML5 gamepad support
-- 🪞 [Mirrored event graphics](/dist/mirrored-event-graphics.js): Flip events with the "mirrored" tag
-- 🖼 [Speech portraits from tiles](/dist/speech-portraits-from-tiles.js): Add VN-style portraits to dialogues via tiles
+- 🪞 [Mirrored event graphics](/dist/Mirrored-event-graphics.js): Flip events with the "mirrored" tag
+- 🖼 [Speech portraits from tiles](/dist/Speech-portraits-from-tiles.js): Add VN-style portraits to dialogues via tiles
 - 👪 [tall character](/dist/tall-character.js): Make the character taller
 
 ## How to use
