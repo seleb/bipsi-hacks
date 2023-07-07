@@ -144,21 +144,15 @@ function portraitFakedownToTag(text) {
 }
 
 // DRAW PORTRAIT
-if (!portraitVars.orig_dialoguePlayback_render) {
-	portraitVars.orig_dialoguePlayback_render = DialoguePlayback.prototype.render;
-}
-DialoguePlayback.prototype.render = function() {
+wrap.before(DialoguePlayback.prototype, 'render', () => {
 	// No portrait? do original logic only
-	if (portraitVars.currentPortraitId < 0) {
-		portraitVars.orig_dialoguePlayback_render.bind(this)();
-		return;
-	}
-
+	if (portraitVars.currentPortraitId < 0) return;
 	// Always show dialogue at bottom
 	window.PLAYBACK.dialoguePlayback.options.anchorY = 1;
-
-	// Original logic
-	portraitVars.orig_dialoguePlayback_render.bind(this)();
+});
+wrap.after(DialoguePlayback.prototype, 'render', () => {
+	// No portrait? do original logic only
+	if (portraitVars.currentPortraitId < 0) return;
 
 	// Determine where to draw the portrait AND with what colors
 	const portraitLoc = [portraitVars.currentSide === 1 ? portraitVars.OFFSET_X_RIGHT - 12 * portraitVars.SCALE : portraitVars.OFFSET_X_LEFT, portraitVars.OFFSET_Y - 12 * portraitVars.SCALE];
@@ -208,6 +202,6 @@ DialoguePlayback.prototype.render = function() {
 			8 * portraitVars.SCALE
 		);
 	}
-};
+});
 
 })();
