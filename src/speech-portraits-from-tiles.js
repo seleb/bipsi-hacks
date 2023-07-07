@@ -149,21 +149,22 @@ wrap.before(DialoguePlayback.prototype, 'render', () => {
 wrap.after(DialoguePlayback.prototype, 'render', () => {
 	// No portrait? do original logic only
 	if (portraitVars.currentPortraitId < 0) return;
+	const { dialoguePlayback } = window.PLAYBACK;
 
 	// Determine where to draw the portrait AND with what colors
 	const portraitLoc = [portraitVars.currentSide === 1 ? portraitVars.OFFSET_X_RIGHT - 12 * portraitVars.SCALE : portraitVars.OFFSET_X_LEFT, portraitVars.OFFSET_Y - 12 * portraitVars.SCALE];
-	const options = window.PLAYBACK.dialoguePlayback.getOptions(window.PLAYBACK.dialoguePlayback.currentPage.options);
+	const options = dialoguePlayback.getOptions(dialoguePlayback.currentPage.options);
 	const palette = window.PLAYBACK.getActivePalette();
 	const borderColor = portraitVars.currentBorderColorIndex === 0 ? options.panelColor : palette.colors[portraitVars.currentBorderColorIndex];
 
 	// Draw a panel border
-	window.PLAYBACK.dialoguePlayback.dialogueRendering.fillStyle = borderColor;
-	window.PLAYBACK.dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 0 * portraitVars.SCALE, portraitLoc[1] + 0 * portraitVars.SCALE, 12 * portraitVars.SCALE, 12 * portraitVars.SCALE);
+	dialoguePlayback.dialogueRendering.fillStyle = borderColor;
+	dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 0 * portraitVars.SCALE, portraitLoc[1] + 0 * portraitVars.SCALE, 12 * portraitVars.SCALE, 12 * portraitVars.SCALE);
 
 	// Draw a background rectangle behind the portrait
 	if (portraitVars.currentBgColorIndex > 0) {
-		window.PLAYBACK.dialoguePlayback.dialogueRendering.fillStyle = palette.colors[portraitVars.currentBgColorIndex];
-		window.PLAYBACK.dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 1 * portraitVars.SCALE, portraitLoc[1] + 1 * portraitVars.SCALE, 10 * portraitVars.SCALE, 10 * portraitVars.SCALE);
+		dialoguePlayback.dialogueRendering.fillStyle = palette.colors[portraitVars.currentBgColorIndex];
+		dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 1 * portraitVars.SCALE, portraitLoc[1] + 1 * portraitVars.SCALE, 10 * portraitVars.SCALE, 10 * portraitVars.SCALE);
 	}
 
 	// Draw the portrait
@@ -186,7 +187,7 @@ wrap.after(DialoguePlayback.prototype, 'render', () => {
 		}
 
 		// Draw the portrait from tint-canvas to screen
-		window.PLAYBACK.dialoguePlayback.dialogueRendering.drawImage(
+		dialoguePlayback.dialogueRendering.drawImage(
 			portraitVars.TINT_CANVAS,
 			0,
 			0,
