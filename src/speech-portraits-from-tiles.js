@@ -147,7 +147,7 @@ DialoguePlayback.prototype.render = function () {
 	// No portrait? do original logic only
 	if (portraitVars.currentPortraitId < 0) {
 		// Original logic
-		portraitVars.orig_dialoguePlayback_render.bind(this)();
+		portraitVars.orig_dialoguePlayback_render.call(this);
 		return;
 	}
 	const { dialoguePlayback } = window.PLAYBACK;
@@ -156,7 +156,7 @@ DialoguePlayback.prototype.render = function () {
 	dialoguePlayback.options.anchorY = 1;
 
 	// Original logic
-	portraitVars.orig_dialoguePlayback_render.bind(this)();
+	portraitVars.orig_dialoguePlayback_render.call(this);
 
 	// Determine where to draw the portrait AND with what colors
 	const portraitLoc = [portraitVars.currentSide === 1 ? portraitVars.OFFSET_X_RIGHT - 12 * portraitVars.SCALE : portraitVars.OFFSET_X_LEFT, portraitVars.OFFSET_Y - 12 * portraitVars.SCALE];
