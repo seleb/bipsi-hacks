@@ -140,23 +140,20 @@ function portraitFakedownToTag(text) {
 // #endregion
 
 // #region DRAW PORTRAIT
-if (!portraitVars.orig_dialoguePlayback_render) {
-	portraitVars.orig_dialoguePlayback_render = DialoguePlayback.prototype.render;
-}
-DialoguePlayback.prototype.render = function renderPortrait() {
+wrap.splice(DialoguePlayback.prototype, 'render', original => {
+	const { dialoguePlayback } = window.PLAYBACK;
 	// No portrait? do original logic only
 	if (portraitVars.currentPortraitId < 0) {
 		// Original logic
-		portraitVars.orig_dialoguePlayback_render.call(this);
+		original.call(dialoguePlayback);
 		return;
 	}
-	const { dialoguePlayback } = window.PLAYBACK;
 
 	// Always show dialogue at bottom
 	dialoguePlayback.options.anchorY = 1;
 
 	// Original logic
-	portraitVars.orig_dialoguePlayback_render.call(this);
+	original.call(dialoguePlayback);
 
 	// Determine where to draw the portrait AND with what colors
 	const portraitLoc = [portraitVars.currentSide === 1 ? portraitVars.OFFSET_X_RIGHT - 12 * portraitVars.SCALE : portraitVars.OFFSET_X_LEFT, portraitVars.OFFSET_Y - 12 * portraitVars.SCALE];
@@ -206,5 +203,5 @@ DialoguePlayback.prototype.render = function renderPortrait() {
 			8 * portraitVars.SCALE
 		);
 	}
-};
+});
 // #endregion
