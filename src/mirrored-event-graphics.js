@@ -1,6 +1,6 @@
 /**
 🪞
-@file Mirrored event graphics
+@file mirrored event graphics
 @summary Flip events with the "mirrored" tag
 @license MIT
 @author Violgamba (Jon Heard)
