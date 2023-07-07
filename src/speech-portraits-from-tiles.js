@@ -73,12 +73,13 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 	portraitVars.DEFAULT_SIDE = 0;
 }
 
-// TRACK THE CURRENTLY RUN EVENT
+// #region TRACK THE CURRENTLY RUN EVENT
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 	portraitVars.currentEvent = event;
 });
+// #endregion
 
-// PROCESS TEXT FOR PORTRAIT IDS
+// #region PROCESS TEXT FOR PORTRAIT IDS
 wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {
 	script = portraitFakedownToTag(script);
 	return original.call(this, script, options);
@@ -136,8 +137,9 @@ function portraitFakedownToTag(text) {
 
 	return text;
 }
+// #endregion
 
-// DRAW PORTRAIT
+// #region DRAW PORTRAIT
 wrap.before(DialoguePlayback.prototype, 'render', () => {
 	// No portrait? do original logic only
 	if (portraitVars.currentPortraitId < 0) return;
@@ -197,3 +199,4 @@ wrap.after(DialoguePlayback.prototype, 'render', () => {
 		);
 	}
 });
+// #endregion
