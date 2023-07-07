@@ -1,10 +1,10 @@
 /**
 🪞
-@file Mirrored event graphics
+@file mirrored event graphics
 @summary Flip events with the "mirrored" tag
 @license MIT
 @author Violgamba (Jon Heard)
-@version 2.2.0
+@version 2.2.1
 
 @version 1.0.0
 

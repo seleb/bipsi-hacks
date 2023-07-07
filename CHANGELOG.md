@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/seleb/bipsi-hacks/compare/v2.2.0...v2.2.1) (2023-07-07)
+
+
+### Bug Fixes
+
+* minor issues with "mirrored events" and "speech portraits" hacks ([7e2e5e4](https://github.com/seleb/bipsi-hacks/commit/7e2e5e48fa2821d56a6d142a60fccc1da529dac8))
+
 # [2.2.0](https://github.com/seleb/bipsi-hacks/compare/v2.1.0...v2.2.0) (2023-07-06)
 
 
