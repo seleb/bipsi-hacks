@@ -4,7 +4,7 @@
 @summary Make the character taller
 @license GPL3.0-or-later
 @author Jummit
-@version 3.0.0
+@version 3.0.1
 
 
 @description

@@ -1,3 +1,11 @@
+## [3.0.1](https://github.com/seleb/bipsi-hacks/compare/v3.0.0...v3.0.1) (2023-07-08)
+
+
+### Bug Fixes
+
+* `dist` not being cleaned before build ([f078395](https://github.com/seleb/bipsi-hacks/commit/f078395bc96422dc721745bcde778fb77bf28168))
+* remove unused `index` ([e7728e2](https://github.com/seleb/bipsi-hacks/commit/e7728e2c5c27b70d1bca946f20919285c42dca8f))
+
 # [3.0.0](https://github.com/seleb/bipsi-hacks/compare/v2.2.1...v3.0.0) (2023-07-08)
 
 
