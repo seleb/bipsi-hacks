@@ -4,7 +4,6 @@
 @summary Add character portraits to dialogues
 @license MIT
 @author Violgamba (Jon Heard)
-@version 1.0.0
 
 @description
 Add character portraits to be drawn above the dialogue panel.
