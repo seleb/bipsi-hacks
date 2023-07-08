@@ -79,9 +79,6 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 //!CONFIG default-border-palette-color (text) "0"
 */
 
-// JSLint directives
-/* global PLAYBACK, oneField, findEventByTag */
-
 if (window.portraitVars) {
 	console.error('portraitVars over-defined.  Suggests multiple copies of the same plugin.');
 }
@@ -181,24 +178,24 @@ function gatherPortraitData(portraitId) {
 	} else {
 		// Setup portrait from image
 		const portraitIdParts = portraitId.split('-');
-		const srcEvent = portraitIdParts.length === 1 ? portraitVars.currentEvent : findEventByTag(PLAYBACK.data, portraitIdParts[0]);
+		const srcEvent = portraitIdParts.length === 1 ? portraitVars.currentEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
 		if (!srcEvent) {
 			return;
 		}
 		// To support framed animations, try the field-id with a suffix of "1"
 		// eslint-disable-next-line prefer-template
-		const srcFields = [oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + '1', 'file')];
+		const srcFields = [window.oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + '1', 'file')];
 		if (!srcFields[0]) {
 			// If suffix of "1" didn't work, try the field-id with no extra suffix
-			srcFields[0] = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1], 'file');
+			srcFields[0] = window.oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1], 'file');
 		} else {
 			// Suffix of "1" worked!  Keep loading consecutive suffixes until we hit null
 			let suffix = '2';
-			let nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
+			let nextSrcField = window.oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
 			while (nextSrcField) {
 				srcFields.push(nextSrcField);
 				suffix++;
-				nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
+				nextSrcField = window.oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
 			}
 		}
 		if (!srcFields[0]) {
@@ -230,7 +227,7 @@ function gatherPortraitData(portraitId) {
 
 		// Load the images from files into the portrait data
 		const srcFiles = srcFields.map(x => {
-			const resource = PLAYBACK.stateManager.resources.resources.get(x.data);
+			const resource = window.PLAYBACK.stateManager.resources.resources.get(x.data);
 			return resource ? resource.instance : null;
 		});
 		srcFiles.forEach((x, i) => {
