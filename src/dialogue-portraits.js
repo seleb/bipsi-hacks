@@ -78,6 +78,11 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 //!CONFIG default-border-palette-color (text) "0"
 */
 
+// JSLint directives
+/*global PLAYBACK*/
+/*global oneField*/
+/*global findEventByTag*/
+
 if (window.portraitVars) {
 	console.error('portraitVars over-defined.  Suggests multiple copies of the same plugin.');
 }
