@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/seleb/bipsi-hacks/compare/v2.2.1...v3.0.0) (2023-07-08)
+
+
+### Features
+
+* support file-based portraits ([71b1acf](https://github.com/seleb/bipsi-hacks/commit/71b1acf8518fb323c6c33c7ba7942eddab74303d))
+
+
+### BREAKING CHANGES
+
+* `speech-portraits-from-tiles` hack renamed to `dialogue-portraits`, and now supports files
+
 ## [2.2.1](https://github.com/seleb/bipsi-hacks/compare/v2.2.0...v2.2.1) (2023-07-07)
 
 
