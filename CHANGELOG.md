@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/seleb/bipsi-hacks/compare/v3.0.1...v3.0.2) (2023-07-08)
+
+
+### Bug Fixes
+
+* remove redundant versions ([c39e7e4](https://github.com/seleb/bipsi-hacks/commit/c39e7e4d7da51a381eaad7105f90c705dc44ca7c))
+
 ## [3.0.1](https://github.com/seleb/bipsi-hacks/compare/v3.0.0...v3.0.1) (2023-07-08)
 
 
