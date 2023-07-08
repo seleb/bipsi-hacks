@@ -69,8 +69,8 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 // The portrait's size
 //!CONFIG scale (text) "4"
 
-// The portrait's y-position (relative to the top of the dialogue ui)
-//!CONFIG vertical-offset (text) "2"
+// The portrait's distance from the dialogue UI's edges
+//!CONFIG margin (text) "2"
 
 // Which side of the screen the portrait is drawn to (unless specified in the dialogue text).
 //!CONFIG default-side (text) "0"
@@ -91,19 +91,18 @@ const portraitVars = {
 	currentEvent: null,
 };
 window.portraitVars = portraitVars;
-portraitVars.OFFSET_X_LEFT = 24;
-portraitVars.OFFSET_X_RIGHT = 232;
-portraitVars.OFFSET_Y = FIELD(CONFIG, 'vertical-offset', 'text') || 2;
 portraitVars.TINT_CANVAS = document.createElement('canvas');
 portraitVars.TINT_CANVAS.width = 8;
 portraitVars.TINT_CANVAS.height = 8;
 portraitVars.TINT_CANVAS_CONTEXT = portraitVars.TINT_CANVAS.getContext('2d');
+
+portraitVars.MARGIN = parseInt(FIELD(CONFIG, 'margin', 'text')) || 2;
 portraitVars.SCALE = parseInt(FIELD(CONFIG, 'scale', 'text'), 10) || 4;
 portraitVars.DEFAULT_BORDER_PALETTE_COLOR = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'text'), 10) || 0;
 if (portraitVars.DEFAULT_BORDER_PALETTE_COLOR < 0 || portraitVars.DEFAULT_BORDER_PALETTE_COLOR > 7) {
 	portraitVars.DEFAULT_BORDER_PALETTE_COLOR = 0;
 }
-portraitVars.DEFAULT_SIDE = FIELD(CONFIG, 'default-side', 'text');
+portraitVars.DEFAULT_SIDE = parseInt(FIELD(CONFIG, 'default-side', 'text'));
 if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 	portraitVars.DEFAULT_SIDE = 0;
 }
@@ -284,6 +283,8 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	const spaceX = displayWidth - width;
 	const spaceY = displayHeight - height;
 	const margin = options.noMargin ? 0 : Math.ceil(Math.min(spaceX, spaceY) / 2);
+	const minX = margin;
+	const maxX = displayWidth - margin;
 	const minY = margin;
 	const maxY = displayHeight - margin;
 	const dialogueUiY = Math.floor(minY + (maxY - minY - height) * options.anchorY);
@@ -291,8 +292,8 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	// Determine where to draw the portrait AND with what colors
 	const portraitSize = (portraitVars.currentPortraitData.type == 'tile' ? 12 : 10) * portraitVars.SCALE;
 	const portraitLoc = [];
-	portraitLoc[0] = portraitVars.currentSide === 1 ? portraitVars.OFFSET_X_RIGHT - portraitSize : portraitVars.OFFSET_X_LEFT;
-	portraitLoc[1] = dialogueUiY - portraitVars.OFFSET_Y - portraitSize;
+	portraitLoc[0] = (portraitVars.currentSide === 0) ? (minX + portraitVars.MARGIN) : (maxX - portraitVars.MARGIN - portraitSize);
+	portraitLoc[1] = dialogueUiY - portraitVars.MARGIN - portraitSize;
 	const palette = window.PLAYBACK.getActivePalette();
 	const borderColor = portraitVars.currentBorderColorIndex === 0 ? options.panelColor : palette.colors[portraitVars.currentBorderColorIndex];
 
