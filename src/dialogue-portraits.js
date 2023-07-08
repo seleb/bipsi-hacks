@@ -80,9 +80,9 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 */
 
 // JSLint directives
-/*global PLAYBACK*/
-/*global oneField*/
-/*global findEventByTag*/
+/*global PLAYBACK */
+/*global oneField */
+/*global findEventByTag */
 
 if (window.portraitVars) {
 	console.error('portraitVars over-defined.  Suggests multiple copies of the same plugin.');
