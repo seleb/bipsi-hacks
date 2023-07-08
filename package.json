@@ -9,7 +9,7 @@
 	],
 	"version": "3.0.0",
 	"scripts": {
-		"build": "rollup -c",
+		"build": "rm -rf ./dist && rollup -c",
 		"test": "jest --runInBand",
 		"lint": "eslint ./src/**/*.js",
 		"postversion": "npm run build"
