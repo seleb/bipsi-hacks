@@ -96,13 +96,13 @@ portraitVars.TINT_CANVAS.width = 8;
 portraitVars.TINT_CANVAS.height = 8;
 portraitVars.TINT_CANVAS_CONTEXT = portraitVars.TINT_CANVAS.getContext('2d');
 
-portraitVars.MARGIN = parseInt(FIELD(CONFIG, 'margin', 'text')) || 2;
+portraitVars.MARGIN = parseInt(FIELD(CONFIG, 'margin', 'text'), 10) || 2;
 portraitVars.SCALE = parseInt(FIELD(CONFIG, 'scale', 'text'), 10) || 4;
 portraitVars.DEFAULT_BORDER_PALETTE_COLOR = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'text'), 10) || 0;
 if (portraitVars.DEFAULT_BORDER_PALETTE_COLOR < 0 || portraitVars.DEFAULT_BORDER_PALETTE_COLOR > 7) {
 	portraitVars.DEFAULT_BORDER_PALETTE_COLOR = 0;
 }
-portraitVars.DEFAULT_SIDE = parseInt(FIELD(CONFIG, 'default-side', 'text'));
+portraitVars.DEFAULT_SIDE = parseInt(FIELD(CONFIG, 'default-side', 'text'), 10);
 if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 	portraitVars.DEFAULT_SIDE = 0;
 }
@@ -124,7 +124,7 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 	window.PLAYBACK.dialoguePlayback.currentPage.glyphs.forEach((glyph, i) => {
 		if (glyph.styles.has('portrait')) {
 			const args = glyph.styles.get('portrait').split(',');
-			const portraitId = parseInt(args[0]) || args[0];
+			let portraitId = parseInt(args[0], 10) || args[0];
 			portraitVars.currentSide = parseInt(args[1], 10);
 			portraitVars.currentFgColorIndex = parseInt(args[2], 10);
 			portraitVars.currentBgColorIndex = parseInt(args[3], 10);
@@ -154,63 +154,67 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 });
 
 function shallowArrayEquals(a, b) {
-    return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
+	return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
 }
 
-function gatherPortraitData(portraitId)
-{
+function gatherPortraitData(portraitId) {
 	portraitVars.currentPortraitData.type = null;
-	if (portraitId == -1 || (!portraitId && portraitId !== 0)) {
+	if (portraitId === -1 || (!portraitId && portraitId !== 0)) {
 		// Type is already falsy, nothing more needed
-	// Setup portrait from tile
-	} else if (typeof(portraitId) == 'number') {
-		// Avoid re-loading the same tile consecutively
-		if (portraitId == portraitVars.currentPortraitData.tileId)
-		{
+	} else if (typeof portraitId === 'number') {
+		// Setup portrait from tile
+		if (portraitId === portraitVars.currentPortraitData.tileId) {
+			// Avoid re-loading the same tile consecutively
 			portraitVars.currentPortraitData.type = 'tile';
 			return;
 		}
 		const tile = window.PLAYBACK.data.tiles.find(i => i.id === portraitId);
-		if (!tile) { return; }
+		if (!tile)
+		{
+			return;
+		}
 		portraitVars.currentPortraitData.type = 'tile';
 		portraitVars.currentPortraitData.frameIds = tile.frames;
 		portraitVars.currentPortraitData.tileId = portraitId;
-	// Setup portrait from image
 	} else {
+		// Setup portrait from image
 		const portraitIdParts = portraitId.split('-');
-		const srcEvent = (portraitIdParts.length == 1) ? portraitVars.currentEvent : findEventByTag(PLAYBACK.data, portraitIdParts[0]);
-		if (!srcEvent) { return; }
+		const srcEvent = portraitIdParts.length === 1 ? portraitVars.currentEvent : findEventByTag(PLAYBACK.data, portraitIdParts[0]);
+		if (!srcEvent)
+		{
+			return;
+		}
 		// To support framed animations, try the field-id with a suffix of "1"
-		let srcFields = [ oneField(srcEvent, portraitIdParts[portraitIdParts.length-1] + "1", 'file') ];
-		// If suffix of "1" didn't work, try the field-id with no extra suffix
+		const srcFields = [oneField(srcEvent, portraitIdParts[portraitIdParts.length-1] + '1', 'file')];
 		if (!srcFields[0]) {
-			srcFields[0] = oneField(srcEvent, portraitIdParts[portraitIdParts.length-1], 'file');
-		// Suffix of "1" worked!  Keep loading consecutive suffixes until we hit null
+			// If suffix of "1" didn't work, try the field-id with no extra suffix
+			srcFields[0] = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1], 'file');
 		} else {
-			let suffix = "2";
-			let nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length-1] + suffix, 'file');
-			while (nextSrcField)
-			{
+			// Suffix of "1" worked!  Keep loading consecutive suffixes until we hit null
+			let suffix = '2';
+			let nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
+			while (nextSrcField) {
 				srcFields.push(nextSrcField);
 				suffix++;
-				nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length-1] + suffix, 'file');
+				nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
 			}
 		}
-		if (!srcFields[0]) { return; }
-		// Avoid re-loading the same image consecutively
-		if (shallowArrayEquals( srcFields.map(x => x.data), portraitVars.currentPortraitData.imageResourceIds ))
+		if (!srcFields[0])
 		{
+			return;
+		}
+		// Avoid re-loading the same image consecutively
+		if (shallowArrayEquals(srcFields.map(x => x.data), portraitVars.currentPortraitData.imageResourceIds)) {
 			portraitVars.currentPortraitData.type = 'image';
 			return;
 		}
 		// Setup image objects
 		portraitVars.currentPortraitData.images ||= [];
-		for (let i = portraitVars.currentPortraitData.images.length; i < srcFields.length; i++)
-		{
+		for (let i = portraitVars.currentPortraitData.images.length; i < srcFields.length; i++) {
 			portraitVars.currentPortraitData.images[i] = new Image();
 		}
 		// Make sure all images are clear (to avoid any flicker from prior dialogue)
-		portraitVars.currentPortraitData.images.forEach(x => x.src = null);
+		portraitVars.currentPortraitData.images.forEach(x => { x.src = null });
 		// Setup non-image portrait data (image part is setup above)
 		portraitVars.currentPortraitData.type = 'image';
 		portraitVars.currentPortraitData.imageResourceIds = srcFields.map(x => x.data);
@@ -222,11 +226,13 @@ function gatherPortraitData(portraitId)
 			return resource ? resource.instance : null;
 		});
 		srcFiles.forEach((x, i) => {
-			if (!x) { return; }
+			if (!x) {
+				return;
+			}
 			const reader = new FileReader();
 			reader.onload = () => {
 				portraitVars.currentPortraitData.images[i].src = reader.result;
-			}
+			};
 			reader.readAsDataURL(x);
 		});
 	}
@@ -290,9 +296,9 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	const dialogueUiY = Math.floor(minY + (maxY - minY - height) * options.anchorY);
 
 	// Determine where to draw the portrait AND with what colors
-	const portraitSize = (portraitVars.currentPortraitData.type == 'tile' ? 12 : 10) * portraitVars.SCALE;
+	const portraitSize = (portraitVars.currentPortraitData.type === 'tile' ? 12 : 10) * portraitVars.SCALE;
 	const portraitLoc = [];
-	portraitLoc[0] = (portraitVars.currentSide === 0) ? (minX + portraitVars.MARGIN) : (maxX - portraitVars.MARGIN - portraitSize);
+	portraitLoc[0] = portraitVars.currentSide === 0 ? minX + portraitVars.MARGIN : maxX - portraitVars.MARGIN - portraitSize;
 	portraitLoc[1] = dialogueUiY - portraitVars.MARGIN - portraitSize;
 	const palette = window.PLAYBACK.getActivePalette();
 	const borderColor = portraitVars.currentBorderColorIndex === 0 ? options.panelColor : palette.colors[portraitVars.currentBorderColorIndex];
@@ -302,11 +308,11 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0], portraitLoc[1], portraitSize, portraitSize);
 
 	// Draw the portrait from a tile
-	if (portraitVars.currentPortraitData.type == 'tile') {
+	if (portraitVars.currentPortraitData.type === 'tile') {
 		// Draw a background rectangle behind the portrait
 		if (portraitVars.currentBgColorIndex > 0) {
 			dialoguePlayback.dialogueRendering.fillStyle = palette.colors[portraitVars.currentBgColorIndex];
-			dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 1*portraitVars.SCALE, portraitLoc[1] + 1*portraitVars.SCALE, portraitSize - 2*portraitVars.SCALE, portraitSize - 2*portraitVars.SCALE);
+			dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 1 * portraitVars.SCALE, portraitLoc[1] + 1 * portraitVars.SCALE, portraitSize - 2 * portraitVars.SCALE, portraitSize - 2 * portraitVars.SCALE);
 		}
 
 		// Draw the portrait
@@ -334,23 +340,22 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 				0,
 				8,
 				8,
-				portraitLoc[0] + 2*portraitVars.SCALE,
-				portraitLoc[1] + 2*portraitVars.SCALE,
-				portraitSize - 4*portraitVars.SCALE,
-				portraitSize - 4*portraitVars.SCALE
+				portraitLoc[0] + 2 * portraitVars.SCALE,
+				portraitLoc[1] + 2 * portraitVars.SCALE,
+				portraitSize - 4 * portraitVars.SCALE,
+				portraitSize - 4 * portraitVars.SCALE
 			);
 		}
 	}
 	// Draw the portrait from a picture file
-	else if (portraitVars.currentPortraitData.type == 'image')
-	{
+	else if (portraitVars.currentPortraitData.type === 'image') {
 		const frameIndex = window.PLAYBACK.frameCount % portraitVars.currentPortraitData.frameCount;
 		dialoguePlayback.dialogueRendering.drawImage(
 			portraitVars.currentPortraitData.images[frameIndex],
-			portraitLoc[0] + 1*portraitVars.SCALE,
-			portraitLoc[1] + 1*portraitVars.SCALE,
-			portraitSize - 2*portraitVars.SCALE,
-			portraitSize - 2*portraitVars.SCALE
+			portraitLoc[0] + 1 * portraitVars.SCALE,
+			portraitLoc[1] + 1 * portraitVars.SCALE,
+			portraitSize - 2 * portraitVars.SCALE,
+			portraitSize - 2 * portraitVars.SCALE
 		);
 	}
 });
