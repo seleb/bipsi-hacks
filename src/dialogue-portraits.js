@@ -169,8 +169,7 @@ function gatherPortraitData(portraitId) {
 			return;
 		}
 		const tile = window.PLAYBACK.data.tiles.find(i => i.id === portraitId);
-		if (!tile)
-		{
+		if (!tile) {
 			return;
 		}
 		portraitVars.currentPortraitData.type = 'tile';
@@ -180,12 +179,11 @@ function gatherPortraitData(portraitId) {
 		// Setup portrait from image
 		const portraitIdParts = portraitId.split('-');
 		const srcEvent = portraitIdParts.length === 1 ? portraitVars.currentEvent : findEventByTag(PLAYBACK.data, portraitIdParts[0]);
-		if (!srcEvent)
-		{
+		if (!srcEvent) {
 			return;
 		}
 		// To support framed animations, try the field-id with a suffix of "1"
-		const srcFields = [oneField(srcEvent, portraitIdParts[portraitIdParts.length-1] + '1', 'file')];
+		const srcFields = [oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + '1', 'file')];
 		if (!srcFields[0]) {
 			// If suffix of "1" didn't work, try the field-id with no extra suffix
 			srcFields[0] = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1], 'file');
@@ -199,12 +197,16 @@ function gatherPortraitData(portraitId) {
 				nextSrcField = oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + suffix, 'file');
 			}
 		}
-		if (!srcFields[0])
-		{
+		if (!srcFields[0]) {
 			return;
 		}
 		// Avoid re-loading the same image consecutively
-		if (shallowArrayEquals(srcFields.map(x => x.data), portraitVars.currentPortraitData.imageResourceIds)) {
+		if (
+			shallowArrayEquals(
+				srcFields.map(x => x.data),
+				portraitVars.currentPortraitData.imageResourceIds
+			)
+		) {
 			portraitVars.currentPortraitData.type = 'image';
 			return;
 		}
@@ -214,7 +216,9 @@ function gatherPortraitData(portraitId) {
 			portraitVars.currentPortraitData.images[i] = new Image();
 		}
 		// Make sure all images are clear (to avoid any flicker from prior dialogue)
-		portraitVars.currentPortraitData.images.forEach(x => { x.src = null });
+		portraitVars.currentPortraitData.images.forEach(x => {
+			x.src = null
+		});
 		// Setup non-image portrait data (image part is setup above)
 		portraitVars.currentPortraitData.type = 'image';
 		portraitVars.currentPortraitData.imageResourceIds = srcFields.map(x => x.data);
@@ -273,8 +277,7 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	}
 
 	// Move a top-dialogue to the bottom, since we're adding a portrait above it
-	if (dialoguePlayback.options.anchorY == 0)
-	{
+	if (dialoguePlayback.options.anchorY === 0) {
 		dialoguePlayback.options.anchorY = 1;
 	}
 
@@ -312,7 +315,12 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 		// Draw a background rectangle behind the portrait
 		if (portraitVars.currentBgColorIndex > 0) {
 			dialoguePlayback.dialogueRendering.fillStyle = palette.colors[portraitVars.currentBgColorIndex];
-			dialoguePlayback.dialogueRendering.fillRect(portraitLoc[0] + 1 * portraitVars.SCALE, portraitLoc[1] + 1 * portraitVars.SCALE, portraitSize - 2 * portraitVars.SCALE, portraitSize - 2 * portraitVars.SCALE);
+			dialoguePlayback.dialogueRendering.fillRect(
+				portraitLoc[0] + 1 * portraitVars.SCALE,
+				portraitLoc[1] + 1 * portraitVars.SCALE,
+				portraitSize - 2 * portraitVars.SCALE,
+				portraitSize - 2 * portraitVars.SCALE
+			);
 		}
 
 		// Draw the portrait
