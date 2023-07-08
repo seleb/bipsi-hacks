@@ -79,6 +79,11 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 //!CONFIG default-border-palette-color (text) "0"
 */
 
+// JSLint directives
+/*global PLAYBACK*/
+/*global oneField*/
+/*global findEventByTag*/
+
 if (window.portraitVars) {
 	console.error('portraitVars over-defined.  Suggests multiple copies of the same plugin.');
 }
@@ -183,6 +188,7 @@ function gatherPortraitData(portraitId) {
 			return;
 		}
 		// To support framed animations, try the field-id with a suffix of "1"
+		// eslint-disable-next-line prefer-template
 		const srcFields = [oneField(srcEvent, portraitIdParts[portraitIdParts.length - 1] + '1', 'file')];
 		if (!srcFields[0]) {
 			// If suffix of "1" didn't work, try the field-id with no extra suffix
@@ -217,7 +223,7 @@ function gatherPortraitData(portraitId) {
 		}
 		// Make sure all images are clear (to avoid any flicker from prior dialogue)
 		portraitVars.currentPortraitData.images.forEach(x => {
-			x.src = null
+			x.src = null;
 		});
 		// Setup non-image portrait data (image part is setup above)
 		portraitVars.currentPortraitData.type = 'image';
