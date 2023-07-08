@@ -339,10 +339,10 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 			portraitVars.TINT_CANVAS_CONTEXT.globalCompositeOperation = 'destination-atop';
 			if (portraitVars.currentSide === 1) {
 				portraitVars.TINT_CANVAS_CONTEXT.scale(-1, 1);
-				portraitVars.TINT_CANVAS_CONTEXT.drawImage(frameCanvas, frameId * 8, 0, 8, 8, 0, 0, -8, 8);
+				portraitVars.TINT_CANVAS_CONTEXT.drawImage(frameCanvas, (frameId % 16) * 8, Math.trunc(frameId / 16) * 8, 8, 8, 0, 0, -8, 8);
 				portraitVars.TINT_CANVAS_CONTEXT.scale(-1, 1);
 			} else {
-				portraitVars.TINT_CANVAS_CONTEXT.drawImage(frameCanvas, frameId * 8, 0, 8, 8, 0, 0, 8, 8);
+				portraitVars.TINT_CANVAS_CONTEXT.drawImage(frameCanvas, (frameId % 16) * 8, Math.trunc(frameId / 16) * 8, 8, 8, 0, 0, 8, 8);
 			}
 
 			// Draw the portrait from tint-canvas to screen
