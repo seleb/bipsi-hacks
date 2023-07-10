@@ -76,7 +76,7 @@ NOTE - Adding the file field of step 2 to a library event, instead of the trigge
 */
 
 // JSLint directives
-/* global PLAYBACK, STANDARD_SCRIPTS */
+/* global PLAYBACK, STANDARD_SCRIPTS, SCRIPTING_FUNCTIONS */
 
 const DEFAULT_SOUND_CHANNEL = 'main';
 
