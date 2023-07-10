@@ -23,15 +23,14 @@ NOTE: if this plugin's configuration is changed, the key to press may be differe
 //!CONFIG fullscreen-hotkey (text) "Enter"
 */
 
-const KEY_FOR_FULLSCREEN = FIELD(CONFIG, 'fullscreen-keycode', 'text') || "Enter";
+const KEY_FOR_FULLSCREEN = FIELD(CONFIG, 'fullscreen-keycode', 'text') || 'Enter';
 
 function toggleFullscreen() {
-	var canvas = document.getElementById("player-canvas");
+	const canvas = document.getElementById('player-canvas');
 	if (!canvas) {
 		return;
 	}
-	if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement)
-	{
+	if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
 		if (canvas.requestFullscreen) {
 			canvas.requestFullscreen();
 		} else if (document.documentElement.msRequestFullscreen) {
@@ -41,9 +40,7 @@ function toggleFullscreen() {
 		} else if (document.documentElement.webkitRequestFullscreen) {
 			canvas.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 		}
-	}
-	else
-	{
+	} else {
 		if (document.exitFullscreen) {
 			document.exitFullscreen();
 		} else if (document.msExitFullscreen) {
@@ -56,19 +53,19 @@ function toggleFullscreen() {
 	}
 }
 
-function fullscreenPlugin_onKeydown(e) {
-	if (e.key == KEY_FOR_FULLSCREEN) {
+function fullscreenPluginOnKeydown(e) {
+	if (e.key === KEY_FOR_FULLSCREEN) {
 		toggleFullscreen();
 	}
 }
 
 // Make sure this plugin does NOT add multiple event handlers (i.e. each time the game is played)
-const oldKeydownHandler = window.parent.window.EDITOR.fullscreenPlugin_onKeydown;
+const oldKeydownHandler = window.parent.window.EDITOR.fullscreenPluginOnKeydown;
 if (oldKeydownHandler) {
-	window.parent.document.removeEventListener("keydown", oldKeydownHandler);
+	window.parent.document.removeEventListener('keydown', oldKeydownHandler);
 }
-window.parent.window.EDITOR.fullscreenPlugin_onKeydown = fullscreenPlugin_onKeydown;
+window.parent.window.EDITOR.fullscreenPluginOnKeydown = fullscreenPluginOnKeydown;
 
 // Add key event handler both to the game, and to the editor
-document.addEventListener("keydown", fullscreenPlugin_onKeydown);
-window.parent.document.addEventListener("keydown", fullscreenPlugin_onKeydown);
+document.addEventListener('keydown', fullscreenPluginOnKeydown);
+window.parent.document.addEventListener('keydown', fullscreenPluginOnKeydown);

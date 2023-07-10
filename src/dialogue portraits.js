@@ -79,7 +79,7 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 */
 
 // JSLint directives
-/* global PLAYBACK, oneField, findEventByTag */
+/* global PLAYBACK */
 
 const EMPTY_CHAR_CODE = 1;
 const EMPTY_CHAR = String.fromCharCode(EMPTY_CHAR_CODE);
@@ -115,8 +115,7 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 
 // Keep track of which event is running the current js code
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
-	if (PLAYBACK)
-	{
+	if (PLAYBACK) {
 		PLAYBACK.jsSourceEvent = event;
 	}
 });
@@ -125,9 +124,8 @@ wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 
 // Add a zero-width character to the font so we can use it for characterless styles (like "portrait")
 function addEmptyCharToFont(font) {
-	if (!font.characters.has(1))
-	{
-		font.characters.set(1, { codepoint: EMPTY_CHAR_CODE, rect: {x:0,y:0,width:0,height:0}, spacing: 0, image: font.characters.get(0).image });
+	if (!font.characters.has(1)) {
+		font.characters.set(1, { codepoint: EMPTY_CHAR_CODE, rect: { x: 0, y: 0, width: 0, height: 0 }, spacing: 0, image: font.characters.get(0).image });
 	}
 }
 wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {

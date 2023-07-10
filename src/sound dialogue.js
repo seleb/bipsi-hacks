@@ -23,22 +23,23 @@ HOW TO USE:
 5. Run the game and trigger the text dialogue of step 5.  Note that the audio dialogue plays.
 */
 
+// JSLint directives
+/* global PLAYBACK */
+
 const EMPTY_CHAR_CODE = 1;
 const EMPTY_CHAR = String.fromCharCode(EMPTY_CHAR_CODE);
 
 // Keep track of which event is running the current js code
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
-	if (PLAYBACK)
-	{
+	if (PLAYBACK) {
 		PLAYBACK.jsSourceEvent = event;
 	}
 });
 
 // Add a zero-width character to the font so we can use it for characterless styles (like "sound")
 function addEmptyCharToFont(font) {
-	if (!font.characters.has(1))
-	{
-		font.characters.set(1, { codepoint: EMPTY_CHAR_CODE, rect: {x:0,y:0,width:0,height:0}, spacing: 0, image: font.characters.get(0).image });
+	if (!font.characters.has(1)) {
+		font.characters.set(1, { codepoint: EMPTY_CHAR_CODE, rect: { x: 0, y: 0, width: 0, height: 0 }, spacing: 0, image: font.characters.get(0).image });
 	}
 }
 
@@ -57,10 +58,9 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 		if (!glyph.hidden && glyph.styles.has('sound')) {
 			const soundName = glyph.styles.get('sound');
 			if (soundName) {
-				let assetId = PLAYBACK.makeScriptingDefines(PLAYBACK.jsSourceEvent).FIELD_OR_LIBRARY(soundName);
-				if (assetId)
-				{
-					PLAYBACK.playSound(PLAYBACK.getFileObjectURL(assetId), "dialogue");
+				const assetId = PLAYBACK.makeScriptingDefines(PLAYBACK.jsSourceEvent).FIELD_OR_LIBRARY(soundName);
+				if (assetId) {
+					PLAYBACK.playSound(PLAYBACK.getFileObjectURL(assetId), 'dialogue');
 				}
 			}
 			glyph.styles.delete('sound');
@@ -88,7 +88,7 @@ function soundFakedownToTag(text) {
 }
 
 // Make sound dialogue stop playing when the dialogue ui is closed
-wrap.after(DialoguePlayback.prototype, 'setPage', (page) => {
+wrap.after(DialoguePlayback.prototype, 'setPage', page => {
 	if (!this.currentPage) {
 		PLAYBACK?.stopSound('dialogue');
 	}
