@@ -4,7 +4,6 @@
 @summary Add a hotkey to toggle fullscreen.  A gamepad's "start" button can also toggle fullscreen.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 1.0.0
 
 @description
 Add a hotkey to toggle fullscreen mode.
