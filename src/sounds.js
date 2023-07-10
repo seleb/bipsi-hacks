@@ -4,7 +4,6 @@
 @summary Sound effects from audio files (mp3, wav).  Also adds volume control for sounds and music.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 1.0.0
 
 @description
 Work with sound effect files (mp3, wav) in a manner akin to how Bipsi handles music.
