@@ -41,6 +41,7 @@ function toggleFullscreen() {
 			canvas.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 		}
 	} else {
+		// eslint-disable-next-line no-lonely-if
 		if (document.exitFullscreen) {
 			document.exitFullscreen();
 		} else if (document.msExitFullscreen) {

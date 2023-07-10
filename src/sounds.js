@@ -75,6 +75,9 @@ NOTE - Adding the file field of step 2 to a library event, instead of the trigge
 //!CONFIG default-music-volume (text) "1.0"
 */
 
+// JSLint directives
+/* global PLAYBACK, STANDARD_SCRIPTS */
+
 const DEFAULT_SOUND_CHANNEL = 'main';
 
 wrap.after(window, 'start', () => {
@@ -127,7 +130,8 @@ SCRIPTING_FUNCTIONS.STOP_SOUND = function(channel) {
 
 BipsiPlayback.prototype.setSoundVolume = function(volume, channel) {
 	// Prep the volume value
-	if (!parseFloat(volume, 10) && volume != 0) { // "!=" needed, not "!=="
+	// eslint-disable-next-line eqeqeq
+	if (!parseFloat(volume, 10) && volume != 0) {
 		console.log(`Invalid sound volume set: '${volume}'".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
@@ -152,7 +156,8 @@ SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function(volume, channel) {
 };
 
 BipsiPlayback.prototype.setMusicVolume = function(volume) {
-	if (!parseFloat(volume, 10) && volume != 0) { // "!=" needed, not "!=="
+	// eslint-disable-next-line eqeqeq
+	if (!parseFloat(volume, 10) && volume != 0) {
 		console.log(`Invalid music volume set: '${volume}'.`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
