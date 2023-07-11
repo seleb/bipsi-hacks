@@ -4,7 +4,7 @@
 @summary Sound effects from audio files (mp3, wav).  Also adds volume control for sounds and music.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.2.0
+@version 4.2.1
 
 
 @description
@@ -98,6 +98,11 @@ BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
 		this.soundChannels[channel] = document.createElement('audio');
 		this.soundChannels[channel].volume = this.defaultSoundVolume;
 	}
+	// If request to loop a sound that's already looping, do nothing to avoid resetting the loop
+	if (looped && this.soundChannels[channel] && this.soundChannels[channel].src === sound) {
+		return;
+	}
+	// Setup the given sound on the given channel
 	this.soundChannels[channel].src = sound;
 	this.soundChannels[channel].loop = looped;
 	this.soundChannels[channel].play();
@@ -133,8 +138,8 @@ SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
 
 BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel) {
 	// Prep the volume value
-	if (!parseFloat(volume) && volume !== 0) {
-		console.log(`Invalid sound volume set: "${volume}".`);
+	if (Number.isNaN(parseFloat(volume))) {
+		console.log(`Invalid sound volume: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
 
@@ -157,8 +162,8 @@ SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function SET_SOUND_VOLUME(volume, channel
 };
 
 BipsiPlayback.prototype.setMusicVolume = function setMusicVolume(volume) {
-	if (!parseFloat(volume) && volume !== 0) {
-		console.log(`Invalid music volume set: "${volume}".`);
+	if (Number.isNaN(parseFloat(volume))) {
+		console.log(`Invalid music volume: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
 
@@ -174,6 +179,6 @@ if (sound) {
 	PLAY_SOUND(sound);
 }
 `;
-STANDARD_SCRIPTS.push(BEHAVIOUR_TOUCH_SOUND);
+STANDARD_SCRIPTS.unshift(BEHAVIOUR_TOUCH_SOUND);
 
 })();

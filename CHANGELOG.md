@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/seleb/bipsi-hacks/compare/v4.2.0...v4.2.1) (2023-07-11)
+
+
+### Bug Fixes
+
+* **sounds:** play immediately on touch, avoid restarting loops, better invalid volume checks ([14cd556](https://github.com/seleb/bipsi-hacks/commit/14cd556d6ac53ae8bcb129b1e69496ee86dc92f1)), closes [#10](https://github.com/seleb/bipsi-hacks/issues/10)
+
 # [4.2.0](https://github.com/seleb/bipsi-hacks/compare/v4.1.0...v4.2.0) (2023-07-11)
 
 
