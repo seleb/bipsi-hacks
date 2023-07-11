@@ -11,6 +11,8 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 - 🖼 [dialogue portraits](/dist/dialogue-portraits.js): Add character portraits to dialogues
 - 🎮 [gamepad input](/dist/gamepad-input.js): HTML5 gamepad support
 - 🪞 [mirrored event graphics](/dist/mirrored-event-graphics.js): Flip events with the "mirrored" tag
+- 💬 [sound dialogue](/dist/sound-dialogue.js): Add sound dialogue that plays alongside text dialogue.  Add VO to your game.
+- 🔊 [sounds](/dist/sounds.js): Sound effects from audio files (mp3, wav).  Also adds volume control for sounds and music.
 - 👪 [tall character](/dist/tall-character.js): Make the character taller
 
 ## How to use

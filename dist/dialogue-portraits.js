@@ -4,7 +4,7 @@
 @summary Add character portraits to dialogues
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.1.0
+@version 4.2.0
 
 
 @description
@@ -116,23 +116,23 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 	portraitVars.DEFAULT_SIDE = 0;
 }
 
-// #region TRACK THE CURRENTLY RUN EVENT
+// Keep track of which event is running the current js code
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 	if (window.PLAYBACK) {
 		window.PLAYBACK.jsSourceEvent = event;
 	}
 });
-// #endregion
 
 // #region PROCESS TEXT FOR PORTRAIT IDS
 
-// Add a spaceless character to the font so we can use it for characterless styles (like "portrait")
+// Add a zero-width character to the font so we can use it for characterless styles (like "portrait")
 function addEmptyCharToFont(font) {
 	if (!font.characters.has(1)) {
 		font.characters.set(1, { codepoint: EMPTY_CHAR_CODE, rect: { x: 0, y: 0, width: 0, height: 0 }, spacing: 0, image: font.characters.get(0).image });
 	}
 }
 wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {
+	// Make sure the font includes a zero-width character
 	addEmptyCharToFont(this.getOptions(options).font);
 	// Dialogue has no portrait by default
 	portraitVars.currentPortraitData.type = null;
@@ -143,6 +143,7 @@ wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original
 	return original.call(this, script, options);
 });
 
+// React to each "portrait" style in the dialogue text by setting up its portrait to be rendered
 wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 	// Portrait logic
 	window.PLAYBACK.dialoguePlayback.currentPage.glyphs.forEach((glyph, i) => {
@@ -266,13 +267,14 @@ function gatherPortraitData(portraitId) {
 	}
 }
 
+// Handle each portrait markup by turning it into a portrait-styled zero-width character
 function portraitFakedownToTag(text) {
 	// Make sure the "@@"s are properly paired
 	if ((text.match(/@@/g) ?? []).length % 2 !== 0) {
 		return text;
 	}
 
-	// Swap each "@@" pair with a portrait style (to attach to the next character)
+	// Swap each "@@" pair with a portrait style and attach it to a zero-width character
 	let start = text.indexOf('@@');
 	let end = 0;
 	while (start !== -1) {

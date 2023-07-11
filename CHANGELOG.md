@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/seleb/bipsi-hacks/compare/v4.1.0...v4.2.0) (2023-07-11)
+
+
+### Features
+
+* add `sounds` and `sound dialogue` hacks ([#8](https://github.com/seleb/bipsi-hacks/issues/8)) ([f1ce312](https://github.com/seleb/bipsi-hacks/commit/f1ce3120258dd07a01b5c7e4fc9561cac6fc2d24)), closes [#5](https://github.com/seleb/bipsi-hacks/issues/5)
+
 # [4.1.0](https://github.com/seleb/bipsi-hacks/compare/v4.0.0...v4.1.0) (2023-07-11)
 
 
