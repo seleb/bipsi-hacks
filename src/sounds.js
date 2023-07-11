@@ -79,8 +79,8 @@ const DEFAULT_SOUND_CHANNEL = 'main';
 
 wrap.after(window, 'start', () => {
 	window.PLAYBACK.soundChannels = {};
-	window.PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text'), 10) || 0;
-	window.PLAYBACK.music.volume = parseFloat(FIELD(CONFIG, 'default-music-volume', 'text'), 10) || 0;
+	window.PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text')) || 0;
+	window.PLAYBACK.music.volume = parseFloat(FIELD(CONFIG, 'default-music-volume', 'text')) || 0;
 });
 
 BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
@@ -127,10 +127,10 @@ SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
 
 BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel) {
 	// Prep the volume value
-	if (!parseFloat(volume, 10) && volume !== 0) {
+	if (!parseFloat(volume) && volume !== 0) {
 		console.log(`Invalid sound volume set: "${volume}".`);
 	}
-	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
+	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
 
 	if (channel) {
 		// Set the volume for a single channel
@@ -151,10 +151,10 @@ SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function SET_SOUND_VOLUME(volume, channel
 };
 
 BipsiPlayback.prototype.setMusicVolume = function setMusicVolume(volume) {
-	if (!parseFloat(volume, 10) && volume !== 0) {
+	if (!parseFloat(volume) && volume !== 0) {
 		console.log(`Invalid music volume set: "${volume}".`);
 	}
-	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
+	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
 
 	this.music.volume = volume;
 };
