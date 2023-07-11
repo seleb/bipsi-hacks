@@ -88,7 +88,7 @@ BipsiPlayback.prototype.playSound = function (sound, channel, looped) {
 		return;
 	}
 	channel ||= DEFAULT_SOUND_CHANNEL;
-	if (!this.soundChannels.hasOwnProperty(channel)) {
+	if (!this.soundChannels[channel]) {
 		this.soundChannels[channel] = document.createElement('audio');
 		this.soundChannels[channel].volume = this.defaultSoundVolume;
 	}
@@ -107,7 +107,7 @@ SCRIPTING_FUNCTIONS.PLAY_SOUND = function (sound, channel, looped) {
 
 BipsiPlayback.prototype.stopSound = function (channel) {
 	if (channel) {
-		if (!this.soundChannels.hasOwnProperty(channel)) {
+		if (!this.soundChannels[channel]) {
 			return;
 		}
 		this.soundChannels[channel].pause();
@@ -134,7 +134,7 @@ BipsiPlayback.prototype.setSoundVolume = function (volume, channel) {
 
 	if (channel) {
 		// Set the volume for a single channel
-		if (!this.soundChannels.hasOwnProperty(channel)) {
+		if (!this.soundChannels[channel]) {
 			this.soundChannels[channel] = document.createElement('audio');
 		}
 		this.soundChannels[channel].volume = volume;
