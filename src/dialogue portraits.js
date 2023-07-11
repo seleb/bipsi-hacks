@@ -112,8 +112,8 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 
 // #region TRACK THE CURRENTLY RUN EVENT
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
-	if (PLAYBACK) {
-		PLAYBACK.jsSourceEvent = event;
+	if (window.PLAYBACK) {
+		window.PLAYBACK.jsSourceEvent = event;
 	}
 });
 // #endregion
@@ -148,7 +148,7 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 			portraitVars.currentBgColorIndex = parseInt(args[3], 10);
 			portraitVars.currentBorderColorIndex = parseInt(args[4], 10);
 			// Use the portraited event's colors as defaults.
-			const eventColors = FIELD(PLAYBACK.jsSourceEvent, 'colors', 'colors') || { fg: 3, bg: 1 };
+			const eventColors = FIELD(window.PLAYBACK.jsSourceEvent, 'colors', 'colors') || { fg: 3, bg: 1 };
 			if ((!portraitId && portraitId !== 0) || portraitId < -1) {
 				portraitId = null; // No portrait shown
 			}
@@ -197,7 +197,7 @@ function gatherPortraitData(portraitId) {
 	} else {
 		// Setup portrait from image
 		const portraitIdParts = portraitId.split('-');
-		const srcEvent = portraitIdParts.length === 1 ? PLAYBACK.jsSourceEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
+		const srcEvent = portraitIdParts.length === 1 ? window.PLAYBACK.jsSourceEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
 		if (!srcEvent) {
 			return;
 		}
