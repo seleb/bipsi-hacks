@@ -1,3 +1,19 @@
+# [4.0.0](https://github.com/seleb/bipsi-hacks/compare/v3.0.2...v4.0.0) (2023-07-11)
+
+
+### Bug Fixes
+
+* adjusted plugin file naming ([#6](https://github.com/seleb/bipsi-hacks/issues/6)) ([d2948b1](https://github.com/seleb/bipsi-hacks/commit/d2948b1ccce19e846f6d52cdd41385ab9bfeb862)), closes [#5](https://github.com/seleb/bipsi-hacks/issues/5)
+
+
+### BREAKING CHANGES
+
+* `dialogue-portraits` renamed to `dialogue portraits`
+* `mirrored-event-graphics` renamed to `mirrored event
+graphics`
+
+Co-authored-by: Jonathan Heard <jon.heard.tutor@gmail.com>
+
 ## [3.0.2](https://github.com/seleb/bipsi-hacks/compare/v3.0.1...v3.0.2) (2023-07-08)
 
 
