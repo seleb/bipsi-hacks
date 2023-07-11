@@ -9,7 +9,7 @@
 Add sound dialogue that plays alongside text dialogue.  Add VO to your game.
 ** NOTE - Requires the "sounds.js" Bipsi plugin. **
 
-Motivation - My neices can't read well yet, but they can draw and they can certainly talk.  This is
+Motivation - My nieces can't read well yet, but they can draw and they can certainly talk.  This is
 	part of an in-editor system to let them make games and easily add non-text dialogue.
 
 
