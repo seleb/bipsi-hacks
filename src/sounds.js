@@ -127,7 +127,7 @@ SCRIPTING_FUNCTIONS.STOP_SOUND = function (channel) {
 
 BipsiPlayback.prototype.setSoundVolume = function (volume, channel) {
 	// Prep the volume value
-	if (!parseFloat(volume, 10) && volume != 0) {
+	if (!parseFloat(volume, 10) && volume !== 0) {
 		console.log(`Invalid sound volume set: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
@@ -151,7 +151,7 @@ SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function (volume, channel) {
 };
 
 BipsiPlayback.prototype.setMusicVolume = function (volume) {
-	if (!parseFloat(volume, 10) && volume != 0) {
+	if (!parseFloat(volume, 10) && volume !== 0) {
 		console.log(`Invalid music volume set: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
