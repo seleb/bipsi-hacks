@@ -92,6 +92,11 @@ BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
 		this.soundChannels[channel] = document.createElement('audio');
 		this.soundChannels[channel].volume = this.defaultSoundVolume;
 	}
+	// If request to loop a sound that's already looping, do nothing to avoid resetting the loop
+	if (looped && this.soundChannels[channel] && this.soundChannels[channel].src == sound) {
+		return;
+	}
+	// Setup the given sound on the given channel
 	this.soundChannels[channel].src = sound;
 	this.soundChannels[channel].loop = looped;
 	this.soundChannels[channel].play();
