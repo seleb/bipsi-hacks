@@ -86,7 +86,7 @@ function soundFakedownToTag(text) {
 
 // Make sound dialogue stop playing when the dialogue ui is closed
 wrap.after(DialoguePlayback.prototype, 'setPage', page => {
-	if (!this.currentPage) {
+	if (!window.PLAYBACK.dialoguePlayback.currentPage) {
 		window.PLAYBACK?.stopSound('dialogue');
 	}
 });
