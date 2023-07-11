@@ -28,8 +28,8 @@ const EMPTY_CHAR = String.fromCharCode(EMPTY_CHAR_CODE);
 
 // Keep track of which event is running the current js code
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
-	if (PLAYBACK) {
-		PLAYBACK.jsSourceEvent = event;
+	if (window.PLAYBACK) {
+		window.PLAYBACK.jsSourceEvent = event;
 	}
 });
 
@@ -55,9 +55,9 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 		if (!glyph.hidden && glyph.styles.has('sound')) {
 			const soundName = glyph.styles.get('sound');
 			if (soundName) {
-				const assetId = PLAYBACK.makeScriptingDefines(PLAYBACK.jsSourceEvent).FIELD_OR_LIBRARY(soundName);
+				const assetId = window.PLAYBACK.makeScriptingDefines(window.PLAYBACK.jsSourceEvent).FIELD_OR_LIBRARY(soundName);
 				if (assetId) {
-					PLAYBACK.playSound(PLAYBACK.getFileObjectURL(assetId), 'dialogue');
+					window.PLAYBACK.playSound(window.PLAYBACK.getFileObjectURL(assetId), 'dialogue');
 				}
 			}
 			glyph.styles.delete('sound');
@@ -87,9 +87,9 @@ function soundFakedownToTag(text) {
 // Make sound dialogue stop playing when the dialogue ui is closed
 wrap.after(DialoguePlayback.prototype, 'setPage', page => {
 	if (!this.currentPage) {
-		PLAYBACK?.stopSound('dialogue');
+		window.PLAYBACK?.stopSound('dialogue');
 	}
 });
 wrap.after(DialoguePlayback.prototype, 'cancel', () => {
-	PLAYBACK?.stopSound('dialogue');
+	window.PLAYBACK?.stopSound('dialogue');
 });

@@ -78,9 +78,9 @@ NOTE - Adding the file field of step 2 to a library event, instead of the trigge
 const DEFAULT_SOUND_CHANNEL = 'main';
 
 wrap.after(window, 'start', () => {
-	PLAYBACK.soundChannels = {};
-	PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text'), 10) || 0;
-	PLAYBACK.music.volume = parseFloat(FIELD(CONFIG, 'default-music-volume', 'text'), 10) || 0;
+	window.PLAYBACK.soundChannels = {};
+	window.PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text'), 10) || 0;
+	window.PLAYBACK.music.volume = parseFloat(FIELD(CONFIG, 'default-music-volume', 'text'), 10) || 0;
 });
 
 BipsiPlayback.prototype.playSound = function (sound, channel, looped) {
