@@ -112,8 +112,7 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 
 // #region TRACK THE CURRENTLY RUN EVENT
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
-	if (PLAYBACK)
-	{
+	if (PLAYBACK) {
 		PLAYBACK.jsSourceEvent = event;
 	}
 });
