@@ -83,10 +83,9 @@ wrap.after(window, 'start', () => {
 	PLAYBACK.music.volume = parseFloat(FIELD(CONFIG, 'default-music-volume', 'text'), 10) || 0;
 });
 
-BipsiPlayback.prototype.playSound = function(sound, channel, looped) {
-	if (!sound)
-	{
-		return
+BipsiPlayback.prototype.playSound = function (sound, channel, looped) {
+	if (!sound) {
+		return;
 	}
 	channel ||= DEFAULT_SOUND_CHANNEL;
 	if (!this.soundChannels.hasOwnProperty(channel)) {
@@ -97,40 +96,39 @@ BipsiPlayback.prototype.playSound = function(sound, channel, looped) {
 	this.soundChannels[channel].loop = looped;
 	this.soundChannels[channel].play();
 };
-SCRIPTING_FUNCTIONS['PLAY_SOUND'] = function(sound, channel, looped) {
+SCRIPTING_FUNCTIONS.PLAY_SOUND = function (sound, channel, looped) {
 	let assetId = this.FIELD_OR_LIBRARY(sound, this.EVENT);
-	if (!assetId)
-	{
+	if (!assetId) {
 		assetId = sound;
 	}
 	sound = this.PLAYBACK.getFileObjectURL(assetId);
 	this.PLAYBACK.playSound(sound, channel, looped);
 };
 
-BipsiPlayback.prototype.stopSound = function(channel) {
+BipsiPlayback.prototype.stopSound = function (channel) {
 	if (channel) {
 		if (!this.soundChannels.hasOwnProperty(channel)) {
 			return;
 		}
 		this.soundChannels[channel].pause();
-		this.soundChannels[channel].removeAttribute("src");
+		this.soundChannels[channel].removeAttribute('src');
 		this.soundChannels[channel].loop = false;
 	} else {
 		for (const name in this.soundChannels) {
 			this.soundChannels[name].pause();
-			this.soundChannels[name].removeAttribute("src");
+			this.soundChannels[name].removeAttribute('src');
 			this.soundChannels[name].loop = false;
 		}
 	}
 };
-SCRIPTING_FUNCTIONS['STOP_SOUND'] = function(channel) {
+SCRIPTING_FUNCTIONS.STOP_SOUND = function (channel) {
 	this.PLAYBACK.stopSound(channel);
 };
 
-BipsiPlayback.prototype.setSoundVolume = function(volume, channel) {
+BipsiPlayback.prototype.setSoundVolume = function (volume, channel) {
 	// Prep the volume value
 	if (!parseFloat(volume, 10) && volume != 0) {
-		console.log('Invalid sound volume set: "' + volume + '".');
+		console.log(`Invalid sound volume set: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
 
@@ -148,19 +146,19 @@ BipsiPlayback.prototype.setSoundVolume = function(volume, channel) {
 		}
 	}
 };
-SCRIPTING_FUNCTIONS["SET_SOUND_VOLUME"] = function(volume, channel) {
+SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function (volume, channel) {
 	this.PLAYBACK.setSoundVolume(volume, channel);
 };
 
-BipsiPlayback.prototype.setMusicVolume = function(volume) {
+BipsiPlayback.prototype.setMusicVolume = function (volume) {
 	if (!parseFloat(volume, 10) && volume != 0) {
-		console.log('Invalid music volume set: "' + volume + '".');
+		console.log(`Invalid music volume set: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume, 10), 0), 1);
 
 	this.music.volume = volume;
 };
-SCRIPTING_FUNCTIONS["SET_MUSIC_VOLUME"] = function(volume) {
+SCRIPTING_FUNCTIONS.SET_MUSIC_VOLUME = function (volume) {
 	this.PLAYBACK.setMusicVolume(volume);
 };
 
