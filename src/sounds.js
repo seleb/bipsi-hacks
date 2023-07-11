@@ -114,11 +114,11 @@ BipsiPlayback.prototype.stopSound = function (channel) {
 		this.soundChannels[channel].removeAttribute('src');
 		this.soundChannels[channel].loop = false;
 	} else {
-		for (const name in this.soundChannels) {
-			this.soundChannels[name].pause();
-			this.soundChannels[name].removeAttribute('src');
-			this.soundChannels[name].loop = false;
-		}
+		Object.values(this.soundChannels).forEach(i => {
+			i.pause();
+			i.removeAttribute('src');
+			i.loop = false;
+		});
 	}
 };
 SCRIPTING_FUNCTIONS.STOP_SOUND = function (channel) {
@@ -141,9 +141,9 @@ BipsiPlayback.prototype.setSoundVolume = function (volume, channel) {
 	} else {
 		// Set the volume for ALL channels
 		this.defaultSoundVolume = volume;
-		for (const name in this.soundChannels) {
-			this.soundChannels[name].volume = volume;
-		}
+		Object.values(this.soundChannels).forEach(i => {
+			i.volume = volume;
+		});
 	}
 };
 SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function (volume, channel) {
