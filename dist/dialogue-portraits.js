@@ -4,7 +4,7 @@
 @summary Add character portraits to dialogues
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.0.0
+@version 4.1.0
 
 
 @description
@@ -84,11 +84,15 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 
 
 
+const EMPTY_CHAR_CODE = 1;
+const EMPTY_CHAR = String.fromCharCode(EMPTY_CHAR_CODE);
+
 if (window.portraitVars) {
 	console.error('portraitVars over-defined.  Suggests multiple copies of the same plugin.');
 }
 const portraitVars = {
 	currentPortraitData: { type: null },
+	currentPageHasPortrait: false,
 	currentSide: 0,
 	currentFgColorIndex: 3,
 	currentBgColorIndex: 1,
@@ -114,20 +118,35 @@ if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 
 // #region TRACK THE CURRENTLY RUN EVENT
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
-	portraitVars.currentEvent = event;
+	if (window.PLAYBACK) {
+		window.PLAYBACK.jsSourceEvent = event;
+	}
 });
 // #endregion
 
 // #region PROCESS TEXT FOR PORTRAIT IDS
+
+// Add a spaceless character to the font so we can use it for characterless styles (like "portrait")
+function addEmptyCharToFont(font) {
+	if (!font.characters.has(1)) {
+		font.characters.set(1, { codepoint: EMPTY_CHAR_CODE, rect: { x: 0, y: 0, width: 0, height: 0 }, spacing: 0, image: font.characters.get(0).image });
+	}
+}
 wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {
+	addEmptyCharToFont(this.getOptions(options).font);
+	// Dialogue has no portrait by default
+	portraitVars.currentPortraitData.type = null;
+	portraitVars.currentPageHasPortrait = false;
+	// Parse custom markup
 	script = portraitFakedownToTag(script);
+	// Original logic
 	return original.call(this, script, options);
 });
 
 wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 	// Portrait logic
 	window.PLAYBACK.dialoguePlayback.currentPage.glyphs.forEach((glyph, i) => {
-		if (glyph.styles.has('portrait')) {
+		if (!glyph.hidden && glyph.styles.has('portrait')) {
 			const args = glyph.styles.get('portrait').split(',');
 			let portraitId = parseInt(args[0], 10) || args[0];
 			portraitVars.currentSide = parseInt(args[1], 10);
@@ -135,7 +154,7 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 			portraitVars.currentBgColorIndex = parseInt(args[3], 10);
 			portraitVars.currentBorderColorIndex = parseInt(args[4], 10);
 			// Use the portraited event's colors as defaults.
-			const eventColors = FIELD(portraitVars.currentEvent, 'colors', 'colors') || { fg: 3, bg: 1 };
+			const eventColors = FIELD(window.PLAYBACK.jsSourceEvent, 'colors', 'colors') || { fg: 3, bg: 1 };
 			if ((!portraitId && portraitId !== 0) || portraitId < -1) {
 				portraitId = null; // No portrait shown
 			}
@@ -154,6 +173,7 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 
 			// Work out the portrait info to be rendered
 			gatherPortraitData(portraitId);
+			glyph.styles.delete('portrait');
 		}
 	});
 });
@@ -181,7 +201,7 @@ function gatherPortraitData(portraitId) {
 	} else {
 		// Setup portrait from image
 		const portraitIdParts = portraitId.split('-');
-		const srcEvent = portraitIdParts.length === 1 ? portraitVars.currentEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
+		const srcEvent = portraitIdParts.length === 1 ? window.PLAYBACK.jsSourceEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
 		if (!srcEvent) {
 			return;
 		}
@@ -257,13 +277,9 @@ function portraitFakedownToTag(text) {
 	let end = 0;
 	while (start !== -1) {
 		end = text.indexOf('@@', start + 1);
-		text = `${text.slice(0, start)}{portrait=${text.slice(start + 2, end)}}${text.slice(end + 2, end + 3)}{-portrait}${text.slice(end + 3)}`;
+		text = `${text.slice(0, start)}{portrait=${text.slice(start + 2, end)}}${EMPTY_CHAR}{-portrait}${text.slice(end + 2)}`;
+		portraitVars.currentPageHasPortrait = true;
 		start = text.indexOf('@@');
-	}
-
-	// If the first character does not already have a portrait style, add a NON-portrait style.
-	if (!text.startsWith('{portrait=')) {
-		text = `{portrait=-1}${text[0]}{-portrait}${text.slice(1)}`;
 	}
 
 	return text;
@@ -275,7 +291,7 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	const { dialoguePlayback } = window.PLAYBACK;
 
 	// No portrait? do original logic only
-	if (!portraitVars.currentPortraitData.type) {
+	if (!portraitVars.currentPageHasPortrait) {
 		original.call(dialoguePlayback);
 		return;
 	}
@@ -287,6 +303,11 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 
 	// Original logic
 	original.call(dialoguePlayback);
+
+	// Portrait not shown yet?  early out.
+	if (!portraitVars.currentPortraitData.type) {
+		return;
+	}
 
 	// Determine dialogue UI's Y position (this is a recalculation of what's in original logic)
 	const options = dialoguePlayback.getOptions(dialoguePlayback.currentPage.options);

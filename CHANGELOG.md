@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/seleb/bipsi-hacks/compare/v4.0.0...v4.1.0) (2023-07-11)
+
+
+### Features
+
+* **dialogue portraits:** expose current event, support changing within a single page ([#7](https://github.com/seleb/bipsi-hacks/issues/7)) ([35536a5](https://github.com/seleb/bipsi-hacks/commit/35536a567f25b616ffafde0cfcd7bfe1bdbbba59))
+
 # [4.0.0](https://github.com/seleb/bipsi-hacks/compare/v3.0.2...v4.0.0) (2023-07-11)
 
 
