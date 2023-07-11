@@ -93,7 +93,7 @@ BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
 		this.soundChannels[channel].volume = this.defaultSoundVolume;
 	}
 	// If request to loop a sound that's already looping, do nothing to avoid resetting the loop
-	if (looped && this.soundChannels[channel] && this.soundChannels[channel].src == sound) {
+	if (looped && this.soundChannels[channel] && this.soundChannels[channel].src === sound) {
 		return;
 	}
 	// Setup the given sound on the given channel
@@ -132,7 +132,7 @@ SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
 
 BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel) {
 	// Prep the volume value
-	if (isNaN(parseFloat(volume))) {
+	if (Number.isNaN(parseFloat(volume))) {
 		console.log(`Invalid sound volume: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
@@ -156,7 +156,7 @@ SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function SET_SOUND_VOLUME(volume, channel
 };
 
 BipsiPlayback.prototype.setMusicVolume = function setMusicVolume(volume) {
-	if (isNaN(parseFloat(volume))) {
+	if (Number.isNaN(parseFloat(volume))) {
 		console.log(`Invalid music volume: "${volume}".`);
 	}
 	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
