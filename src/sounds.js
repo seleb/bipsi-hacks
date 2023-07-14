@@ -168,7 +168,7 @@ SCRIPTING_FUNCTIONS.SET_MUSIC_VOLUME = function SET_MUSIC_VOLUME(volume) {
 };
 
 const BEHAVIOUR_TOUCH_SOUND = `
-const sound = FIELD(EVENT, "touch-sound", "file");
+const sound = FIELD(EVENT, "touch-sound");
 if (sound) {
 	PLAY_SOUND(sound);
 }
