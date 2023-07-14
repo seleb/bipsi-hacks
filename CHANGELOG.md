@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/seleb/bipsi-hacks/compare/v4.2.1...v4.3.0) (2023-07-14)
+
+
+### Features
+
+* **sounds:** `touch-sound` field can now be text ([#11](https://github.com/seleb/bipsi-hacks/issues/11)) ([8399258](https://github.com/seleb/bipsi-hacks/commit/8399258cd09eb888cef2bd5ca92184efb6aba0c2))
+
 ## [4.2.1](https://github.com/seleb/bipsi-hacks/compare/v4.2.0...v4.2.1) (2023-07-11)
 
 

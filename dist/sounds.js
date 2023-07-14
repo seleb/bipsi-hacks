@@ -4,7 +4,7 @@
 @summary Sound effects from audio files (mp3, wav).  Also adds volume control for sounds and music.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.2.1
+@version 4.3.0
 
 
 @description
@@ -174,7 +174,7 @@ SCRIPTING_FUNCTIONS.SET_MUSIC_VOLUME = function SET_MUSIC_VOLUME(volume) {
 };
 
 const BEHAVIOUR_TOUCH_SOUND = `
-const sound = FIELD(EVENT, "touch-sound", "file");
+const sound = FIELD(EVENT, "touch-sound");
 if (sound) {
 	PLAY_SOUND(sound);
 }
