@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/seleb/bipsi-hacks/compare/v4.3.0...v4.3.1) (2023-07-17)
+
+
+### Bug Fixes
+
+* **sounds:** if "touch-sound" is text & doesn't match library audio, fail silently ([#12](https://github.com/seleb/bipsi-hacks/issues/12)) ([b928440](https://github.com/seleb/bipsi-hacks/commit/b9284401d48da975890c91e2ec4b57133b7c6a27))
+
 # [4.3.0](https://github.com/seleb/bipsi-hacks/compare/v4.2.1...v4.3.0) (2023-07-14)
 
 
