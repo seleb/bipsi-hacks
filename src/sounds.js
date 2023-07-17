@@ -168,9 +168,20 @@ SCRIPTING_FUNCTIONS.SET_MUSIC_VOLUME = function SET_MUSIC_VOLUME(volume) {
 };
 
 const BEHAVIOUR_TOUCH_SOUND = `
-const sound = FIELD(EVENT, "touch-sound");
-if (sound) {
-	PLAY_SOUND(sound);
+const field = oneField(EVENT, 'touch-sound');
+if (!field || (field.type != 'file' && field.type != 'text')) {
+	return;
 }
+if (!field.data) {
+	return;
+}
+if (field.type == 'text') {
+	const library = findEventById(PLAYBACK.data, PLAYBACK.libraryId);
+	const libField = oneField(library, field.data);
+	if (!libField || !libField.data) {
+		return;
+	}
+}
+PLAY_SOUND(field.data);
 `;
 STANDARD_SCRIPTS.unshift(BEHAVIOUR_TOUCH_SOUND);
