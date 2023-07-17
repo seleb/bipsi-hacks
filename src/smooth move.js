@@ -111,7 +111,7 @@ BipsiPlayback.prototype.animateSmoothMove = async function animateSmoothMove(ava
 		}
 
 		// Animation
-		updateMovement = time => {
+		const updateMovement = time => {
 			const lerpPhase = (time - startTime) / MOVE_SPEED;
 
 			if (lerpPhase < 1) {
