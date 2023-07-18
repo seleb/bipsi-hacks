@@ -33,9 +33,7 @@ function setupFullscreenToggle() {
 	// Fullscreen toggle logic
 	EDITOR.toggleFullscreen = function toggleFullscreen() {
 		const canvas = this.playtestIframe.contentWindow.document.getElementById('player-canvas');
-		if (!canvas) {
-			return;
-		}
+		if (!canvas) return;
 		if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
 			if (canvas.requestFullscreen) {
 				canvas.requestFullscreen();
@@ -76,10 +74,14 @@ function setupFullscreenToggle() {
 			EDITOR.toggleFullscreen();
 		}
 	});
+
+	// Prevent repeating this setup
+	EDITOR.loadedEditorPlugins ||= new Set();
+	EDITOR.loadedEditorPlugins.add('fullscreen');
 }
 
 // Setup the plugin, if not already setup
-if (!document.getElementById('fullscreenButton')) {
+if (!EDITOR.loadedEditorPlugins?.has('fullscreen')) {
 	setupFullscreenToggle();
 }
 
