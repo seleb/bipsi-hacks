@@ -183,6 +183,6 @@ let makePlaybackSrc = makePlayback.toString();
 makePlaybackSrc = makePlaybackSrc.replace('async function makePlayback', 'makePlayback = async function');
 
 // Smooth move introduces a natural move delay.  Don't compound that with the original delay.
-makePlaybackSrc = makePlaybackSrc.replace('moveCooldown = .2;', '');
+makePlaybackSrc = makePlaybackSrc.replaceAll(/\n *moveCooldown = [^;]+;/g, '');
 
 eval(makePlaybackSrc);
