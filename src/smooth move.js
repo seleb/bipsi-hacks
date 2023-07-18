@@ -38,7 +38,7 @@ HOW TO USE:
 */
 
 const MOVE_SPEED = parseInt(FIELD(CONFIG, 'move-speed', 'text'), 10) || 190;
-const MANAGE_AVATAR_GRAPHIC = FIELD(CONFIG, 'manage-avatar-graphic', 'text') !== 'false' ?? true;
+const MANAGE_AVATAR_GRAPHIC = FIELD(CONFIG, 'manage-avatar-graphic', 'text').trim() !== 'false' ?? true;
 
 const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
 
