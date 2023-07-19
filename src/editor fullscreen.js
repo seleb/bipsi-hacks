@@ -28,8 +28,6 @@ NOTE: if this plugin's configuration is changed, the key to press may not be 'en
 //! CODE_EDITOR
 
 function setupFullscreenToggle() {
-	const KEY_FOR_FULLSCREEN = FIELD(CONFIG, 'fullscreen-keycode', 'text') || 'Enter';
-
 	// Fullscreen toggle logic
 	EDITOR.toggleFullscreen = function toggleFullscreen() {
 		const canvas = this.playtestIframe.contentWindow.document.getElementById('player-canvas');
@@ -68,9 +66,18 @@ function setupFullscreenToggle() {
 	fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewbox="0 0 16 16" stroke="currentColor" stroke-linecap="round" fill="none" stroke-width="1.25"><path d="M5 2h-3v3"/><path d="M11 2h3v3"/><path d="M2 11v3h3"/><path d="M14 11v3h-3"/></svg>`;
 	fullscreenButton.addEventListener('click', EDITOR.toggleFullscreen.bind(EDITOR));
 
-	// Hotkey
+	// Hotkey value
+	let hotkey;
+	function updateHotkey() {
+		const event = findEventById(EDITOR.stateManager.present, EVENT_ID);
+		hotkey = FIELD(event, 'fullscreen-hotkey', 'text').trim() || 'Enter';
+	}
+	wrap.before(BipsiEditor.prototype, 'playtest', updateHotkey);
+	updateHotkey();
+
+	// Hotkey event
 	document.addEventListener('keydown', e => {
-		if (e.key === KEY_FOR_FULLSCREEN) {
+		if (e.key === hotkey) {
 			EDITOR.toggleFullscreen();
 		}
 	});
@@ -88,9 +95,9 @@ if (!EDITOR.loadedEditorPlugins?.has('fullscreen')) {
 //! CODE_RUNTIME_DEV
 
 // Add fullscreen hotkey while the playtest canvas has the focused (i.e. while playtesting the game)
-const KEY_FOR_FULLSCREEN = FIELD(CONFIG, 'fullscreen-keycode', 'text') || 'Enter';
+const FULLSCREEN_HOTKEY = FIELD(CONFIG, 'fullscreen-hotkey', 'text').trim() || 'Enter';
 document.addEventListener('keydown', e => {
-	if (e.key === KEY_FOR_FULLSCREEN) {
+	if (e.key === FULLSCREEN_HOTKEY) {
 		window.parent.window.EDITOR.toggleFullscreen();
 	}
 });
