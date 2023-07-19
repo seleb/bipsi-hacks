@@ -47,7 +47,7 @@ function coordLerp(startCoords, endCoords, phase) {
 }
 
 function snapCoordsToPixels(coords) {
-	return [ Math.round(coords[0] * TILE_PX) / TILE_PX, Math.round(coords[1] * TILE_PX) / TILE_PX ];
+	return [Math.round(coords[0] * TILE_PX) / TILE_PX, Math.round(coords[1] * TILE_PX) / TILE_PX];
 }
 
 // Setup default avatar graphic tile fields, based on existing fields.
