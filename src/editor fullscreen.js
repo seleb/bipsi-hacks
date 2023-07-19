@@ -29,7 +29,7 @@ NOTE: if this plugin's configuration is changed, the key to press may not be 'en
 
 function setupFullscreenToggle() {
 	// Fullscreen toggle logic
-	EDITOR.toggleFullscreen = function toggleFullscreen() {
+	window.EDITOR.toggleFullscreen = function toggleFullscreen() {
 		const canvas = this.playtestIframe.contentWindow.document.getElementById('player-canvas');
 		if (!canvas) return;
 		if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
@@ -64,12 +64,12 @@ function setupFullscreenToggle() {
 	fullscreenButton.classList.add('icon-button');
 	fullscreenButton.title = 'toggle fullscreen';
 	fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewbox="0 0 16 16" stroke="currentColor" stroke-linecap="round" fill="none" stroke-width="1.25"><path d="M5 2h-3v3"/><path d="M11 2h3v3"/><path d="M2 11v3h3"/><path d="M14 11v3h-3"/></svg>`;
-	fullscreenButton.addEventListener('click', EDITOR.toggleFullscreen.bind(EDITOR));
+	fullscreenButton.addEventListener('click', window.EDITOR.toggleFullscreen.bind(EDITOR));
 
 	// Hotkey value
 	let hotkey;
 	function updateHotkey() {
-		const event = findEventById(EDITOR.stateManager.present, EVENT_ID);
+		const event = findEventById(window.EDITOR.stateManager.present, EVENT_ID);
 		hotkey = FIELD(event, 'fullscreen-hotkey', 'text').trim() || 'Enter';
 	}
 	wrap.before(BipsiEditor.prototype, 'playtest', updateHotkey);
@@ -78,17 +78,17 @@ function setupFullscreenToggle() {
 	// Hotkey event
 	document.addEventListener('keydown', e => {
 		if (e.key === hotkey) {
-			EDITOR.toggleFullscreen();
+			window.EDITOR.toggleFullscreen();
 		}
 	});
 
 	// Prevent repeating this setup
-	EDITOR.loadedEditorPlugins ||= new Set();
-	EDITOR.loadedEditorPlugins.add('fullscreen');
+	window.EDITOR.loadedEditorPlugins ||= new Set();
+	window.EDITOR.loadedEditorPlugins.add('fullscreen');
 }
 
 // Setup the plugin, if not already setup
-if (!EDITOR.loadedEditorPlugins?.has('fullscreen')) {
+if (!window.EDITOR.loadedEditorPlugins?.has('fullscreen')) {
 	setupFullscreenToggle();
 }
 
