@@ -69,7 +69,7 @@ function setupFullscreenToggle() {
 	// Hotkey value
 	let hotkey;
 	function updateHotkey() {
-		const event = findEventById(window.EDITOR.stateManager.present, EVENT_ID);
+		const event = window.findEventById(window.EDITOR.stateManager.present, EVENT_ID);
 		hotkey = FIELD(event, 'fullscreen-hotkey', 'text').trim() || 'Enter';
 	}
 	wrap.before(BipsiEditor.prototype, 'playtest', updateHotkey);
