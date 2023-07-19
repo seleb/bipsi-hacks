@@ -46,6 +46,10 @@ function coordLerp(startCoords, endCoords, phase) {
 	return [startCoords[0] * (1 - phase) + endCoords[0] * phase, startCoords[1] * (1 - phase) + endCoords[1] * phase];
 }
 
+function snapCoordsToPixels(coords) {
+	return [ Math.round(coords[0] * TILE_PX) / TILE_PX, Math.round(coords[1] * TILE_PX) / TILE_PX ];
+}
+
 // Setup default avatar graphic tile fields, based on existing fields.
 const GRAPHIC_DEFAULTS = {
 	'graphic-move': ['graphic-move-left', 'graphic-move-right', 'graphic-move-up', 'graphic-move-down'],
@@ -115,7 +119,7 @@ BipsiPlayback.prototype.animateSmoothMove = async function animateSmoothMove(ava
 			const lerpPhase = (time - startTime) / MOVE_SPEED;
 
 			if (lerpPhase < 1) {
-				avatar.position = coordLerp(startPosition, endPosition, lerpPhase);
+				avatar.position = snapCoordsToPixels(coordLerp(startPosition, endPosition, lerpPhase));
 				requestAnimationFrame(updateMovement);
 			} else {
 				// Track end time to allow transitioning into the next smooth-move
