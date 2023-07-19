@@ -30,14 +30,18 @@ HOW TO USE:
 
 
 // The rapidity of the avatar's movement
-//!CONFIG move-speed (text) "190"
+//!CONFIG avatar-move-speed (text) "190"
 
-// Whether to update the avatar's 'graphic' field whenever the avatar moves.  Useful for controlling
-// the avatar graphic outside of this plugin.
+// The rapidity of non-avatar event movement
+//!CONFIG event-move-speed (text) "400"
+
+// Whether to update the avatar's 'graphic' field whenever the avatar moves.  Disable this if the
+// avatar graphic is controlled outside of this plugin.
 //!CONFIG manage-avatar-graphic (text) "true"
 */
 
-const MOVE_SPEED = parseInt(FIELD(CONFIG, 'move-speed', 'text'), 10) || 190;
+const AVATAR_MOVE_SPEED = parseInt(FIELD(CONFIG, 'avatar-move-speed', 'text'), 10) || 190;
+const EVENT_MOVE_SPEED = parseInt(FIELD(CONFIG, 'event-move-speed', 'text'), 10) || 400;
 const MANAGE_AVATAR_GRAPHIC = FIELD(CONFIG, 'manage-avatar-graphic', 'text').trim() !== 'false' ?? true;
 
 function coordLerp(startCoords, endCoords, phase) {
@@ -80,6 +84,7 @@ function refreshAvatarGraphic(avatar) {
 		replaceFields(avatar, 'graphic', 'tile', tile);
 	}
 }
+
 // Called when a move causes the avatar to turn
 BipsiPlayback.prototype.onAvatarTurn = function onAvatarTurn(dx, dy) {
 	let direction = 'down';
@@ -96,7 +101,7 @@ BipsiPlayback.prototype.onAvatarTurn = function onAvatarTurn(dx, dy) {
 };
 
 // "Smooth" move the avatar via lerping
-BipsiPlayback.prototype.animateSmoothMove = async function animateSmoothMove(avatar, endPosition) {
+window.animateSmoothMove = async function animateSmoothMove(avatar, endPosition, speed) {
 	return new Promise(resolve => {
 		// Change to the 'move' graphic
 		if (MANAGE_AVATAR_GRAPHIC) {
@@ -114,7 +119,7 @@ BipsiPlayback.prototype.animateSmoothMove = async function animateSmoothMove(ava
 
 		// Animation
 		const updateMovement = time => {
-			const lerpPhase = (time - startTime) / MOVE_SPEED;
+			const lerpPhase = (time - startTime) / speed;
 
 			if (lerpPhase < 1) {
 				avatar.position = snapCoordsToPixels(coordLerp(startPosition, endPosition, lerpPhase));
@@ -145,6 +150,20 @@ Object.defineProperty(BipsiPlayback.prototype, 'canMove', {
 	},
 });
 
+// Modify the event walk functionality for smooth move
+SCRIPTING_FUNCTIONS.WALK = async function(event, sequence, delay=.4, wait=.4) {
+	const dirs = Array.from(sequence);
+	for (const dir of dirs) {
+		if (dir === ".") {
+			await sleep(wait * 1000);
+		} else {
+			let [x, y] = event.position;
+			const [dx, dy] = WALK_DIRECTIONS[dir];
+			await window.animateSmoothMove(event, [ x+dx, y+dy ], EVENT_MOVE_SPEED);
+		}
+	}
+}
+
 // Update 'BipsiPlayback.move' via code injection (instead of copying the entire method)
 let BipsiPlaybackMoveSrc = BipsiPlayback.prototype.move.toString();
 BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace('async move', 'BipsiPlayback.prototype.move = async function');
@@ -158,8 +177,8 @@ BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace(
 	}`
 );
 
-// Change move from instant-position-change to lerping
-BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace('avatar.position = [tx, ty];', 'await this.animateSmoothMove(avatar, [ tx, ty ]);');
+// Change avatar move from instant-position-change to lerping
+BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace('avatar.position = [tx, ty];', 'await window.animateSmoothMove(avatar, [ tx, ty ], AVATAR_MOVE_SPEED);');
 
 // If avatar blocked/bounded, smooth move doesn't run, so there's no delay.  Manually add delay to
 // avoid spamming the touch logic more frequently than original movement does.
@@ -170,7 +189,7 @@ BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace(
 		let delayStartTime = performance.now();
 		do {
 			await window.sleep(10);
-		} while ((performance.now() - delayStartTime) < MOVE_SPEED);
+		} while ((performance.now() - delayStartTime) < AVATAR_MOVE_SPEED);
 	}
 	this.busy = false;`
 );
