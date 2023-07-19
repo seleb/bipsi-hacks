@@ -59,7 +59,7 @@ const GRAPHIC_DEFAULTS = {
 };
 wrap.after(window, 'start', () => {
 	if (MANAGE_AVATAR_GRAPHIC) {
-		const avatar = getEventById(PLAYBACK.data, PLAYBACK.avatarId);
+		const avatar = window.getEventById(window.PLAYBACK.data, window.PLAYBACK.avatarId);
 		Object.keys(GRAPHIC_DEFAULTS).forEach(baseName => {
 			GRAPHIC_DEFAULTS[baseName].forEach(fieldName => {
 				if (FIELD(avatar, fieldName, 'tile')) {
@@ -69,11 +69,11 @@ wrap.after(window, 'start', () => {
 				if (!tile) {
 					tile = FIELD(avatar, 'graphic', 'tile');
 				}
-				replaceFields(avatar, fieldName, 'tile', tile);
+				window.replaceFields(avatar, fieldName, 'tile', tile);
 			});
 		});
 		avatar.direction = 'down';
-		PLAYBACK.onAvatarTurn(0, 0);
+		window.PLAYBACK.onAvatarTurn(0, 0);
 	}
 });
 
@@ -81,7 +81,7 @@ wrap.after(window, 'start', () => {
 function refreshAvatarGraphic(avatar) {
 	const tile = FIELD(avatar, `graphic-${avatar.isMoving ? 'move' : 'idle'}-${avatar.direction}`, 'tile');
 	if (tile) {
-		replaceFields(avatar, 'graphic', 'tile', tile);
+		window.replaceFields(avatar, 'graphic', 'tile', tile);
 	}
 }
 
@@ -95,7 +95,7 @@ BipsiPlayback.prototype.onAvatarTurn = function onAvatarTurn(dx, dy) {
 	} else if (dy < 0) {
 		direction = 'up';
 	}
-	const avatar = getEventById(this.data, this.avatarId);
+	const avatar = window.getEventById(this.data, this.avatarId);
 	avatar.direction = direction;
 	refreshAvatarGraphic(avatar);
 };
@@ -151,18 +151,20 @@ Object.defineProperty(BipsiPlayback.prototype, 'canMove', {
 });
 
 // Modify the event walk functionality for smooth move
-SCRIPTING_FUNCTIONS.WALK = async function(event, sequence, delay=.4, wait=.4) {
+SCRIPTING_FUNCTIONS.WALK = async function WALK(event, sequence, delay = 0.4, wait = 0.4) {
 	const dirs = Array.from(sequence);
 	for (const dir of dirs) {
-		if (dir === ".") {
-			await sleep(wait * 1000);
+		if (dir === '.') {
+			/* eslint-disable no-await-in-loop */
+			await window.sleep(wait * 1000);
 		} else {
-			let [x, y] = event.position;
+			const [x, y] = event.position;
 			const [dx, dy] = WALK_DIRECTIONS[dir];
-			await window.animateSmoothMove(event, [ x+dx, y+dy ], EVENT_MOVE_SPEED);
+			/* eslint-disable no-await-in-loop */
+			await window.animateSmoothMove(event, [x + dx, y + dy], EVENT_MOVE_SPEED);
 		}
 	}
-}
+};
 
 // Update 'BipsiPlayback.move' via code injection (instead of copying the entire method)
 let BipsiPlaybackMoveSrc = BipsiPlayback.prototype.move.toString();
@@ -200,7 +202,7 @@ BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace('if (!this.canMove) return;'
 eval(BipsiPlaybackMoveSrc);
 
 // Update 'makePlayback' via code injection (instead of copying the entire method)
-let makePlaybackSrc = makePlayback.toString();
+let makePlaybackSrc = window.makePlayback.toString();
 makePlaybackSrc = makePlaybackSrc.replace('async function makePlayback', 'makePlayback = async function');
 
 // Smooth move introduces a natural move delay.  Don't compound that with the original delay.
