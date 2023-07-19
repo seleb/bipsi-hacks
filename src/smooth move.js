@@ -40,8 +40,6 @@ HOW TO USE:
 const MOVE_SPEED = parseInt(FIELD(CONFIG, 'move-speed', 'text'), 10) || 190;
 const MANAGE_AVATAR_GRAPHIC = FIELD(CONFIG, 'manage-avatar-graphic', 'text').trim() !== 'false' ?? true;
 
-const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
-
 function coordLerp(startCoords, endCoords, phase) {
 	return [startCoords[0] * (1 - phase) + endCoords[0] * phase, startCoords[1] * (1 - phase) + endCoords[1] * phase];
 }
@@ -171,7 +169,7 @@ BipsiPlaybackMoveSrc = BipsiPlaybackMoveSrc.replace(
 	if (blocked || bounded) {
 		let delayStartTime = performance.now();
 		do {
-			await sleep(10);
+			await window.sleep(10);
 		} while ((performance.now() - delayStartTime) < MOVE_SPEED);
 	}
 	this.busy = false;`
