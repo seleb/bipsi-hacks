@@ -1,13 +1,13 @@
 /*
 👣
 @file smooth move
-@summary Add smooth (lerped) movement to the avatar.
+@summary Add smooth (lerped) movement to the avatar and walking events.
 @license MIT
 @author Violgamba (Jon Heard)
 
 @description
-Add smooth (lerped) movement to the avatar.  The speed is a settable config, and defaults to roughly
-the same speed as the original, non-smoothed movement.
+Add smooth (lerped) movement to the avatar and any walking events.  The speed is a settable config,
+and defaults to roughly the same speed as the original, non-smoothed movement.
 
 This plugin also handles separate tile fields for avatar moving vs idle states.  Since this creates
 incompatibility with the 'direction-avatar.js' plugin, this plugin also handles direction-based
