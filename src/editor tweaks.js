@@ -30,19 +30,19 @@ TWEAKS LIST
 - tweak--field-name-column-maximized - This widens the name column of the fields list ui.  Useful if
 	using long field names.
 - tweak--editing-hotkeys - 'delete', 'ctrl-c', 'ctrl-v' & 'ctrl-x' work as expected on events,
-	fields & tiles right after clicking them.  Arrow keys shift events, fields & tiles right after
-	clicking them.  'ctrl-shift-z' triggers REDO, rather than UNDO.
+	fields & tiles right after clicking them.  Arrow keys move events, fields & tiles around right
+	after clicking them.  'ctrl-shift-z' triggers REDO, rather than UNDO.
 
 
 HOW TO USE:
 1. Import this plugin into your game.  Note that the editor is altered by all the tweaks in this plugin.
-2. Run through the config fields in this plugin's event.  Set any unwanted tweaks to 'false'.
+2. Run through the config fields in this plugin's event.  Set any unwanted tweaks to 'false', then save the game.
 2. Refresh the page.  Note that the tweaks that are set to false don't alter the editor.
 
 
 // See @description for details on these fields
-//!CONFIG tweak--new-fields-default-to-tag-type (text) "true"
 //!CONFIG tweak--new-plugins-have-filename-tag (text) "true"
+//!CONFIG tweak--new-fields-default-to-tag-type (text) "true"
 //!CONFIG tweak--tilset-export-ordered-by-tile (text) "true"
 //!CONFIG tweak--save-button-shows-when-saved (text) "true"
 //!CONFIG tweak--field-name-column-maximized (text) "true"
