@@ -1,3 +1,10 @@
+# [4.4.0](https://github.com/seleb/bipsi-hacks/compare/v4.3.1...v4.4.0) (2023-07-23)
+
+
+### Features
+
+* add `editor fullscreen` plugin ([#14](https://github.com/seleb/bipsi-hacks/issues/14)) ([dae5c23](https://github.com/seleb/bipsi-hacks/commit/dae5c23275817cf591d9dbfe607146da5ba8780d))
+
 ## [4.3.1](https://github.com/seleb/bipsi-hacks/compare/v4.3.0...v4.3.1) (2023-07-17)
 
 

@@ -4,7 +4,7 @@
 @summary Add sound dialogue that plays alongside text dialogue.  Add VO to your game.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.3.1
+@version 4.4.0
 
 
 @description
@@ -46,7 +46,7 @@ function addEmptyCharToFont(font) {
 	}
 }
 
-wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {
+wrap.splice(DialoguePlayback.prototype, 'queue', function queueSound(original, script, options) {
 	// Make sure the font includes a zero-width character
 	addEmptyCharToFont(this.getOptions(options).font);
 	// Replace sound markup with a sound style
