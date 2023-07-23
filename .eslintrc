@@ -15,6 +15,7 @@
 		"CONFIG": "readonly",
 		"BipsiPlayback": "readonly",
 		"DialoguePlayback": "readonly",
+		"BipsiEditor": "readonly",
 		"SCRIPTING_FUNCTIONS": "readonly",
 		"STANDARD_SCRIPTS": "readonly",
 		"wrap": "readonly"
