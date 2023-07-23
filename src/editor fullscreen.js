@@ -64,7 +64,7 @@ function setupEditorPlugin() {
 	fullscreenButton.classList.add('icon-button');
 	fullscreenButton.title = 'toggle fullscreen';
 	fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewbox="0 0 16 16" stroke="currentColor" stroke-linecap="round" fill="none" stroke-width="1.25"><path d="M5 2h-3v3"/><path d="M11 2h3v3"/><path d="M2 11v3h3"/><path d="M14 11v3h-3"/></svg>`;
-	fullscreenButton.addEventListener('click', window.EDITOR.toggleFullscreen.bind(EDITOR));
+	fullscreenButton.addEventListener('click', window.EDITOR.toggleFullscreen.bind(window.EDITOR));
 
 	// Hotkey
 	document.addEventListener('keydown', e => {
