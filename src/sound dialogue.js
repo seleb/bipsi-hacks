@@ -40,7 +40,7 @@ function addEmptyCharToFont(font) {
 	}
 }
 
-wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original, script, options) {
+wrap.splice(DialoguePlayback.prototype, 'queue', function queueSound(original, script, options) {
 	// Make sure the font includes a zero-width character
 	addEmptyCharToFont(this.getOptions(options).font);
 	// Replace sound markup with a sound style
