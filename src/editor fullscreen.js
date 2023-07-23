@@ -81,7 +81,7 @@ if (!window.EDITOR.loadedEditorPlugins?.has('fullscreen')) {
 	setupEditorPlugin();
 }
 
-//! CODE_RUNTIME_DEV
+//! CODE_PLAYBACK_DEV
 
 // Add fullscreen hotkey while the playtest canvas has the focused (i.e. while playtesting the game)
 const FULLSCREEN_HOTKEY = FIELD(CONFIG, 'fullscreen-hotkey', 'text').trim() || 'Enter';
