@@ -31,3 +31,5 @@ function setupEditorPlugin() {
 if (!window.EDITOR.loadedEditorPlugins?.has('fieldsStartAsTags')) {
 	setupEditorPlugin();
 }
+
+//! CODE_PLAYBACK
