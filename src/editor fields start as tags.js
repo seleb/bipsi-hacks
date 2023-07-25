@@ -19,9 +19,9 @@ HOW TO USE
 
 function setupEditorPlugin() {
 	wrap.after(EventEditor.prototype, 'addField', () => {
-		const { event } = EDITOR.getSelections();
+		const { event } = window.EDITOR.getSelections();
 		event.fields[event.fields.length - 1].type = 'tag';
-		EDITOR.eventEditor.refresh();
+		window.EDITOR.eventEditor.refresh();
 	});
 
 	// Prevent repeating this setup
