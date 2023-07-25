@@ -9,6 +9,7 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 - 😴 [canvas replacement](/dist/canvas-replacement.js): WebGLazy bipsi integration
 - 🖼 [dialogue portraits](/dist/dialogue-portraits.js): Add character portraits to dialogues
+- 🏷 [editor fields start as tags](/dist/editor-fields-start-as-tags.js): New fields begin as "tag" types, rather than "text" types.
 - 🖥️ [editor fullscreen](/dist/editor-fullscreen.js): Add a ui button and hotkey to the editor to toggle fullscreen while playtesting the game.
 - 🎮 [gamepad input](/dist/gamepad-input.js): HTML5 gamepad support
 - 🪞 [mirrored event graphics](/dist/mirrored-event-graphics.js): Flip events with the "mirrored" tag

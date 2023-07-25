@@ -1,3 +1,10 @@
+# [4.5.0](https://github.com/seleb/bipsi-hacks/compare/v4.4.0...v4.5.0) (2023-07-25)
+
+
+### Features
+
+* add `editor fields start as tags` hack ([#16](https://github.com/seleb/bipsi-hacks/issues/16)) ([cc3e2c2](https://github.com/seleb/bipsi-hacks/commit/cc3e2c2691e76644ab19b3db85a654cf6ebd308e))
+
 # [4.4.0](https://github.com/seleb/bipsi-hacks/compare/v4.3.1...v4.4.0) (2023-07-23)
 
 
