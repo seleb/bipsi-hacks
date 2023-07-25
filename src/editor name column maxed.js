@@ -6,7 +6,7 @@
 @author Violgamba (Jon Heard)
 
 @description
-This maximizes the name column of the field list ui.  Useful if using long field names.
+This maximizes the name column of the field list ui.  Useful if often using long field names.
 
 
 HOW TO USE
