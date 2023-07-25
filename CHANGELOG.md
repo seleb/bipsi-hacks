@@ -1,3 +1,10 @@
+# [4.6.0](https://github.com/seleb/bipsi-hacks/compare/v4.5.0...v4.6.0) (2023-07-25)
+
+
+### Features
+
+* add `editor name column maxed` hack ([#17](https://github.com/seleb/bipsi-hacks/issues/17)) ([16b4ed5](https://github.com/seleb/bipsi-hacks/commit/16b4ed5ca30c40edcf225340768e25c93837f182))
+
 # [4.5.0](https://github.com/seleb/bipsi-hacks/compare/v4.4.0...v4.5.0) (2023-07-25)
 
 
