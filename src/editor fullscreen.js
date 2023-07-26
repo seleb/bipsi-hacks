@@ -68,7 +68,7 @@ function setupEditorPlugin() {
 
 	// Hotkey
 	document.addEventListener('keydown', e => {
-		if (e.key === (FIELD(CONFIG, 'fullscreen-hotkey', 'text').trim() || 'Enter')) {
+		if (e.key === (FIELD(CONFIG, 'fullscreen-hotkey', 'text')?.trim() || 'Enter')) {
 			window.EDITOR.toggleFullscreen();
 		}
 	});
@@ -84,7 +84,7 @@ if (!window.EDITOR.loadedEditorPlugins?.has('fullscreen')) {
 //! CODE_PLAYBACK_DEV
 
 // Add fullscreen hotkey while the playtest canvas has the focused (i.e. while playtesting the game)
-const FULLSCREEN_HOTKEY = FIELD(CONFIG, 'fullscreen-hotkey', 'text').trim() || 'Enter';
+const FULLSCREEN_HOTKEY = FIELD(CONFIG, 'fullscreen-hotkey', 'text')?.trim() || 'Enter';
 document.addEventListener('keydown', e => {
 	if (e.key === FULLSCREEN_HOTKEY) {
 		window.parent.window.EDITOR.toggleFullscreen();
