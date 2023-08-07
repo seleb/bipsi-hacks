@@ -29,7 +29,7 @@ HOW TO USE:
 // See example below.
 // If your game needs multiple maps to tie all the rooms together then you can add multiple fields
 // named "room-map" to this plugin.  When there are adjacency conflicts between these maps, later
-// maps take precidence.
+// maps take precedence.
 //
 // EXAMPLE:
 //
