@@ -11,7 +11,9 @@
 		}
 	},
 	"globals": {
+		"ROOM_SIZE": "readonly",
 		"FIELD": "readonly",
+		"FIELDS": "readonly",
 		"CONFIG": "readonly",
 		"BipsiPlayback": "readonly",
 		"DialoguePlayback": "readonly",
