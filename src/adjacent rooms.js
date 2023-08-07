@@ -100,24 +100,26 @@ wrap.splice(BipsiPlayback.prototype, 'move', (original, dx, dy) => {
 	const [px, py] = avatar.position;
 	const [tx, ty] = [px + dx, py + dy];
 	const currentRoomAdjacencies = roomAdjacencies[window.roomFromEvent(window.PLAYBACK.data, avatar).id];
-	let adjacencyDestination = null;
-	// If moving through an adjacency, setup a modified "location" object to move the pc to.
-	// "target" is added to the location object to represent where pc should end up in the next room, while the ACTUAL position is one cell off-screen.
-	// This allows the pc to "move" into the room, while also allowing a check to make sure the destination is not blocked.
-	if (tx <= -1 && currentRoomAdjacencies.left) {
-		adjacencyDestination = { room: currentRoomAdjacencies.left, position: [ROOM_SIZE, avatar.position[1]], target: [ROOM_SIZE - 1, avatar.position[1]] };
-	} else if (ty <= -1 && currentRoomAdjacencies.up) {
-		adjacencyDestination = { room: currentRoomAdjacencies.up, position: [avatar.position[0], ROOM_SIZE], target: [avatar.position[0], ROOM_SIZE - 1] };
-	} else if (tx >= ROOM_SIZE && currentRoomAdjacencies.right) {
-		adjacencyDestination = { room: currentRoomAdjacencies.right, position: [-1, avatar.position[1]], target: [0, avatar.position[1]] };
-	} else if (ty >= ROOM_SIZE && currentRoomAdjacencies.down) {
-		adjacencyDestination = { room: currentRoomAdjacencies.down, position: [avatar.position[0], -1], target: [avatar.position[0], 0] };
-	}
-	// Move to the adjacent room, but only if the destination cell isn't blocked
-	if (adjacencyDestination) {
-		const room = window.getRoomById(window.PLAYBACK.data, adjacencyDestination.room);
-		if (window.cellIsSolid(room, adjacencyDestination.target[0], adjacencyDestination.target[1])) return;
-		window.moveEvent(window.PLAYBACK.data, avatar, adjacencyDestination);
+	if (currentRoomAdjacencies) {
+		let adjacencyDestination = null;
+		// If moving through an adjacency, setup a modified "location" object to move the pc to.
+		// "target" is added to the location object to represent where pc should end up in the next room, while the ACTUAL position is one cell off-screen.
+		// This allows the pc to "move" into the room, while also allowing a check to make sure the destination is not blocked.
+		if (tx <= -1 && currentRoomAdjacencies.left) {
+			adjacencyDestination = { room: currentRoomAdjacencies.left, position: [ROOM_SIZE, avatar.position[1]], target: [ROOM_SIZE - 1, avatar.position[1]] };
+		} else if (ty <= -1 && currentRoomAdjacencies.up) {
+			adjacencyDestination = { room: currentRoomAdjacencies.up, position: [avatar.position[0], ROOM_SIZE], target: [avatar.position[0], ROOM_SIZE - 1] };
+		} else if (tx >= ROOM_SIZE && currentRoomAdjacencies.right) {
+			adjacencyDestination = { room: currentRoomAdjacencies.right, position: [-1, avatar.position[1]], target: [0, avatar.position[1]] };
+		} else if (ty >= ROOM_SIZE && currentRoomAdjacencies.down) {
+			adjacencyDestination = { room: currentRoomAdjacencies.down, position: [avatar.position[0], -1], target: [avatar.position[0], 0] };
+		}
+		// Move to the adjacent room, but only if the destination cell isn't blocked
+		if (adjacencyDestination) {
+			const room = window.getRoomById(window.PLAYBACK.data, adjacencyDestination.room);
+			if (window.cellIsSolid(room, adjacencyDestination.target[0], adjacencyDestination.target[1])) return;
+			window.moveEvent(window.PLAYBACK.data, avatar, adjacencyDestination);
+		}
 	}
 	// Finish with normal movement logic
 	original.call(window.PLAYBACK, dx, dy);
