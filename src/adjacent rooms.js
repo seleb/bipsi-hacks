@@ -120,5 +120,5 @@ wrap.splice(BipsiPlayback.prototype, 'move', (original, dx, dy) => {
 		window.moveEvent(window.PLAYBACK.data, avatar, adjacencyDestination);
 	}
 	// Finish with normal movement logic
-	original.bind(window.PLAYBACK)(dx, dy);
+	original.call(window.PLAYBACK, dx, dy);
 });
