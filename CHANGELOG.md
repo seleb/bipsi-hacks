@@ -1,3 +1,10 @@
+# [4.7.0](https://github.com/seleb/bipsi-hacks/compare/v4.6.1...v4.7.0) (2023-08-07)
+
+
+### Features
+
+* add `adjacent rooms` hack ([#19](https://github.com/seleb/bipsi-hacks/issues/19)) ([17bd4d2](https://github.com/seleb/bipsi-hacks/commit/17bd4d2d3e565e14b89abe73c95f730f82b0ee35))
+
 ## [4.6.1](https://github.com/seleb/bipsi-hacks/compare/v4.6.0...v4.6.1) (2023-08-07)
 
 
