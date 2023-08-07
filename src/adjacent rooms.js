@@ -57,32 +57,37 @@ function includeAdjacenciesFromMapString(mapString) {
 	roomMap = roomMap.map(line => {
 		// Split each line into cells of text (either a number cluster or a non-number cluster)
 		const cells = line.match(/[0-9]+|[^\s0-9]+/g);
-		// Turn each cell of text into either a number or null
+		// Turn each cell of text into either a number or undefined
 		return cells.map(item => {
-			return parseInt(item, 10) || null;
+			const num = parseInt(item, 10);
+			return Number.isNaN(num) ? undefined : num;
 		});
 	});
 	// Turn the cell data into adjacency lists
 	for (let y = 0; y < roomMap.length; y++) {
 		for (let x = 0; x < roomMap[y].length; x++) {
 			const roomId = roomMap[y][x];
-			// NOTE: map id's start at 1 so falsy checks are fine.
-			if (!roomId) continue;
-			if (roomMap[y][x - 1]) {
+			if (roomId === undefined) continue;
+			let other;
+			other = roomMap[y][x - 1];
+			if (other !== undefined) {
 				roomAdjacencies[roomId] ||= {};
-				roomAdjacencies[roomId].left = roomMap[y][x - 1];
+				roomAdjacencies[roomId].left = other;
 			}
-			if (roomMap[y][x + 1]) {
+			other = roomMap[y][x + 1];
+			if (other !== undefined) {
 				roomAdjacencies[roomId] ||= {};
-				roomAdjacencies[roomId].right = roomMap[y][x + 1];
+				roomAdjacencies[roomId].right = other;
 			}
-			if (roomMap[y - 1]?.[x]) {
+			other = roomMap[y - 1]?.[x];
+			if (other !== undefined) {
 				roomAdjacencies[roomId] ||= {};
-				roomAdjacencies[roomId].up = roomMap[y - 1][x];
+				roomAdjacencies[roomId].up = other;
 			}
-			if (roomMap[y + 1]?.[x]) {
+			other = roomMap[y + 1]?.[x];
+			if (other !== undefined) {
 				roomAdjacencies[roomId] ||= {};
-				roomAdjacencies[roomId].down = roomMap[y + 1][x];
+				roomAdjacencies[roomId].down = other;
 			}
 		}
 	}
@@ -101,21 +106,21 @@ wrap.splice(BipsiPlayback.prototype, 'move', (original, dx, dy) => {
 	const [tx, ty] = [px + dx, py + dy];
 	const currentRoomAdjacencies = roomAdjacencies[window.roomFromEvent(window.PLAYBACK.data, avatar).id];
 	if (currentRoomAdjacencies) {
-		let adjacencyDestination = null;
+		let adjacencyDestination;
 		// If moving through an adjacency, setup a modified "location" object to move the pc to.
 		// "target" is added to the location object to represent where pc should end up in the next room, while the ACTUAL position is one cell off-screen.
 		// This allows the pc to "move" into the room, while also allowing a check to make sure the destination is not blocked.
-		if (tx <= -1 && currentRoomAdjacencies.left) {
+		if (tx <= -1 && currentRoomAdjacencies.left !== undefined) {
 			adjacencyDestination = { room: currentRoomAdjacencies.left, position: [ROOM_SIZE, avatar.position[1]], target: [ROOM_SIZE - 1, avatar.position[1]] };
-		} else if (ty <= -1 && currentRoomAdjacencies.up) {
+		} else if (ty <= -1 && currentRoomAdjacencies.up !== undefined) {
 			adjacencyDestination = { room: currentRoomAdjacencies.up, position: [avatar.position[0], ROOM_SIZE], target: [avatar.position[0], ROOM_SIZE - 1] };
-		} else if (tx >= ROOM_SIZE && currentRoomAdjacencies.right) {
+		} else if (tx >= ROOM_SIZE && currentRoomAdjacencies.right !== undefined) {
 			adjacencyDestination = { room: currentRoomAdjacencies.right, position: [-1, avatar.position[1]], target: [0, avatar.position[1]] };
-		} else if (ty >= ROOM_SIZE && currentRoomAdjacencies.down) {
+		} else if (ty >= ROOM_SIZE && currentRoomAdjacencies.down !== undefined) {
 			adjacencyDestination = { room: currentRoomAdjacencies.down, position: [avatar.position[0], -1], target: [avatar.position[0], 0] };
 		}
 		// Move to the adjacent room, but only if the destination cell isn't blocked
-		if (adjacencyDestination) {
+		if (adjacencyDestination !== undefined) {
 			const room = window.getRoomById(window.PLAYBACK.data, adjacencyDestination.room);
 			if (window.cellIsSolid(room, adjacencyDestination.target[0], adjacencyDestination.target[1])) return;
 			window.moveEvent(window.PLAYBACK.data, avatar, adjacencyDestination);
