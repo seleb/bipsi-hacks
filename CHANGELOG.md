@@ -1,3 +1,10 @@
+## [4.6.1](https://github.com/seleb/bipsi-hacks/compare/v4.6.0...v4.6.1) (2023-08-07)
+
+
+### Bug Fixes
+
+* **editor fullscreen:** missing CONFIG parameter field causes console error log. ([#18](https://github.com/seleb/bipsi-hacks/issues/18)) ([b0a52e2](https://github.com/seleb/bipsi-hacks/commit/b0a52e225c319288c81904303880b867221f04a1))
+
 # [4.6.0](https://github.com/seleb/bipsi-hacks/compare/v4.5.0...v4.6.0) (2023-07-25)
 
 
