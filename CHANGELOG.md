@@ -1,3 +1,10 @@
+## [4.10.1](https://github.com/seleb/bipsi-hacks/compare/v4.10.0...v4.10.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* **dialogue portraits:** if an event isn't specified in a call to runJS()… ([#25](https://github.com/seleb/bipsi-hacks/issues/25)) ([4042490](https://github.com/seleb/bipsi-hacks/commit/40424908437077628bd265b00f692410680efc1d))
+
 # [4.10.0](https://github.com/seleb/bipsi-hacks/compare/v4.9.0...v4.10.0) (2023-08-08)
 
 
