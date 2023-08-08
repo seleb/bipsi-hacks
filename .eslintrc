@@ -12,6 +12,8 @@
 	},
 	"globals": {
 		"ROOM_SIZE": "readonly",
+		"ROOM_PX": "readonly",
+		"TILE_PX": "readonly",
 		"FIELD": "readonly",
 		"FIELDS": "readonly",
 		"CONFIG": "readonly",
