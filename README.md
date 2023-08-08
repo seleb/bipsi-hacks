@@ -7,6 +7,7 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 ## Contents
 
+- 🏘️ [adjacent rooms](/dist/adjacent-rooms.js): Auto-move between "adjacent" rooms by walking to room edges.
 - 😴 [canvas replacement](/dist/canvas-replacement.js): WebGLazy bipsi integration
 - 🖼 [dialogue portraits](/dist/dialogue-portraits.js): Add character portraits to dialogues
 - 🏷 [editor fields start as tags](/dist/editor-fields-start-as-tags.js): New fields begin as "tag" types, rather than "text" types.

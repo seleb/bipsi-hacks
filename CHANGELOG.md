@@ -1,3 +1,10 @@
+## [4.8.1](https://github.com/seleb/bipsi-hacks/compare/v4.8.0...v4.8.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* **adjacent rooms:** non-jsdoc header ([8af30b5](https://github.com/seleb/bipsi-hacks/commit/8af30b50c147c14864af8eda04273b5f8e8717fc)), closes [#24](https://github.com/seleb/bipsi-hacks/issues/24)
+
 # [4.8.0](https://github.com/seleb/bipsi-hacks/compare/v4.7.0...v4.8.0) (2023-08-08)
 
 
