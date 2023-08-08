@@ -28,8 +28,8 @@ HOW TO USE - COMPUTE AVATAR'S GRAPHIC BASED ON WHICH SIDE OF THE ROOM THEY ARE O
   return { type: "tile", data: data };
 5. Run the game and move the player horizontally across the room.  Note that it's graphic changes halfway across.
 6. BONUS: Note that the avatar shows no graphic in the editor.  You can fix this by adding a "tile"
-		type field named "graphic" anywhere below the field of step 4.  The editor will use this
-		field for the graphic, while the playback will use the field of step 4 for the graphic.
+     type field named "graphic" anywhere below the field of step 4.  The editor will use this
+     field for the graphic, while the playback will use the field of step 4 for the graphic.
 
 
 HOW TO USE - COMPUTE TERRAIN PASSABILITY BASED ON WHETHER AN ITEM IS TAKEN
@@ -38,7 +38,7 @@ HOW TO USE - COMPUTE TERRAIN PASSABILITY BASED ON WHETHER AN ITEM IS TAKEN
 3. Draw a "fence" tile.
 4. Draw a "door" tile for an interactible.
 5. Add a "message" event beside the avatar event.  Add a tile field named "graphic" and set it to
-		the tile of step 2.  Add a tag field named "key".  Set the "say" field to "I've got the key".
+     the tile of step 2.  Add a tag field named "key".  Set the "say" field to "I've got the key".
 6. Draw fence on the map (from the tile of step 3) that surrounds the avatar and key.  Leave one tile open for a door.
 7. Draw walls on the fence map cells to make them unpassable.
 8. Add a "character" event on the opening of the fence.  Set its graphic to the door tile of step 4.  Erase the "say" field.
