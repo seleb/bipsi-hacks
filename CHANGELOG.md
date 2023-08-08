@@ -1,3 +1,24 @@
+# [4.9.0](https://github.com/seleb/bipsi-hacks/compare/v4.8.1...v4.9.0) (2023-08-08)
+
+
+### Features
+
+* add `fullscreen button` hack ([#21](https://github.com/seleb/bipsi-hacks/issues/21)) ([51a18d1](https://github.com/seleb/bipsi-hacks/commit/51a18d1cff0af8b589017179fc94c868b655e361))
+
+## [4.8.1](https://github.com/seleb/bipsi-hacks/compare/v4.8.0...v4.8.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* **adjacent rooms:** non-jsdoc header ([8af30b5](https://github.com/seleb/bipsi-hacks/commit/8af30b50c147c14864af8eda04273b5f8e8717fc)), closes [#24](https://github.com/seleb/bipsi-hacks/issues/24)
+
+# [4.8.0](https://github.com/seleb/bipsi-hacks/compare/v4.7.0...v4.8.0) (2023-08-08)
+
+
+### Features
+
+* add `event bound images` hack ([#23](https://github.com/seleb/bipsi-hacks/issues/23)) ([cfe78a0](https://github.com/seleb/bipsi-hacks/commit/cfe78a01e16f88d664bd8572db03a68b72790da7))
+
 # [4.7.0](https://github.com/seleb/bipsi-hacks/compare/v4.6.1...v4.7.0) (2023-08-07)
 
 

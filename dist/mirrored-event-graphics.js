@@ -4,7 +4,7 @@
 @summary Flip events with the "mirrored" tag
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.7.0
+@version 4.9.0
 
 
 @description
