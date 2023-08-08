@@ -68,8 +68,8 @@ wrap.before(BipsiPlayback.prototype, 'render', function() {
 
 // Update the position for a single avatar-bound image, based on its event's position.
 BipsiPlayback.prototype.updateEventBoundImage = function(binding, currentRoomId) {
+	// If bound event is in a different room, put the image off-screen
 	if (window.roomFromEvent(this.data, binding.event).id !== currentRoomId) {
-		// Put the image off-screen
 		binding.image.x = ROOM_PX;
 		return;
 	}
