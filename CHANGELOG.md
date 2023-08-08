@@ -1,3 +1,10 @@
+# [4.8.0](https://github.com/seleb/bipsi-hacks/compare/v4.7.0...v4.8.0) (2023-08-08)
+
+
+### Features
+
+* add `event bound images` hack ([#23](https://github.com/seleb/bipsi-hacks/issues/23)) ([cfe78a0](https://github.com/seleb/bipsi-hacks/commit/cfe78a01e16f88d664bd8572db03a68b72790da7))
+
 # [4.7.0](https://github.com/seleb/bipsi-hacks/compare/v4.6.1...v4.7.0) (2023-08-07)
 
 

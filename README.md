@@ -12,6 +12,7 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 - 🏷 [editor fields start as tags](/dist/editor-fields-start-as-tags.js): New fields begin as "tag" types, rather than "text" types.
 - 🖥️ [editor fullscreen](/dist/editor-fullscreen.js): Add a ui button and hotkey to the editor to toggle fullscreen while playtesting the game.
 - 🎪 [editor name column maxed](/dist/editor-name-column-maxed.js): Maximize the name column of the field list ui.
+- 📎 [event bound images](/dist/event-bound-images.js): Display images relative to an event.  If the event moves, the image moves.
 - 🎮 [gamepad input](/dist/gamepad-input.js): HTML5 gamepad support
 - 🪞 [mirrored event graphics](/dist/mirrored-event-graphics.js): Flip events with the "mirrored" tag
 - 💬 [sound dialogue](/dist/sound-dialogue.js): Add sound dialogue that plays alongside text dialogue.  Add VO to your game.
