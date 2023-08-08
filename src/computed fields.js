@@ -1,5 +1,5 @@
 /**
-🔊
+🧠
 @file computed fields
 @summary Use JavaScript to dynamically calculate fields that are normally static.
 @license MIT
@@ -34,31 +34,19 @@ HOW TO USE - COMPUTE AVATAR'S GRAPHIC BASED ON WHICH SIDE OF THE ROOM THEY ARE O
 
 HOW TO USE - COMPUTE TERRAIN PASSABILITY BASED ON WHETHER AN ITEM IS TAKEN
 1. Import this plugin into a game with an open room to move about in.
-2. Draw a "boots" tile for an item.
-3. Draw a "spikes" tile for the floor.
-4. Add a "message" event beside the player.  Set the "say" field to "I put on the boots.".  Add a tag
-		field and name it "boots".  Add a tile field named "graphic" and set it to the boots tile of step 2.
-5. Add a "character" event a few cells from the avatar.  Set its graphic to the spikes tile of step 3.  Erase the "say" field.
-6. Change the "solid" tag field for the event of step 5 to javascript type.  Set it to this code:
-  if (!FIND_EVENT("boots")) return;
-  return { type: "tag", data: true };
-7. Copy the event of step 5.  Paste it around the player and the boots so that they are surrounded.
-8. Playtest the game.  Try to step over the spikes without getting the boots.  You should be blocked.  Walk over the boots and now the spikes should not block you.
-
-
-HOW TO USE - DIALOGUE CHANGES BASED ON HOW LONG THE GAME IS PLAYED
-1. Import this plugin into a game.
-2. Add a character event near the avatar with a custom graphic tile.
-3. Set the "say" field for the event of step 2 to a javascript type.  Set it to this code:
-  CLEAR_EVENT_SAY_CACHE(EVENT);
-  let data =
-    "We've been here for " +
-    PLAYBACK.frameCount +
-    " ticks.";
-  return { type: "dialogue", data: data };
-4. Run the game and repeatedly interact with the event of step 2.  Note that the dialogue changes.
-5. Also, not that the code begins with "CLEAR_EVENT_SAY_CACHE(EVENT);".  This is important to render
-	the latest "say" value.  Without it the dialogue is cached, so won't show changes.
+2. Draw a "key" tile for an item.
+3. Draw a "fence" tile.
+4. Draw a "door" tile for an interactible.
+5. Add a "message" event beside the avatar event.  Add a tile field named "graphic" and set it to
+		the tile of step 2.  Add a tag field named "key".  Set the "say" field to "I've got the key".
+6. Draw fence on the map (from the tile of step 3) that surrounds the avatar and key.  Leave one tile open for a door.
+7. Draw walls on the fence map cells to make them unpassable.
+8. Add a "character" event on the opening of the fence.  Set its graphic to the door tile of step 4.  Erase the "say" field.
+9. Change the "solid" tag field for the event of step 8 to javascript type.  Set it to this code:
+  if (FIND_EVENT("key")) {
+    return { type: "tag", data: true };
+  }
+8. Playtest the game.  Try to step through the door without getting the key.  You should be blocked.  Walk over the key and now the door should not block you.
 
 
 // A newline-delimited list of the names of fields that should be computed if their type is javascript.
@@ -67,17 +55,8 @@ HOW TO USE - DIALOGUE CHANGES BASED ON HOW LONG THE GAME IS PLAYED
 
 const computedFields = new Set((window.oneField(CONFIG, 'computed-fields', 'text')?.data || '').split('\n').filter(Boolean));
 
-// Callable by calculated "say" fields for when they need to change their value.
-window.CLEAR_EVENT_SAY_CACHE = event => {
-	window.PLAYBACK.variables.forEach((value, key, map) => {
-		if (key.startsWith(`SAY-ITERATORS/${event.id}`)) {
-			map.delete(key);
-		}
-	});
-};
-
 // A variation of "runJS" which (A) is synchronous (B) returns the return-value of the code.
-BipsiPlayback.prototype.runJSNonAsync = function runJSNonAsync(event, js, debug = false) {
+BipsiPlayback.prototype.runJSSync = function runJSSync(event, js, debug = false) {
 	const defines = this.makeScriptingDefines(event);
 	const names = Object.keys(defines).join(', ');
 	const preamble = `const { ${names} } = this;\n`;
@@ -107,7 +86,7 @@ wrap.after(window, 'start', () => {
 		// This IS a computed field.  Get the first field that matches either 'javascript' or the given type.
 		let result = event.fields.find(field => field.key === name && (field.type === 'javascript' || field.type === (type ?? field.type)));
 		if (result?.type === 'javascript') {
-			const computedField = window.PLAYBACK.runJSNonAsync(event, result.data);
+			const computedField = window.PLAYBACK.runJSSync(event, result.data);
 			if (computedField && computedField.type && computedField.data && computedField.type === (type ?? computedField.type)) {
 				computedField.key = name;
 				result = computedField;
@@ -135,7 +114,7 @@ wrap.after(window, 'start', () => {
 			}
 			// Accept computed fields
 			else if (field.type === 'javascript') {
-				const computedField = window.PLAYBACK.runJSNonAsync(event, field.data);
+				const computedField = window.PLAYBACK.runJSSync(event, field.data);
 				if (computedField && computedField.type && computedField.data && (!type || computedField.type === type)) {
 					computedField.key = name;
 					result.push(computedField);
@@ -152,7 +131,7 @@ wrap.after(window, 'start', () => {
 					return true;
 				}
 				if (computedFields.has(field.key) && field.type === 'javascript') {
-					return window.PLAYBACK.runJSNonAsync(event, field.data)?.type === 'tag';
+					return window.PLAYBACK.runJSSync(event, field.data)?.type === 'tag';
 				}
 				return false;
 			})
