@@ -13,7 +13,7 @@ Display images relative to an event.  If the event moves, the image moves.  Uses
 
 NOTE - Incidentally, there is an undocumented feature of "SHOW_IMAGE".  Instead of passing a single
 image, you can pass an array of images.  If this is done then the images will be animated together
-at the same rate as tiles are.  This feature can be useful in conjuntion with this plugin.
+at the same rate as tiles are.  This feature can be useful in conjunction with this plugin.
 
 
 HOW TO USE
