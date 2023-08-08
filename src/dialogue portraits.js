@@ -149,7 +149,10 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 			portraitVars.currentBgColorIndex = parseInt(args[3], 10);
 			portraitVars.currentBorderColorIndex = parseInt(args[4], 10);
 			// Use the portraited event's colors as defaults.
-			const eventColors = FIELD(window.PLAYBACK.jsSourceEvent, 'colors', 'colors') || { fg: 3, bg: 1 };
+			let eventColors = { fg: 3, bg: 1 };
+			if (window.PLAYBACK.jsSourceEvent) {
+				eventColors = FIELD(window.PLAYBACK.jsSourceEvent, 'colors', 'colors') || eventColors;
+			}
 			if ((!portraitId && portraitId !== 0) || portraitId < -1) {
 				portraitId = null; // No portrait shown
 			}
