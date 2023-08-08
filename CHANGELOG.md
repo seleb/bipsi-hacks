@@ -1,3 +1,10 @@
+# [4.9.0](https://github.com/seleb/bipsi-hacks/compare/v4.8.1...v4.9.0) (2023-08-08)
+
+
+### Features
+
+* add `fullscreen button` hack ([#21](https://github.com/seleb/bipsi-hacks/issues/21)) ([51a18d1](https://github.com/seleb/bipsi-hacks/commit/51a18d1cff0af8b589017179fc94c868b655e361))
+
 ## [4.8.1](https://github.com/seleb/bipsi-hacks/compare/v4.8.0...v4.8.1) (2023-08-08)
 
 
