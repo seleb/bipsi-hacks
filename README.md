@@ -9,6 +9,7 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 - 🏘️ [adjacent rooms](/dist/adjacent-rooms.js): Auto-move between "adjacent" rooms by walking to room edges.
 - 😴 [canvas replacement](/dist/canvas-replacement.js): WebGLazy bipsi integration
+- 🧠 [computed fields](/dist/computed-fields.js): Use JavaScript to dynamically calculate fields that are normally static.
 - 🖼 [dialogue portraits](/dist/dialogue-portraits.js): Add character portraits to dialogues
 - 🏷 [editor fields start as tags](/dist/editor-fields-start-as-tags.js): New fields begin as "tag" types, rather than "text" types.
 - 🖥️ [editor fullscreen](/dist/editor-fullscreen.js): Add a ui button and hotkey to the editor to toggle fullscreen while playtesting the game.

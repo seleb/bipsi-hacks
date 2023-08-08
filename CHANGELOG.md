@@ -1,3 +1,10 @@
+# [4.10.0](https://github.com/seleb/bipsi-hacks/compare/v4.9.0...v4.10.0) (2023-08-08)
+
+
+### Features
+
+* add `computed fields` hack ([#22](https://github.com/seleb/bipsi-hacks/issues/22)) ([70724fb](https://github.com/seleb/bipsi-hacks/commit/70724fb78a4ef7e6fba7db124693ab3f7195bfa2))
+
 # [4.9.0](https://github.com/seleb/bipsi-hacks/compare/v4.8.1...v4.9.0) (2023-08-08)
 
 
