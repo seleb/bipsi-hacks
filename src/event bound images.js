@@ -61,13 +61,13 @@ wrap.after(BipsiPlayback.prototype, 'init', function init() {
 });
 
 // Update positions for all avatar-bound images just before rendering them.
-wrap.before(BipsiPlayback.prototype, 'render', function() {
+wrap.before(BipsiPlayback.prototype, 'render', function render() {
 	const currentRoomId = window.roomFromEvent(this.data, window.getEventById(this.data, this.avatarId)).id;
 	Object.values(this.eventBoundImages).forEach(binding => this.updateEventBoundImage(binding, currentRoomId));
 });
 
 // Update the position for a single avatar-bound image, based on its event's position.
-BipsiPlayback.prototype.updateEventBoundImage = function(binding, currentRoomId) {
+BipsiPlayback.prototype.updateEventBoundImage = function updateEventBoundImage(binding, currentRoomId) {
 	// If bound event is in a different room, put the image off-screen
 	if (window.roomFromEvent(this.data, binding.event).id !== currentRoomId) {
 		binding.image.x = ROOM_PX;
