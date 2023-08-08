@@ -1,10 +1,10 @@
-/*
+/**
 🏘️
 @file adjacent rooms
 @summary Auto-move between "adjacent" rooms by walking to room edges.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.7.0
+@version 4.8.1
 
 
 @description

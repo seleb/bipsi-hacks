@@ -1,4 +1,4 @@
-/*
+/**
 🏘️
 @file adjacent rooms
 @summary Auto-move between "adjacent" rooms by walking to room edges.
