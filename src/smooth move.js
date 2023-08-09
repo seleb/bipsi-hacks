@@ -125,7 +125,7 @@ SCRIPTING_FUNCTIONS.WALK = async function WALK(event, sequence, delay = 0.4, wai
 	// eslint-disable-next-line no-restricted-syntax
 	for (const dir of dirs) {
 		if (dir === '.') {
-			/* eslint-disable no-await-in-loop */
+			// eslint-disable-next-line no-await-in-loop
 			await window.sleep(wait * 1000);
 		} else {
 			const [x, y] = event.position;
@@ -140,7 +140,7 @@ SCRIPTING_FUNCTIONS.WALK = async function WALK(event, sequence, delay = 0.4, wai
 
 			// MOD-ADDED-BLOCK
 			window.PLAYBACK.updateEventsMoveState(event, true, dx, dy);
-			/* eslint-disable no-await-in-loop */
+			// eslint-disable-next-line no-await-in-loop
 			await runSmoothMove(event, [x + dx, y + dy], EVENT_MOVE_RATE);
 			// /MOD-ADDED-BLOCK
 		}
