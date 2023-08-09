@@ -205,22 +205,3 @@ wrap.splice(BipsiPlayback.prototype, 'proceed', function proceed(original) {
 	if (this.choiceResultOptions) return null;
 	return original.call(this);
 });
-
-// A modification to "runJS" which returns the return-value of the code.
-BipsiPlayback.prototype.runJS = async function runJS(event, js, debug = false) {
-	const defines = this.makeScriptingDefines(event);
-	const names = Object.keys(defines).join(', ');
-	const preamble = `const { ${names} } = this;\n`;
-
-	try {
-		const script = new AsyncFunction('', preamble + js);
-		return await script.call(defines);
-	} catch (e) {
-		const long = `> SCRIPT ERROR "${e}"\n---\n${js}\n---`;
-		this.log(long);
-
-		const error = `SCRIPT ERROR:\n${e}`;
-		this.showError(error);
-	}
-	return undefined;
-};
