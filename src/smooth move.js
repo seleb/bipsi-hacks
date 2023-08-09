@@ -121,6 +121,8 @@ BipsiPlayback.prototype.updateEventsMoveState = function updateEventsMoveState(e
 // Modify bipsi's event-walk functionality to incorporate smooth-move
 SCRIPTING_FUNCTIONS.WALK = async function WALK(event, sequence, delay = 0.4, wait = 0.4) {
 	const dirs = Array.from(sequence);
+	// for-of used for consistency with original bipsi fn
+	// eslint-disable-next-line no-restricted-syntax
 	for (const dir of dirs) {
 		if (dir === '.') {
 			/* eslint-disable no-await-in-loop */
