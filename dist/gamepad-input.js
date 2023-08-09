@@ -4,7 +4,7 @@
 @summary HTML5 gamepad support
 @license MIT
 @author Sean S. LeBlanc
-@version 4.10.1
+@version 4.11.0
 
 
 @description
