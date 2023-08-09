@@ -103,7 +103,7 @@ HOW TO USE - CUSTOM RESULT-OBJECTS:
 
 // A javascript field that is called each time the user makes a choice.  It allows for custom
 // choice-result reactions.  The javascript field is run and given the "CHOICE_RESULT" variable,
-// which holds the result object of the choosen dialogue.  If the "custom-choice-results" code
+// which holds the result object of the chosen dialogue.  If the "custom-choice-results" code
 // successfully handles a result, then it should return truthy, which will signal a short-circuit of
 // all subsequent result-handling for that result.  If this plugin contains multiple javascript
 // fields named "custom-choice-results", then each is run in order.
