@@ -10,68 +10,95 @@
 Present options to the user via the "say" interface, then react to their choice.  This can be useful
 in a variety of ways, such as for creating dialogue trees or for picking settings.
 
+When a choice is selected, it's "result-object" is used to decide what happens next.  See "HOW TO
+USE - DIFFERENT RESULT-OBJECT TYPES" for details and "NATIVELY SUPPORTED RESULT-TYPES" for
+reference.
 
-HOW TO USE - BASIC CHOICE RESULTS:
+NATIVELY SUPPORTED RESULT-TYPES:
+- function - run the function when selected. (see the first choice from the code of step 5)
+- string - Display the string as a new dialogue when selected. (see the second choice from the code of step 5)
+- location object - Touch the event at the given location when selected. (see the third choice from the code of step 5)
+- location field - Treated just like "location object" above.
+- javascript field - Treated just like "function" above.
+
+
+HOW TO USE - BASIC:
+1. Import this plugin into your game.
+2. Create a character event near the avatar.  Remove it's "say" field.
+3. Add a javascript field (to the event of step 2) named "after".  Set it to the following code:
+  SAY_CHOICES("What to ask?", [
+    ["How are you?", () => SAY("I am fine.")],
+    ["Where's the bipsi?", () => SAY("It's right here.  Enjoy!")],
+  ]);
+4. Playtest the game and bump the character event of step 2.  Note that a series of choices is
+   presented that matches the code of step 3.  Try each choice.
+5. Here are some notes on the code of step 5:
+  - The first parameter defines the text that is shown above the choices.  Try setting it to null or
+    an empty string.
+  - The second parameter is an array of choices.  Up to 4 choices are readily supported. More are
+    possible by modifying the plugin's "choice-keys" parameter, though I suggest not overdoing this.
+  - Each choice is an array of two values.  The first value is a string for what to show in the
+    dialogue ui for this choice.  The second value is the choice's result-object.  It represents
+    what to do when the choice is selected.  The code of step 3 provides a function for the result-
+    object of each choice.  When a choice is selected, its function is run.
+
+
+HOW TO USE - NON-FUNCTION RESULT-OBJECTS:
 1. Import this plugin into your game.
 2. Add a message event to a corner of the room.  Remove it's "one-time" field.  Set it's "say" field
-   to "hello from a location".
-3. Create a character event near the avatar.  Remove it's "say" field.  Add a "trigger-location"
-   field of location type.  Add an "after" field of javascript type.
-4. Set the "trigger-location" field of step 3 to point to the position of the event from step 2.
-5. Set the "after" field from step 3 to the following code:
-  SAY_CHOICES("Make a choice...", [
-    ["Try a function result", () => SAY("hello from a function")],
-    ["Try a string result", "hello from a string"],
-    ["Try a location result", FIELD(EVENT,"trigger-location","location")],
-    ["Try a number result", 3],
+   to "It's further than you think.".
+3. Create a character event near the avatar.  Remove it's "say" field.
+4. Add a location field (to the event of step 3) called "remote-location".  Set it to the location
+   of the event from step 2.
+5. Add a javascript field (to the event of step 3) called "after".  Set it to the following code:
+  SAY_CHOICES("What to ask?", [
+    ["How are you?", "I am fine."],
+    ["Where's the bipsi?", FIELD(EVENT,"remote-location","location")],
   ]);
 6. Playtest the game and bump the character event of step 3.  Note that a series of choices is
    presented that matches the code of step 5.  Try each choice.
 7. Here are some notes on the code of step 5:
-  - The first parameter defines the text that is shown above the choices.  Try setting it to null or
-    an empty string.
-  - The second parameter is an array of choices.  Up to 4 choices are readily supported. More are
-    possible via the plugin's "choice-keys" parameter, though I suggest not overdoing this.
-  - Each choice is an array of two values.  The first value is a string for what to show in the
-    dialogue ui for this choice.
-    The second is a "result" object defining what to do when the choice is selected.
-  - Different types of "result" objects can work.  Support for some basic result types is natively
-    setup, and more types can be added.  Below is a list of the natively supported result types.
-	Note that the "number" type is NOT natively supported.  Thus, the fourth choice from the code of
-	step 5 shows what happens when a non-supported result type is chosen.  Basically, nothing
-	happens within the game, but a warning IS printed to the browser console.
-
-NATIVELY SUPPORTED RESULT TYPES:
-	- function - run the function when selected. (see the first choice from the code of step 5)
-	- string - Display the string as a new dialogue when selected. (see the second choice from the code of step 5)
-	- location object - Touch the event at the given location when selected. (see the third choice from the code of step 5)
-	- location field - Treated just like "location object" above.
-	- javascript field - Treated just like "function" above.
+  - The result-objects of choices don't have to be functions.  The first choice (of step 5's code)
+    has a string for a result-object.  When a choice is selected that has a string result-object,
+    "dialogue-choices" displays that string in a diaogue ui by default.
+  - The second choice (of step 5's code) is a location.  When a choice is selected that has a
+    location result-object, the "dialogue-choices" plugin triggers a touch of whatever event is at that
+    location.
 
 
-HOW TO USE - CUSTOM CHOICE RESULTS:
+HOW TO USE - CUSTOM RESULT-OBJECTS:
 1. Import this plugin into your game.
-2. Modify this plugin's "custon-choice-results" field by setting it to the following code:
-  if (typeof CHOICE_RESULT === "number") {
-    await SAY("" + CHOICE_RESULT);
-    return true;
-  }
-3. Create a character event.  Remove it's "say" field.  Add an "after" field of javascript type.
-4. Set the "after" field from step 3 to the following code:
+2. Create a character event.  Remove it's "say" field.
+3. Add a javascript type (to the event of step 2) named "after".  Set it to the following code:
   SAY_CHOICES("Choose a formula...", [
     ["2 * 2", 4],
     ["8 + 1", 9],
     ["3^2", 9],
   ]);
-5. Playtest the game and bump the character event of step 3.  Note that a series of choices is
-   presented that matches the code of step 4.  Each choice has a number result and that result is
-   shown in a dialogue ui when the choice is selected.  Numbers aren't natively supported as choice
-   results, but the plugin's "custom-choice-results" field adds support for them.
+4. Playtest the game and bump the character event of step 2.  Note that nothing happens when you
+   select any of the choices.  This is because all of the choices have a result-type of "number",
+   and "dialogue-choices" doesn't know what to do with that.
+5. BONUS - Open the browser's console.  Note that a warning is added each time you select a choice.
+6. Select the "dialogue-choices" plugin event.  Modify the field "custom-choice-results" by setting
+   it to the following code:
+  if (typeof CHOICE_RESULT === "number") {
+    await SAY("" + CHOICE_RESULT);
+    return true;
+  }
+7. Playtest the game and bump into the character event of step 2.  Note that, when you select a
+   choice, it's result-object number is displayed in a dialogue ui.
+8. Here are some notes on the code of step 6:
+   - The plugin's "custom-choice-results" parameter allows you to add custom reactions to new
+     result-object types.  In the example, we added a reaction when the result-object was a number.
+   - If "custom-choice-results" DOES handle a result-object, then it should return true.  This
+     ends the result-handling logic, so that no further checks are done.
+   - If necessary, you can add multiple javascript fields named "custom-choice-results" to the
+     "dialogue-choices" event.  If this is done, each object-result is passed to every field in order.
 
 
 // An array of which keys trigger which choices.  The "char" property defines what is displayed for
 // that choice in the dialogue ui.  The "codes" property is an array of key-event "key" values which
-// will trigger that choice.
+// will trigger that choice when hit.
 //!CONFIG choice-keys (json) [{"char":"↑","codes":["ArrowUp","w","W"]},{"char":"↓","codes":["ArrowDown","s","S"]},{"char":"←","codes":["ArrowLeft","a","A"]},{"char":"→","codes":["ArrowRight","d","D"]}]
 
 // A javascript field that is called each time the user makes a choice.  It allows for custom
