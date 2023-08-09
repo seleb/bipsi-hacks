@@ -7,12 +7,15 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 
 ## Contents
 
+- 🏘️ [adjacent rooms](/dist/adjacent-rooms.js): Auto-move between "adjacent" rooms by walking to room edges.
 - 😴 [canvas replacement](/dist/canvas-replacement.js): WebGLazy bipsi integration
+- 🧠 [computed fields](/dist/computed-fields.js): Use JavaScript to dynamically calculate fields that are normally static.
 - 🖼 [dialogue portraits](/dist/dialogue-portraits.js): Add character portraits to dialogues
 - 🏷 [editor fields start as tags](/dist/editor-fields-start-as-tags.js): New fields begin as "tag" types, rather than "text" types.
 - 🖥️ [editor fullscreen](/dist/editor-fullscreen.js): Add a ui button and hotkey to the editor to toggle fullscreen while playtesting the game.
 - 🎪 [editor name column maxed](/dist/editor-name-column-maxed.js): Maximize the name column of the field list ui.
 - 📎 [event bound images](/dist/event-bound-images.js): Display images relative to an event.  If the event moves, the image moves.
+- 🖥️ [fullscreen button](/dist/fullscreen-button.js): Adds a fullscreen button to the lower-right of the game canvas.
 - 🎮 [gamepad input](/dist/gamepad-input.js): HTML5 gamepad support
 - 🪞 [mirrored event graphics](/dist/mirrored-event-graphics.js): Flip events with the "mirrored" tag
 - 💬 [sound dialogue](/dist/sound-dialogue.js): Add sound dialogue that plays alongside text dialogue.  Add VO to your game.

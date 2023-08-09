@@ -1,3 +1,31 @@
+## [4.10.1](https://github.com/seleb/bipsi-hacks/compare/v4.10.0...v4.10.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* **dialogue portraits:** if an event isn't specified in a call to runJS()… ([#25](https://github.com/seleb/bipsi-hacks/issues/25)) ([4042490](https://github.com/seleb/bipsi-hacks/commit/40424908437077628bd265b00f692410680efc1d))
+
+# [4.10.0](https://github.com/seleb/bipsi-hacks/compare/v4.9.0...v4.10.0) (2023-08-08)
+
+
+### Features
+
+* add `computed fields` hack ([#22](https://github.com/seleb/bipsi-hacks/issues/22)) ([70724fb](https://github.com/seleb/bipsi-hacks/commit/70724fb78a4ef7e6fba7db124693ab3f7195bfa2))
+
+# [4.9.0](https://github.com/seleb/bipsi-hacks/compare/v4.8.1...v4.9.0) (2023-08-08)
+
+
+### Features
+
+* add `fullscreen button` hack ([#21](https://github.com/seleb/bipsi-hacks/issues/21)) ([51a18d1](https://github.com/seleb/bipsi-hacks/commit/51a18d1cff0af8b589017179fc94c868b655e361))
+
+## [4.8.1](https://github.com/seleb/bipsi-hacks/compare/v4.8.0...v4.8.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* **adjacent rooms:** non-jsdoc header ([8af30b5](https://github.com/seleb/bipsi-hacks/commit/8af30b50c147c14864af8eda04273b5f8e8717fc)), closes [#24](https://github.com/seleb/bipsi-hacks/issues/24)
+
 # [4.8.0](https://github.com/seleb/bipsi-hacks/compare/v4.7.0...v4.8.0) (2023-08-08)
 
 
