@@ -60,7 +60,7 @@ HOW TO USE - NON-FUNCTION RESULT-OBJECTS:
 7. Here are some notes on the code of step 5:
   - The result-objects of choices don't have to be functions.  The first choice (of step 5's code)
     has a string for a result-object.  When a choice is selected that has a string result-object,
-    "dialogue-choices" displays that string in a diaogue ui by default.
+    "dialogue-choices" displays that string in a dialogue ui by default.
   - The second choice (of step 5's code) is a location.  When a choice is selected that has a
     location result-object, the "dialogue-choices" plugin triggers a touch of whatever event is at that
     location.
