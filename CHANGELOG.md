@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/seleb/bipsi-hacks/compare/v5.0.0...v5.0.1) (2023-08-12)
+
+
+### Bug Fixes
+
+* **move animations:** doc polish ([#29](https://github.com/seleb/bipsi-hacks/issues/29)) ([9191bc8](https://github.com/seleb/bipsi-hacks/commit/9191bc8097915c327a931c39044261c5922631b5))
+
 # [5.0.0](https://github.com/seleb/bipsi-hacks/compare/v4.12.0...v5.0.0) (2023-08-12)
 
 

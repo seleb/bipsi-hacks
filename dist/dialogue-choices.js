@@ -4,7 +4,7 @@
 @summary Present options to the user via the "say" interface, then react to their choice.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 5.0.0
+@version 5.0.1
 
 
 
