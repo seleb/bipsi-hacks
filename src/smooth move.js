@@ -196,6 +196,7 @@ BipsiPlayback.prototype.move = async function move(dx, dy) {
 	if (blocked || bounded) {
 		const delayStartTime = performance.now();
 		do {
+			// eslint-disable-next-line no-await-in-loop
 			await window.sleep(10);
 		} while (performance.now() - delayStartTime < AVATAR_MOVE_RATE);
 	}
