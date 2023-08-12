@@ -4,7 +4,7 @@
 @summary Add a ui button and hotkey to the editor to toggle fullscreen while playtesting the game.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.12.0
+@version 5.0.0
 
 
 @description

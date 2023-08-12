@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/seleb/bipsi-hacks/compare/v4.12.0...v5.0.0) (2023-08-12)
+
+
+### Bug Fixes
+
+* **move animations:** Polish for docs and code ([#28](https://github.com/seleb/bipsi-hacks/issues/28)) ([7067e3c](https://github.com/seleb/bipsi-hacks/commit/7067e3c29091d8f50a77c23abe9ffb04688000e4))
+
+
+### BREAKING CHANGES
+
+* **move animations:** `initSmoothMoveAnimationForEvent` -> `initMoveAnimationForEvent`
+
 # [4.12.0](https://github.com/seleb/bipsi-hacks/compare/v4.11.0...v4.12.0) (2023-08-12)
 
 
