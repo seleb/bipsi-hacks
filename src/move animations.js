@@ -7,7 +7,9 @@
 
 
 @description
-ANY event (including the avatar) can specify a tile for each direction and tiles for moving vs not moving.
+ANY event (including the avatar) can specify a tile for each direction.  When this plugin is
+combined with the "smooth-move" plugin, you can also specify tiles for moving vs idle (not moving).
+See below for details.
 
 
 HOW TO USE - BASIC FOR THE AVATAR:
@@ -28,7 +30,7 @@ HOW TO USE - BASIC FOR ANY EVENT:
 1. Import this plugin into your game.
 2. Pick an event to setup.  The avatar event is a valid choice.
 3. Draw 4 tiles for the event (of step 2).  One for each direction (up, left, right, down).
-4. Add the following fields to the event of step 2:
+4. Add the following fields to the event of step 2 and set them to the tiles from step 3:
   "graphic-up" - the tile field used for the UP DIRECTION
   "graphic-left" - the tile field used for the LEFT DIRECTION
   "graphic-right" - the tile field used for the RIGHT DIRECTION
@@ -59,7 +61,7 @@ EVENT" with the following changes:
 - Before starting, import the "smooth-move" plugin into your game.
 - After importing the "move-animations" plugin, set the "plugin-order" field of its event to 1.
 - When drawing tiles, draw a tile for MOVING and a tile for IDLE (not moving).
-- When adding tile fields, add the following fields.
+- When adding tile fields, add the following fields and set them to the MOVING and IDLE tiles.
   - "graphic-move" - the tile field used when MOVING FROM TILE TO TILE.
   - "graphic" - the tile field used for IDLE.
   NOTE - "IDLE" uses the generic "graphic" field, instead of a custom field.
@@ -73,9 +75,9 @@ Follow the instructions from the "HOW TO USE" for either "BASIC FOR THE AVATAR" 
 EVENT" with the following changes:
 - Before starting, import the "smooth-move" plugin into your game.
 - After importing the "move-animations" plugin, set the "plugin-order" field of its event to 1.
-- When drawing tiles, draw 8 TILES: a tile for MOVING in each direction (up, left, right, down) and
+- When drawing tiles, draw 8 tiles: a tile for MOVING in each direction (up, left, right, down) and
   a tile for IDLE (not moving) in each direction.
-- When adding tile fields, add the following fields.
+- When adding tile fields, add the following fields and set them to the 8 drawn tiles.
   - "graphic-up-move" - the tile field used for MOVING UP.
   - "graphic-left-move" - the tile field used for MOVING LEFT.
   - "graphic-right-move" - the tile field used for MOVING RIGHT.
@@ -85,9 +87,9 @@ EVENT" with the following changes:
   - "graphic-right" - the tile field used for IDLE RIGHT.
   - "graphic" - the tile field used for IDLE DOWN.
   NOTE - "IDLE DOWN" uses the generic "graphic" field, instead of a custom field.
-  NOTE - Unspecified MOVING DIRECTION fields ("graphic-*-move") default to "graphic-*".  Unspecified
-    IDLE DIRECTION ("graphic-*) fields default to the generic "graphic" field (or are not rendered,
-    if no "graphic" field).
+  NOTE - Unspecified MOVING DIRECTION fields ("graphic-*-move") default to their respective IDLE
+    DIRECTION fields ("graphic-*").  Unspecified IDLE DIRECTION ("graphic-*) fields default to the
+    generic "graphic" field (or are not rendered, if no "graphic" field).
 - When playtesting, note that the event changes tile when moving vs not moving as well as for
     different directions.
 */
