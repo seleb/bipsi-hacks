@@ -4,7 +4,7 @@
 @summary Add sound dialogue that plays alongside text dialogue.  Add VO to your game.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.11.0
+@version 4.12.0
 
 
 @description

@@ -1,3 +1,10 @@
+# [4.12.0](https://github.com/seleb/bipsi-hacks/compare/v4.11.0...v4.12.0) (2023-08-12)
+
+
+### Features
+
+* add `smooth move` and `move animations` hacks ([#27](https://github.com/seleb/bipsi-hacks/issues/27)) ([1521d18](https://github.com/seleb/bipsi-hacks/commit/1521d18d7dbfb67e85fdeb6b2280b492edabd4c7))
+
 # [4.11.0](https://github.com/seleb/bipsi-hacks/compare/v4.10.1...v4.11.0) (2023-08-09)
 
 
