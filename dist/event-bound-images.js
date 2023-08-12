@@ -4,7 +4,7 @@
 @summary Display images relative to an event.  If the event moves, the image moves.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.10.1
+@version 4.11.0
 
 
 

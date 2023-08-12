@@ -4,7 +4,7 @@
 @summary Use JavaScript to dynamically calculate fields that are normally static.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 4.10.1
+@version 4.11.0
 
 
 @description

@@ -24,6 +24,7 @@
 		"SCRIPTING_FUNCTIONS": "readonly",
 		"STANDARD_SCRIPTS": "readonly",
 		"WALK_DIRECTIONS": "readonly",
+		"AsyncFunction": "readonly",
 		"wrap": "readonly"
 	},
 	"rules": {

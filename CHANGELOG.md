@@ -1,3 +1,10 @@
+# [4.11.0](https://github.com/seleb/bipsi-hacks/compare/v4.10.1...v4.11.0) (2023-08-09)
+
+
+### Features
+
+* add `dialogue-choices` hack ([#26](https://github.com/seleb/bipsi-hacks/issues/26)) ([0d20660](https://github.com/seleb/bipsi-hacks/commit/0d20660a0ab4de946ef8a905e92b0713067897fb))
+
 ## [4.10.1](https://github.com/seleb/bipsi-hacks/compare/v4.10.0...v4.10.1) (2023-08-08)
 
 
