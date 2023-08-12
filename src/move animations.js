@@ -19,15 +19,14 @@ HOW TO USE - BASIC FOR THE AVATAR:
   "graphic-right" - the tile field used for the RIGHT DIRECTION
   "graphic" - the tile field used for the DOWN DIRECTION
   NOTE - "DOWN DIRECTION" uses the generic "graphic" field, instead of a custom field.
-  NOTE - Any fields default to the "graphic" field if unspecified (or are not rendered, if no
-    "graphic" field).
+  NOTE - Any unspecified fields default to the "graphic" field (or are not rendered, if no "graphic" field).
 4. Playtest the game.  Move the avatar about.  Note that the tile changes when moving in different
    directions.
 
 
 HOW TO USE - BASIC FOR ANY EVENT:
 1. Import this plugin into your game.
-2. Pick an event to setup for this "move-animation" plugin.  The avatar event is a valid choice.
+2. Pick an event to setup.  The avatar event is a valid choice.
 3. Draw 4 tiles for the event (of step 2).  One for each direction (up, left, right, down).
 4. Add the following fields to the event of step 2:
   "graphic-up" - the tile field used for the UP DIRECTION
@@ -35,8 +34,7 @@ HOW TO USE - BASIC FOR ANY EVENT:
   "graphic-right" - the tile field used for the RIGHT DIRECTION
   "graphic" - the tile field used for the DOWN DIRECTION
   NOTE - "DOWN DIRECTION" uses the generic "graphic" field, instead of a custom field.
-  NOTE - Any fields default to the "graphic" field if unspecified (or are not rendered, if no
-    "graphic" field).
+  NOTE - Any unspecified fields default to the "graphic" field (or are not rendered, if no "graphic" field).
 5. Setup a readily triggerable javascript field ("before", "after" or "touch").  Add a call to
    WALK() to move the event of step 2 in different directions.
 6. Playtest the game and trigger the javascript field of step 5.  Note that the event's tile changes
@@ -45,8 +43,10 @@ HOW TO USE - BASIC FOR ANY EVENT:
 
 ADDING THE SMOOTH-MOVE PLUGIN
 
-When combined with the "smooth-moves" plugin, "move-animations" lets you specify tiles for moving vs
-not moving.  This adds a few different ways to setup an event.
+When combined with the "smooth-moves" plugin, "move-animations" also lets you specify tiles for
+moving vs not moving.  This allows for a few ways to setup an event:
+- one tile for moving, one tile for idle (not moving).
+- one tile for moving in each direction (up, down, left,right), one tile for idle in each direction.
 
 NOTE - For this plugin to combine with the smooth-move plugin, it needs to come AFTER it.  To be
 sure that this happens, set the "plugin-order" field of the "move-animations" plugin's event to a
@@ -56,14 +56,14 @@ value that is higher than the "plugin-order" field of the "smooth-move" plugin's
 HOW TO USE - A SIMPLE SMOOTH-MOVE SETUP:
 Follow the instructions from the "HOW TO USE" for either "BASIC FOR THE AVATAR" or "BASIC FOR ANY
 EVENT" with the following changes:
-- Before starting, import the "smooth-move" into your game.
+- Before starting, import the "smooth-move" plugin into your game.
 - After importing the "move-animations" plugin, set the "plugin-order" field of its event to 1.
-- When drawing tiles, draw a tile for MOVING and a tile for NOT MOVING.
+- When drawing tiles, draw a tile for MOVING and a tile for IDLE (not moving).
 - When adding tile fields, add the following fields.
   - "graphic-move" - the tile field used when MOVING FROM TILE TO TILE.
-  - "graphic" - the tile field used for NOT MOVING.
-  NOTE - "NOT MOVING" uses the generic "graphic" field, instead of a custom field.
-  NOTE - The "graphic-move" field defaults to the "graphic" field if unspecified (or is not
+  - "graphic" - the tile field used for IDLE.
+  NOTE - "IDLE" uses the generic "graphic" field, instead of a custom field.
+  NOTE - If unspecified, the "graphic-move" field defaults to the "graphic" field (or is not
     rendered, if no "graphic" field).
 - When playtesting, note that the event changes tile when moving vs not moving.
 
@@ -71,30 +71,31 @@ EVENT" with the following changes:
 HOW TO USE - AN ADVANCED SMOOTH-MOVE SETUP
 Follow the instructions from the "HOW TO USE" for either "BASIC FOR THE AVATAR" or "BASIC FOR ANY
 EVENT" with the following changes:
-- Before starting, import the "smooth-move" into your game.
+- Before starting, import the "smooth-move" plugin into your game.
 - After importing the "move-animations" plugin, set the "plugin-order" field of its event to 1.
-- When drawing tiles, draw 8 TILES: a tile for MOVING and a tile for NOT MOVING in each directions
-  (up, left, right, down).
+- When drawing tiles, draw 8 TILES: a tile for MOVING in each direction (up, left, right, down) and
+  a tile for IDLE (not moving) in each direction.
 - When adding tile fields, add the following fields.
-  - "graphic-up" - the tile field used for FACING UP (i.e. not moving).
-  - "graphic-left" - the tile field used for FACING LEFT (i.e. not moving).
-  - "graphic-right" - the tile field used for FACING RIGHT (i.e. not moving).
-  - "graphic" - the tile field used for FACING DOWN (i.e. not moving).
   - "graphic-up-move" - the tile field used for MOVING UP.
   - "graphic-left-move" - the tile field used for MOVING LEFT.
   - "graphic-right-move" - the tile field used for MOVING RIGHT.
   - "graphic-down-move" - the tile field used for MOVING DOWN
-  NOTE - "FACING DOWN" uses the generic "graphic" field, instead of a custom field.
-  NOTE - The "graphic-*-move" fields default to "graphic-*" if unspecified.  "graphic-* fields
-    default to the "graphic" field if unspecified (or is not rendered, if no "graphic" field).
+  - "graphic-up" - the tile field used for IDLE UP.
+  - "graphic-left" - the tile field used for IDLE LEFT.
+  - "graphic-right" - the tile field used for IDLE RIGHT.
+  - "graphic" - the tile field used for IDLE DOWN.
+  NOTE - "IDLE DOWN" uses the generic "graphic" field, instead of a custom field.
+  NOTE - Unspecified MOVING DIRECTION fields ("graphic-*-move") default to "graphic-*".  Unspecified
+    IDLE DIRECTION ("graphic-*) fields default to the generic "graphic" field (or are not rendered,
+    if no "graphic" field).
 - When playtesting, note that the event changes tile when moving vs not moving as well as for
     different directions.
 */
 
-// NOTE - The HOW TOs describe "NOT MOVING DOWN" as using the generic "graphic" field.  It actually
-// uses the "graphic-down" field, but specifying the "graphic" field instead forces "graphic-down"
-// to fall-back to it's default: the "graphic" field.  This is useful as it makes the event show
-// this tile until the first time it moves.
+// NOTE - Each HOW-TO describes one move-tile as using the generic "graphic" field name.  Actually,
+// ALL move-tiles have their own field name, but using the "graphic" field instead forces a move-
+// -tile to fall-back to it's default: the "graphic" field.  This is useful as it makes it so that
+// the event is rendered with that field until the first time the event moves.
 const USED_TILE_FIELDS = ['graphic-up', 'graphic-left', 'graphic-right', 'graphic-down'];
 const USED_TILE_FIELDS_ALTS = [];
 let TILE_SWAP_DELAY = 0;
@@ -102,7 +103,7 @@ let TILE_SWAP_DELAY = 0;
 // the "smooth-move" plugin creates "BipsiPlayback.updateEventsMoveState()" if imported. If so,
 // setup "move-animations" for it.  If not, create it here along with it's callers.
 if (BipsiPlayback.prototype.updateEventsMoveState) {
-	// Setup "move-animations" to combine with "smooth move"
+	// Setup smooth move combining
 	USED_TILE_FIELDS.push(...['graphic-up-move', 'graphic-left-move', 'graphic-right-move', 'graphic-down-move']);
 	USED_TILE_FIELDS_ALTS.push(...['graphic-move', 'graphic-idle']);
 	TILE_SWAP_DELAY = 1;
@@ -122,25 +123,26 @@ if (BipsiPlayback.prototype.updateEventsMoveState) {
 			}
 		}
 	};
+	// Avatar movement calls "BipsiPlayback.updateEventsMoveState()"
 	wrap.before(BipsiPlayback.prototype, 'move', function move(dx, dy) {
 		this.updateEventsMoveState(window.getEventById(this.data, this.avatarId), false, dx, dy);
 	});
+	// Event walking calls "BipsiPlayback.updateEventsMoveState()"
 	let walkSrc = SCRIPTING_FUNCTIONS.WALK.toString();
 	walkSrc = walkSrc.replace('async WALK', 'SCRIPTING_FUNCTIONS.WALK = async function WALK');
 	walkSrc = walkSrc.replaceAll('const [dx, dy] = WALK_DIRECTIONS[dir];', 'const [dx, dy] = WALK_DIRECTIONS[dir];\nwindow.PLAYBACK.updateEventsMoveState(event, false, dx, dy);');
 	new Function(walkSrc)();
 }
 
-// Tile changes are delayed to avoid flicker between move & idle tiles while smooth-moving past
-// multiple cells.
+// smooth-move flips the avatar to "idle" for one frame after each cell movement.  Delaying graphic changes allows us to ignore single-frame move states.
 const pendingGraphicChanges = {};
 
 // This runs each time an event's move-state is changed
 wrap.after(BipsiPlayback.prototype, 'updateEventsMoveState', function updateEventsMoveState(event) {
-	// Make sure the given event is initialized for smooth-move-animations.
-	if (!event.smoothMoveAnimationInitialized) {
-		this.initSmoothMoveAnimationForEvent(event);
-		event.smoothMoveAnimationInitialized = true;
+	// Make sure the given event is initialized for move-animation.
+	if (!event.moveAnimationInitialized) {
+		this.initMoveAnimationForEvent(event);
+		event.moveAnimationInitialized = true;
 	}
 	// Determine the new graphic.  If same as old, remove any pending changes to this event's graphic.
 	let newGraphicName;
@@ -150,10 +152,11 @@ wrap.after(BipsiPlayback.prototype, 'updateEventsMoveState', function updateEven
 		newGraphicName = `graphic-${event.facing}${event.isMoving ? '-move' : ''}`;
 	}
 	if (event.currentGraphicName === newGraphicName) {
+		// If an event is changed to it's own graphic, remove any prior pending graphic changes.
 		delete pendingGraphicChanges[event.id];
 		return;
 	}
-	// Track changing graphics to be updated in a subsequent frame
+	// Track changing graphics to be updated on a subsequent frame
 	pendingGraphicChanges[event.id] = { event, graphicName: newGraphicName, framesLeft: TILE_SWAP_DELAY };
 });
 
@@ -171,8 +174,8 @@ wrap.before(BipsiPlayback.prototype, 'render', () => {
 	});
 });
 
-// Assign defaults for any missing move-animation graphic fields for an event.
-BipsiPlayback.prototype.initSmoothMoveAnimationForEvent = function initSmoothMoveAnimationForEvent(event) {
+// Initialize an event for move-animation - Assign defaults for any missing move-animation graphic fields for an event.
+BipsiPlayback.prototype.initMoveAnimationForEvent = function initMoveAnimationForEvent(event) {
 	event.usesAltTiles = FIELD(event, USED_TILE_FIELDS_ALTS[0], 'tile');
 	const usedFields = event.usesAltTiles ? USED_TILE_FIELDS_ALTS : USED_TILE_FIELDS;
 	const graphicTile = FIELD(event, 'graphic', 'tile');
