@@ -1,5 +1,5 @@
 /**
-👣
+🫠
 @file smooth move
 @summary Add smooth movement to the avatar and to walking events.
 @license MIT
@@ -105,7 +105,7 @@ wrap.before(BipsiPlayback.prototype, 'render', () => {
 // Called whenever an event's move state (i.e. isMoving & facing) needs to change.
 BipsiPlayback.prototype.updateEventsMoveState = function updateEventsMoveState(event, isMoving, dx, dy) {
 	event.isMoving = isMoving;
-	if (isMoving) {
+	if (dx !== undefined) {
 		if (dx > 0) {
 			event.facing = 'right';
 		} else if (dx < 0) {
@@ -203,7 +203,7 @@ BipsiPlayback.prototype.move = async function move(dx, dy) {
 	this.busy = false;
 };
 
-// Code injection - update 'window.makePlayback' - remove original move delay.
+// Code injection - update "window.makePlayback" - remove original move delay.
 // Smooth move introduces a natural move delay.  Don't compound that with the original delay.
 let makePlaybackSrc = window.makePlayback.toString();
 makePlaybackSrc = makePlaybackSrc.replace('async function makePlayback', 'makePlayback = async function');
