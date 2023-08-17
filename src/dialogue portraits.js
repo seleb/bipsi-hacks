@@ -116,30 +116,34 @@ if (!window.EDITOR) {
 	}
 } else {
 	// Pull from CONFIG dynamically when running code in the editor
-	Object.defineProperty(portraitVars, 'SCALE', { get: () =>
-	{
-		return parseInt(FIELD(CONFIG, 'scale', 'json'), 10) || 4;
-	}});
-	Object.defineProperty(portraitVars, 'DEFAULT_SIDE', { get: () =>
-	{
-		let result = parseInt(FIELD(CONFIG, 'default-side', 'json'), 10);
-		if (result !== 0 && result !== 1) {
-			result = 0;
-		}
-		return result;
-	}});
-	Object.defineProperty(portraitVars, 'MARGIN', { get: () =>
-	{
-		return parseInt(FIELD(CONFIG, 'margin', 'json'), 10) || 2;
-	}});
-	Object.defineProperty(portraitVars, 'DEFAULT_BORDER_PALETTE_COLOR', { get: () =>
-	{
-		let result = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'json'), 10) || 0;
-		if (result < 0 || result > 7) {
-			result = 0;
-		}
-		return result;
-	}});
+	Object.defineProperty(portraitVars, 'SCALE', {
+		get: () => {
+			return parseInt(FIELD(CONFIG, 'scale', 'json'), 10) || 4;
+		},
+	});
+	Object.defineProperty(portraitVars, 'DEFAULT_SIDE', {
+		get: () => {
+			let result = parseInt(FIELD(CONFIG, 'default-side', 'json'), 10);
+			if (result !== 0 && result !== 1) {
+				result = 0;
+			}
+			return result;
+		},
+	});
+	Object.defineProperty(portraitVars, 'MARGIN', {
+		get: () => {
+			return parseInt(FIELD(CONFIG, 'margin', 'json'), 10) || 2;
+		},
+	});
+	Object.defineProperty(portraitVars, 'DEFAULT_BORDER_PALETTE_COLOR', {
+		get: () => {
+			let result = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'json'), 10) || 0;
+			if (result < 0 || result > 7) {
+				result = 0;
+			}
+			return result;
+		},
+	});
 }
 
 if (!window.EDITOR) {
