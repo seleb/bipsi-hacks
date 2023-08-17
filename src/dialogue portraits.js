@@ -66,17 +66,19 @@ O - The border color used for a tile OR image portrait.  This is an index into t
     (1-7).  This defaults to the ui dialogue's back color.  0, will use that default.
 
 // The portrait's size
-//!CONFIG scale (text) "4"
-
-// The portrait's distance from the dialogue UI's edges
-//!CONFIG margin (text) "2"
+//!CONFIG scale (json) 4
 
 // Which side of the screen the portrait is drawn to (unless specified in the dialogue text).
-//!CONFIG default-side (text) "0"
+//!CONFIG default-side (json) 0
+
+// The portrait's distance from the dialogue UI's edges
+//!CONFIG margin (json) 2
 
 // What color to use as the portrait's border.  If 0, the dialogue-ui's back color is used.
-//!CONFIG default-border-palette-color (text) "0"
+//!CONFIG default-border-palette-color (json) 0
 */
+
+//! CODE_ALL_TYPES
 
 const EMPTY_CHAR_CODE = 1;
 const EMPTY_CHAR = String.fromCharCode(EMPTY_CHAR_CODE);
@@ -99,23 +101,60 @@ portraitVars.TINT_CANVAS.width = 8;
 portraitVars.TINT_CANVAS.height = 8;
 portraitVars.TINT_CANVAS_CONTEXT = portraitVars.TINT_CANVAS.getContext('2d');
 
-portraitVars.MARGIN = parseInt(FIELD(CONFIG, 'margin', 'text'), 10) || 2;
-portraitVars.SCALE = parseInt(FIELD(CONFIG, 'scale', 'text'), 10) || 4;
-portraitVars.DEFAULT_BORDER_PALETTE_COLOR = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'text'), 10) || 0;
-if (portraitVars.DEFAULT_BORDER_PALETTE_COLOR < 0 || portraitVars.DEFAULT_BORDER_PALETTE_COLOR > 7) {
-	portraitVars.DEFAULT_BORDER_PALETTE_COLOR = 0;
-}
-portraitVars.DEFAULT_SIDE = parseInt(FIELD(CONFIG, 'default-side', 'text'), 10);
+// Pull CONFIG values
+//! CODE_PLAYBACK
+portraitVars.SCALE = parseInt(FIELD(CONFIG, 'scale', 'json'), 10) || 4;
+portraitVars.DEFAULT_SIDE = parseInt(FIELD(CONFIG, 'default-side', 'json'), 10);
 if (portraitVars.DEFAULT_SIDE !== 0 && portraitVars.DEFAULT_SIDE !== 1) {
 	portraitVars.DEFAULT_SIDE = 0;
 }
+portraitVars.MARGIN = parseInt(FIELD(CONFIG, 'margin', 'json'), 10) || 2;
+portraitVars.DEFAULT_BORDER_PALETTE_COLOR = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'json'), 10) || 0;
+if (portraitVars.DEFAULT_BORDER_PALETTE_COLOR < 0 || portraitVars.DEFAULT_BORDER_PALETTE_COLOR > 7) {
+	portraitVars.DEFAULT_BORDER_PALETTE_COLOR = 0;
+}
+//! CODE_EDITOR
+// Pull from CONFIG dynamically when running code in the editor
+Object.defineProperty(portraitVars, 'SCALE', { get: () =>
+{
+	return parseInt(FIELD(CONFIG, 'scale', 'json'), 10) || 4;
+}});
+Object.defineProperty(portraitVars, 'DEFAULT_SIDE', { get: () =>
+{
+	let result = parseInt(FIELD(CONFIG, 'default-side', 'json'), 10);
+	if (result !== 0 && result !== 1) {
+		result = 0;
+	}
+	return result;
+}});
+Object.defineProperty(portraitVars, 'MARGIN', { get: () =>
+{
+	return parseInt(FIELD(CONFIG, 'margin', 'json'), 10) || 2;
+}});
+Object.defineProperty(portraitVars, 'DEFAULT_BORDER_PALETTE_COLOR', { get: () =>
+{
+	let result = parseInt(FIELD(CONFIG, 'default-border-palette-color', 'json'), 10) || 0;
+	if (result < 0 || result > 7) {
+		result = 0;
+	}
+	return result;
+}});
+//! CODE_ALL_TYPES
 
-// Keep track of which event is running the current js code
+//! CODE_EDITOR
+// Editor mode only supports 2-frame animations.  These vars are used to over 2 frames of animation.
+portraitVars.priorFrame = 0;
+portraitVars.animFrameIndex = 0;
+//! CODE_ALL_TYPES
+
+//! CODE_PLAYBACK
+// Keep track of which event is running the current js code (only valid in playback mode)
 wrap.before(BipsiPlayback.prototype, 'runJS', (event, js, debug) => {
 	if (window.PLAYBACK) {
 		window.PLAYBACK.jsSourceEvent = event;
 	}
 });
+//! CODE_ALL_TYPES
 
 // #region PROCESS TEXT FOR PORTRAIT IDS
 
@@ -138,11 +177,18 @@ wrap.splice(DialoguePlayback.prototype, 'queue', function queuePortrait(original
 });
 
 // React to each "portrait" style in the dialogue text by setting up its portrait to be rendered
-wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
+wrap.before(DialoguePlayback.prototype, 'applyStyle', function applyStyle() {
 	// Portrait logic
-	window.PLAYBACK.dialoguePlayback.currentPage.glyphs.forEach((glyph, i) => {
+	this.currentPage.glyphs.forEach((glyph, i) => {
 		if (!glyph.hidden && glyph.styles.has('portrait')) {
-			const args = glyph.styles.get('portrait').split(',');
+			const portraitRawText = glyph.styles.get('portrait');
+			if (portraitRawText === '-') {
+				portraitVars.currentPortraitData.type = null;
+				portraitVars.currentPageHasPortrait = false;
+				return;
+			}
+			portraitVars.currentPageHasPortrait = true;
+			const args = portraitRawText.split(',');
 			let portraitId = parseInt(args[0], 10) || args[0];
 			portraitVars.currentSide = parseInt(args[1], 10);
 			portraitVars.currentFgColorIndex = parseInt(args[2], 10);
@@ -150,9 +196,15 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 			portraitVars.currentBorderColorIndex = parseInt(args[4], 10);
 			// Use the portraited event's colors as defaults.
 			let eventColors = { fg: 3, bg: 1 };
+			//! CODE_PLAYBACK
 			if (window.PLAYBACK.jsSourceEvent) {
 				eventColors = FIELD(window.PLAYBACK.jsSourceEvent, 'colors', 'colors') || eventColors;
 			}
+			//! CODE_EDITOR
+			if (window.EDITOR.getSelections().event) {
+				eventColors = FIELD(window.EDITOR.getSelections().event, 'colors', 'colors') || eventColors;
+			}
+			//! CODE_ALL_TYPES
 			if ((!portraitId && portraitId !== 0) || portraitId < -1) {
 				portraitId = null; // No portrait shown
 			}
@@ -171,6 +223,10 @@ wrap.before(DialoguePlayback.prototype, 'applyStyle', () => {
 
 			// Work out the portrait info to be rendered
 			gatherPortraitData(portraitId);
+			//! CODE_EDITOR
+			// Restart frame counter when changing portraits to be sure we only show the current animation's frame indices
+			portraitVars.animFrameIndex = 0;
+			//! CODE_ALL_TYPES
 			glyph.styles.delete('portrait');
 		}
 	});
@@ -191,7 +247,12 @@ function gatherPortraitData(portraitId) {
 			portraitVars.currentPortraitData.type = 'tile';
 			return;
 		}
-		const tile = window.PLAYBACK.data.tiles.find(i => i.id === portraitId);
+		let tile;
+		//! CODE_PLAYBACK
+		tile = window.PLAYBACK.data.tiles.find(i => i.id === portraitId);
+		//! CODE_EDITOR
+		tile = window.EDITOR.stateManager.present.tiles.find(i => i.id === portraitId);
+		//! CODE_ALL_TYPES
 		if (!tile) {
 			return;
 		}
@@ -201,7 +262,12 @@ function gatherPortraitData(portraitId) {
 	} else {
 		// Setup portrait from image
 		const portraitIdParts = portraitId.split('-');
-		const srcEvent = portraitIdParts.length === 1 ? window.PLAYBACK.jsSourceEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
+		let srcEvent;
+		//! CODE_PLAYBACK
+		srcEvent = portraitIdParts.length === 1 ? window.PLAYBACK.jsSourceEvent : window.findEventByTag(window.PLAYBACK.data, portraitIdParts[0]);
+		//! CODE_EDITOR
+		srcEvent = portraitIdParts.length === 1 ? window.EDITOR.getSelections().event : window.findEventByTag(window.EDITOR.stateManager.present, portraitIdParts[0]);
+		//! CODE_ALL_TYPES
 		if (!srcEvent) {
 			return;
 		}
@@ -239,10 +305,13 @@ function gatherPortraitData(portraitId) {
 		for (let i = portraitVars.currentPortraitData.images.length; i < srcFields.length; i++) {
 			portraitVars.currentPortraitData.images[i] = new Image();
 		}
+		//! CODE_PLAYBACK
+		// NOTE - This triggers a warning in editor mode, and isn't necessary in editor mode anyway.
 		// Make sure all images are clear (to avoid any flicker from prior dialogue)
 		portraitVars.currentPortraitData.images.forEach(x => {
 			x.src = null;
 		});
+		//! CODE_ALL_TYPES
 		// Setup non-image portrait data (image part is setup above)
 		portraitVars.currentPortraitData.type = 'image';
 		portraitVars.currentPortraitData.imageResourceIds = srcFields.map(x => x.data);
@@ -250,7 +319,12 @@ function gatherPortraitData(portraitId) {
 
 		// Load the images from files into the portrait data
 		const srcFiles = srcFields.map(x => {
-			const resource = window.PLAYBACK.stateManager.resources.resources.get(x.data);
+			let resource;
+			//! CODE_PLAYBACK
+			resource = window.PLAYBACK.stateManager.resources.resources.get(x.data);
+			//! CODE_EDITOR
+			resource = window.EDITOR.stateManager.resources.resources.get(x.data);
+			//! CODE_ALL_TYPES
 			return resource ? resource.instance : null;
 		});
 		srcFiles.forEach((x, i) => {
@@ -289,7 +363,12 @@ function portraitFakedownToTag(text) {
 
 // #region DRAW PORTRAIT
 wrap.splice(DialoguePlayback.prototype, 'render', original => {
-	const { dialoguePlayback } = window.PLAYBACK;
+	let dialoguePlayback;
+	//! CODE_PLAYBACK
+	dialoguePlayback = window.PLAYBACK.dialoguePlayback;
+	//! CODE_EDITOR
+	dialoguePlayback = window.EDITOR.dialoguePreviewPlayer;
+	//! CODE_ALL_TYPES
 
 	// No portrait? do original logic only
 	if (!portraitVars.currentPageHasPortrait) {
@@ -329,7 +408,12 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	const portraitLoc = [];
 	portraitLoc[0] = portraitVars.currentSide === 0 ? minX + portraitVars.MARGIN : maxX - portraitVars.MARGIN - portraitSize;
 	portraitLoc[1] = dialogueUiY - portraitVars.MARGIN - portraitSize;
-	const palette = window.PLAYBACK.getActivePalette();
+	let palette;
+	//! CODE_PLAYBACK
+	palette = window.PLAYBACK.getActivePalette();
+	//! CODE_EDITOR
+	palette = window.EDITOR.getSelections().palette;
+	//! CODE_ALL_TYPES
 	const borderColor = portraitVars.currentBorderColorIndex === 0 ? options.panelColor : palette.colors[portraitVars.currentBorderColorIndex];
 
 	// Draw a panel border
@@ -352,8 +436,15 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 		// Draw the portrait
 		if (portraitVars.currentFgColorIndex > 0) {
 			// Draw the portrait from frame-canvas to tint-canvas (flipped if necessary)
-			const frameCanvas = window.PLAYBACK.stateManager.resources.get(window.PLAYBACK.data.tileset).canvas;
-			const frameIndex = window.PLAYBACK.frameCount % portraitVars.currentPortraitData.frameIds.length;
+			let frameCanvas;
+			let frameIndex;
+			//! CODE_PLAYBACK
+			frameCanvas = window.PLAYBACK.stateManager.resources.get(window.PLAYBACK.data.tileset).canvas;
+			frameIndex = window.PLAYBACK.frameCount % portraitVars.currentPortraitData.frameIds.length;
+			//! CODE_EDITOR
+			frameCanvas = window.EDITOR.stateManager.resources.get(window.EDITOR.stateManager.present.tileset).canvas;
+			frameIndex = window.EDITOR.frame % portraitVars.currentPortraitData.frameIds.length;
+			//! CODE_ALL_TYPES
 			const frameId = portraitVars.currentPortraitData.frameIds[frameIndex];
 			portraitVars.TINT_CANVAS_CONTEXT.globalCompositeOperation = 'source-over';
 			portraitVars.TINT_CANVAS_CONTEXT.fillStyle = palette.colors[portraitVars.currentFgColorIndex];
@@ -383,7 +474,17 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	}
 	// Draw the portrait from a picture file
 	else if (portraitVars.currentPortraitData.type === 'image') {
-		const frameIndex = window.PLAYBACK.frameCount % portraitVars.currentPortraitData.frameCount;
+		let frameIndex;
+		//! CODE_PLAYBACK
+		frameIndex = window.PLAYBACK.frameCount % portraitVars.currentPortraitData.frameCount;
+		//! CODE_EDITOR
+		// Transform 2-frame animation indices into animation indices of over 2 frames
+		if (window.EDITOR.frame !== portraitVars.priorFrame) {
+			portraitVars.animFrameIndex = (portraitVars.animFrameIndex + 1) % portraitVars.currentPortraitData.frameCount;
+			portraitVars.priorFrame = window.EDITOR.frame;
+		}
+		frameIndex = portraitVars.animFrameIndex;
+		//! CODE_ALL_TYPES
 		dialoguePlayback.dialogueRendering.drawImage(
 			portraitVars.currentPortraitData.images[frameIndex],
 			portraitLoc[0] + 1 * portraitVars.SCALE,
