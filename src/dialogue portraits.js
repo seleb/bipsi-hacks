@@ -117,9 +117,7 @@ if (!window.EDITOR) {
 } else {
 	// Pull from CONFIG dynamically when running code in the editor
 	Object.defineProperty(portraitVars, 'SCALE', {
-		get: () => {
-			return parseInt(FIELD(CONFIG, 'scale', 'json'), 10) || 4;
-		},
+		get: () => parseInt(FIELD(CONFIG, 'scale', 'json'), 10) || 4,
 	});
 	Object.defineProperty(portraitVars, 'DEFAULT_SIDE', {
 		get: () => {
@@ -131,9 +129,7 @@ if (!window.EDITOR) {
 		},
 	});
 	Object.defineProperty(portraitVars, 'MARGIN', {
-		get: () => {
-			return parseInt(FIELD(CONFIG, 'margin', 'json'), 10) || 2;
-		},
+		get: () => parseInt(FIELD(CONFIG, 'margin', 'json'), 10) || 2,
 	});
 	Object.defineProperty(portraitVars, 'DEFAULT_BORDER_PALETTE_COLOR', {
 		get: () => {
