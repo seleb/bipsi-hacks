@@ -4,7 +4,7 @@
 @summary Present options to the user via the "say" interface, then react to their choice.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 5.0.1
+@version 6.0.0
 
 
 
@@ -135,10 +135,14 @@ const DIALOGUE_LINE_WIDTH = parseInt(FIELD(CONFIG, 'dialogue-line-width', 'text'
 const DIALOGUE_CHARACTER_WIDTH = parseInt(FIELD(CONFIG, 'dialogue-character-width', 'text')?.trim(), 10) ?? 6;
 
 // Method to trigger a choices-dialogue
-BipsiPlayback.prototype.sayChoices = function sayOptions(preamble, choices, extraLineCount = 0, event = undefined) {
+BipsiPlayback.prototype.sayChoices = function sayChoices(preamble, choices, sayStyle = undefined, extraLineCount = 0, event = undefined) {
 	if (choices.length === 0) return undefined;
+
 	const preambleLineCount = preamble ? this.calculateLineCountOfDialogueText(preamble) + PREAMBLE_SEPARATION_COUNT : 0;
 	const choiceCount = Math.min(choices.length, CHOICE_KEYS.length);
+	const choiceSayStyle = { lines: preambleLineCount + choiceCount + extraLineCount, glyphRevealDelay: 0 };
+	sayStyle = sayStyle ? Object.assign(sayStyle, choiceSayStyle) : choiceSayStyle;
+
 	let dialogueText = preamble ? `${preamble}\n${'\n'.repeat(PREAMBLE_SEPARATION_COUNT)}` : '';
 	for (let i = 0; i < choiceCount; i++) {
 		const separatorText = i > 0 ? '\n' : '';
@@ -149,12 +153,12 @@ BipsiPlayback.prototype.sayChoices = function sayOptions(preamble, choices, extr
 		this.choiceResultOptions = choices.map(choice => choice[1]);
 	}, 0);
 	this.choicesSourceEvent = event; // This is used in a few places throughout the plugin
-	return this.say(dialogueText, { lines: preambleLineCount + choiceCount + extraLineCount, glyphRevealDelay: 0 });
+	return this.say(dialogueText, sayStyle);
 };
 
 // Simpler method for use within a javascript field
-SCRIPTING_FUNCTIONS.SAY_CHOICES = async function SAY_CHOICES(preamble, choices, extraLineCount = 0, event = this.EVENT) {
-	return this.PLAYBACK.sayChoices(preamble, choices, extraLineCount, event);
+SCRIPTING_FUNCTIONS.SAY_CHOICES = async function SAY_CHOICES(preamble, choices, sayStyle = undefined, extraLineCount = 0, event = this.EVENT) {
+	return this.PLAYBACK.sayChoices(preamble, choices, sayStyle, extraLineCount, event);
 };
 
 // Get how many lines the given text will display as in the dialogue system.

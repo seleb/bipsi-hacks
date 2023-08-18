@@ -1,3 +1,15 @@
+# [6.0.0](https://github.com/seleb/bipsi-hacks/compare/v5.0.1...v6.0.0) (2023-08-18)
+
+
+### Features
+
+* **dialogue choices:** Added a "sayStyle" option ([#31](https://github.com/seleb/bipsi-hacks/issues/31)) ([2bc01fa](https://github.com/seleb/bipsi-hacks/commit/2bc01fa2760ef9d1835a95f9a77b902b5e08325f))
+
+
+### BREAKING CHANGES
+
+* **dialogue choices:** `BipsiPlayback.prototype.sayChoices` and `SCRIPTING_FUNCTIONS.SAY_CHOICES` function signature modified: `sayStyle` was introduced as new third parameter, shifting `extraLineCount` and `event` over to fourth and fifth parameters
+
 ## [5.0.1](https://github.com/seleb/bipsi-hacks/compare/v5.0.0...v5.0.1) (2023-08-12)
 
 

@@ -4,7 +4,7 @@
 @summary ANY event can specify a tile for each direction and tiles for moving vs not moving.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 5.0.1
+@version 6.0.0
 
 
 

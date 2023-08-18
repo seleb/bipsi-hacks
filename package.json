@@ -7,7 +7,7 @@
 		"hacks",
 		"plugins"
 	],
-	"version": "5.0.1",
+	"version": "6.0.0",
 	"scripts": {
 		"build": "rm -rf ./dist && rollup -c",
 		"test": "jest --runInBand",
