@@ -4,7 +4,7 @@
 @summary Add a ui button and hotkey to the editor to toggle fullscreen while playtesting the game.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 7.0.0
+@version 7.0.1
 
 
 @description
@@ -31,6 +31,7 @@ NOTE: if this plugin's configuration is changed, the key to press may not be 'en
 
 
 
+// This plugin is run in the editor, with some debug-playback code near the end.
 //! CODE_EDITOR
 
 function setupEditorPlugin() {
@@ -96,5 +97,8 @@ document.addEventListener('keydown', e => {
 		window.parent.window.EDITOR.toggleFullscreen();
 	}
 });
+
+// End with a CODE_PLAYBACK section for compatibility with a build-added IIFE wrapper
+//! CODE_PLAYBACK
 
 })();

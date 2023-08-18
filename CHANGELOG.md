@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/seleb/bipsi-hacks/compare/v7.0.0...v7.0.1) (2023-08-18)
+
+
+### Bug Fixes
+
+* **editor fullscreen:** error triggering when game is published ([#32](https://github.com/seleb/bipsi-hacks/issues/32)) ([3dddd37](https://github.com/seleb/bipsi-hacks/commit/3dddd379573df4da0e84485c16bbf9bbf3716e54))
+
 # [7.0.0](https://github.com/seleb/bipsi-hacks/compare/v6.0.0...v7.0.0) (2023-08-18)
 
 
