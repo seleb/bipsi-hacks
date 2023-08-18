@@ -1,3 +1,15 @@
+# [7.0.0](https://github.com/seleb/bipsi-hacks/compare/v6.0.0...v7.0.0) (2023-08-18)
+
+
+### Features
+
+* **dialogue portraits:** dialogue preview in the editor, updated order of config, added support for using `-` to clear state ([#30](https://github.com/seleb/bipsi-hacks/issues/30)) ([2878b0a](https://github.com/seleb/bipsi-hacks/commit/2878b0a1a58d81125916147e12ea41a00a981979))
+
+
+### BREAKING CHANGES
+
+* **dialogue portraits:** `default-border-palette-color`, `scale`, `default-side`, and `margin` configs changed from `text` to `json`
+
 # [6.0.0](https://github.com/seleb/bipsi-hacks/compare/v5.0.1...v6.0.0) (2023-08-18)
 
 
