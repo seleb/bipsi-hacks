@@ -25,6 +25,7 @@ NOTE: if this plugin's configuration is changed, the key to press may not be 'en
 //!CONFIG fullscreen-hotkey (text) "Enter"
 */
 
+// This plugin is run in the editor, with some debug-playback code near the end.
 //! CODE_EDITOR
 
 function setupEditorPlugin() {
@@ -90,3 +91,6 @@ document.addEventListener('keydown', e => {
 		window.parent.window.EDITOR.toggleFullscreen();
 	}
 });
+
+// End with a CODE_PLAYBACK section for compatibility with a build-added IIFE wrapper
+//! CODE_PLAYBACK
