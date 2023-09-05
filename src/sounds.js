@@ -109,17 +109,17 @@ SCRIPTING_FUNCTIONS.PLAY_SOUND = function PLAY_SOUND(sound, channel, looped) {
 		console.error(`Invalid sound asset id: "${assetId}"`);
 		return;
 	}
-	FIELD(this.EVENT, sound, "file");
+	FIELD(this.EVENT, sound, 'file');
 
 	// Determine sound's source and name
-	const libraryReference = FIELD(this.EVENT, sound, "text");
+	const libraryReference = FIELD(this.EVENT, sound, 'text');
 	let soundSource = null;
 	let soundName = '';
 	if (libraryReference) {
-		soundSource = getEventById(PLAYBACK.data, PLAYBACK.libraryId);
+		soundSource = window.getEventById(window.PLAYBACK.data, window.PLAYBACK.libraryId);
 		soundName = libraryReference;
-	} else if (!FIELD(this.EVENT, sound, "file")) {
-		soundSource = getEventById(PLAYBACK.data, PLAYBACK.libraryId);
+	} else if (!FIELD(this.EVENT, sound, 'file')) {
+		soundSource = window.getEventById(window.PLAYBACK.data, window.PLAYBACK.libraryId);
 		soundName = sound;
 	} else {
 		soundSource = this.EVENT;
@@ -158,10 +158,10 @@ BipsiPlayback.prototype.stopSound = function stopSound(channel) {
 		this.soundChannels[channel].audioPlayer.removeAttribute('src');
 		this.soundChannels[channel].audioPlayer.loop = false;
 	} else {
-		Object.values(this.soundChannels).forEach(channel => {
-			channel.audioPlayer.pause();
-			channel.audioPlayer.removeAttribute('src');
-			channel.audioPlayer.loop = false;
+		Object.values(this.soundChannels).forEach(i => {
+			i.audioPlayer.pause();
+			i.audioPlayer.removeAttribute('src');
+			i.audioPlayer.loop = false;
 		});
 	}
 };
@@ -186,8 +186,8 @@ BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel
 	} else {
 		// Set the volume for ALL channels
 		this.defaultSoundVolume = volume;
-		Object.values(this.soundChannels).forEach(channel => {
-			channel.audioPlayer.volume = volume;
+		Object.values(this.soundChannels).forEach(i => {
+			i.audioPlayer.volume = volume;
 		});
 	}
 };
@@ -205,7 +205,7 @@ BipsiPlayback.prototype.addOnSoundEnd = function addOnSoundEnd(callback, channel
 		callback(this.soundChannels[channel].soundSource, this.soundChannels[channel].soundName, channel);
 	};
 	// trigger for a non-looping sound
-	this.soundChannels[channel].audioPlayer.addEventListener('ended',  result.listenerFnc);
+	this.soundChannels[channel].audioPlayer.addEventListener('ended', result.listenerFnc);
 	// trigger for a looping sound
 	this.soundChannels[channel].audioPlayer.addEventListener('seeked', result.listenerFnc);
 	return result;
