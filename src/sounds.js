@@ -101,11 +101,14 @@ NOTE - Adding the file field of step 2 to a library event, instead of the trigge
 
 const DEFAULT_SOUND_CHANNEL = 'main';
 
-wrap.after(window, 'start', () => {
-	window.PLAYBACK.soundChannels = {};
-	window.PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text')) || 0;
-});
-
+SCRIPTING_FUNCTIONS.PLAY_SOUND = function PLAY_SOUND(sound, channel, looped) {
+	let assetId = this.FIELD_OR_LIBRARY(sound, this.EVENT);
+	if (!assetId) {
+		assetId = sound;
+	}
+	sound = this.PLAYBACK.getFileObjectURL(assetId);
+	this.PLAYBACK.playSound(sound, channel, looped);
+};
 BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
 	if (!sound) {
 		return;
@@ -124,15 +127,10 @@ BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
 	this.soundChannels[channel].loop = looped;
 	this.soundChannels[channel].play();
 };
-SCRIPTING_FUNCTIONS.PLAY_SOUND = function PLAY_SOUND(sound, channel, looped) {
-	let assetId = this.FIELD_OR_LIBRARY(sound, this.EVENT);
-	if (!assetId) {
-		assetId = sound;
-	}
-	sound = this.PLAYBACK.getFileObjectURL(assetId);
-	this.PLAYBACK.playSound(sound, channel, looped);
-};
 
+SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
+	this.PLAYBACK.stopSound(channel);
+};
 BipsiPlayback.prototype.stopSound = function stopSound(channel) {
 	if (channel) {
 		if (!this.soundChannels[channel]) {
@@ -149,10 +147,10 @@ BipsiPlayback.prototype.stopSound = function stopSound(channel) {
 		});
 	}
 };
-SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
-	this.PLAYBACK.stopSound(channel);
-};
 
+SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function SET_SOUND_VOLUME(volume, channel) {
+	this.PLAYBACK.setSoundVolume(volume, channel);
+};
 BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel) {
 	// Prep the volume value
 	if (Number.isNaN(parseFloat(volume))) {
@@ -174,9 +172,12 @@ BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel
 		});
 	}
 };
-SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function SET_SOUND_VOLUME(volume, channel) {
-	this.PLAYBACK.setSoundVolume(volume, channel);
-};
+
+wrap.after(window, 'start', () => {
+	window.PLAYBACK.soundChannels = {};
+	window.PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text')) || 0;
+});
+
 
 const BEHAVIOUR_TOUCH_SOUND = `
 const field = oneField(EVENT, 'touch-sound');
