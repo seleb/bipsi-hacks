@@ -106,26 +106,49 @@ SCRIPTING_FUNCTIONS.PLAY_SOUND = function PLAY_SOUND(sound, channel, looped) {
 	if (!assetId) {
 		assetId = sound;
 	}
+	if (!this.PLAYBACK.stateManager.resources.resources.has(assetId)) {
+		console.error(`Invalid sound asset id: "${assetId}"`);
+		return;
+	}
+	FIELD(this.EVENT, sound, "file");
+
+	// Determine sound's source and name
+	const libraryReference = FIELD(this.EVENT, sound, "text");
+	let soundSource = null;
+	let soundName = '';
+	if (libraryReference) {
+		soundSource = getEventById(PLAYBACK.data, PLAYBACK.libraryId);
+		soundName = libraryReference;
+	} else if (!FIELD(this.EVENT, sound, "file")) {
+		soundSource = getEventById(PLAYBACK.data, PLAYBACK.libraryId);
+		soundName = sound;
+	} else {
+		soundSource = this.EVENT;
+		soundName = sound;
+	}
+
 	sound = this.PLAYBACK.getFileObjectURL(assetId);
-	this.PLAYBACK.playSound(sound, channel, looped);
+	this.PLAYBACK.playSound(sound, channel, looped, soundSource, soundName);
 };
-BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped) {
+BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped, soundSource, soundName) {
 	if (!sound) {
 		return;
 	}
 	channel ||= DEFAULT_SOUND_CHANNEL;
 	if (!this.soundChannels[channel]) {
-		this.soundChannels[channel] = document.createElement('audio');
-		this.soundChannels[channel].volume = this.defaultSoundVolume;
+		this.soundChannels[channel] = { audioPlayer: document.createElement('audio') };
+		this.soundChannels[channel].audioPlayer.volume = this.defaultSoundVolume;
 	}
 	// If request to loop a sound that's already looping, do nothing to avoid resetting the loop
-	if (looped && this.soundChannels[channel] && this.soundChannels[channel].src === sound) {
+	if (looped && this.soundChannels[channel] && this.soundChannels[channel].audioPlayer.src === sound) {
 		return;
 	}
 	// Setup the given sound on the given channel
-	this.soundChannels[channel].src = sound;
-	this.soundChannels[channel].loop = looped;
-	this.soundChannels[channel].play();
+	this.soundChannels[channel].audioPlayer.src = sound;
+	this.soundChannels[channel].audioPlayer.loop = looped;
+	this.soundChannels[channel].soundSource = soundSource;
+	this.soundChannels[channel].soundName = soundName;
+	this.soundChannels[channel].audioPlayer.play();
 };
 
 SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
@@ -136,14 +159,14 @@ BipsiPlayback.prototype.stopSound = function stopSound(channel) {
 		if (!this.soundChannels[channel]) {
 			return;
 		}
-		this.soundChannels[channel].pause();
-		this.soundChannels[channel].removeAttribute('src');
-		this.soundChannels[channel].loop = false;
+		this.soundChannels[channel].audioPlayer.pause();
+		this.soundChannels[channel].audioPlayer.removeAttribute('src');
+		this.soundChannels[channel].audioPlayer.loop = false;
 	} else {
-		Object.values(this.soundChannels).forEach(i => {
-			i.pause();
-			i.removeAttribute('src');
-			i.loop = false;
+		Object.values(this.soundChannels).forEach(channel => {
+			channel.audioPlayer.pause();
+			channel.audioPlayer.removeAttribute('src');
+			channel.audioPlayer.loop = false;
 		});
 	}
 };
@@ -161,14 +184,14 @@ BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel
 	if (channel) {
 		// Set the volume for a single channel
 		if (!this.soundChannels[channel]) {
-			this.soundChannels[channel] = document.createElement('audio');
+			this.soundChannels[channel] = { audioPlayer: document.createElement('audio') };
 		}
-		this.soundChannels[channel].volume = volume;
+		this.soundChannels[channel].audioPlayer.volume = volume;
 	} else {
 		// Set the volume for ALL channels
 		this.defaultSoundVolume = volume;
-		Object.values(this.soundChannels).forEach(i => {
-			i.volume = volume;
+		Object.values(this.soundChannels).forEach(channel => {
+			channel.audioPlayer.volume = volume;
 		});
 	}
 };
@@ -187,6 +210,7 @@ if (!field || (field.type != 'file' && field.type != 'text')) {
 if (!field.data) {
 	return;
 }
+/*
 if (field.type == 'text') {
 	const library = findEventById(PLAYBACK.data, PLAYBACK.libraryId);
 	const libField = oneField(library, field.data);
@@ -194,6 +218,7 @@ if (field.type == 'text') {
 		return;
 	}
 }
-PLAY_SOUND(field.data);
+*/
+PLAY_SOUND('touch-sound');
 `;
 STANDARD_SCRIPTS.unshift(BEHAVIOUR_TOUCH_SOUND);
