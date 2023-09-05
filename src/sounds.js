@@ -131,18 +131,16 @@ SCRIPTING_FUNCTIONS.PLAY_SOUND = function PLAY_SOUND(sound, channel, looped) {
 	this.PLAYBACK.playSound(sound, channel, looped, soundSource, soundName);
 };
 BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped, soundSource, soundName) {
-	if (!sound) {
-		return;
-	}
+	if (!sound) return;
 	channel ||= DEFAULT_SOUND_CHANNEL;
 	if (!this.soundChannels[channel]) {
 		this.soundChannels[channel] = { audioPlayer: document.createElement('audio') };
 		this.soundChannels[channel].audioPlayer.volume = this.defaultSoundVolume;
 	}
+
 	// If request to loop a sound that's already looping, do nothing to avoid resetting the loop
-	if (looped && this.soundChannels[channel] && this.soundChannels[channel].audioPlayer.src === sound) {
-		return;
-	}
+	if (looped && this.soundChannels[channel] && this.soundChannels[channel].audioPlayer.src === sound && this.soundChannels[channel].audioPlayer.loop) return;
+
 	// Setup the given sound on the given channel
 	this.soundChannels[channel].audioPlayer.src = sound;
 	this.soundChannels[channel].audioPlayer.loop = looped;
@@ -156,9 +154,7 @@ SCRIPTING_FUNCTIONS.STOP_SOUND = function STOP_SOUND(channel) {
 };
 BipsiPlayback.prototype.stopSound = function stopSound(channel) {
 	if (channel) {
-		if (!this.soundChannels[channel]) {
-			return;
-		}
+		if (!this.soundChannels[channel]) return;
 		this.soundChannels[channel].audioPlayer.pause();
 		this.soundChannels[channel].audioPlayer.removeAttribute('src');
 		this.soundChannels[channel].audioPlayer.loop = false;
@@ -177,7 +173,8 @@ SCRIPTING_FUNCTIONS.SET_SOUND_VOLUME = function SET_SOUND_VOLUME(volume, channel
 BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel) {
 	// Prep the volume value
 	if (Number.isNaN(parseFloat(volume))) {
-		console.log(`Invalid sound volume: "${volume}".`);
+		console.error(`Invalid sound volume: "${volume}".`);
+		return;
 	}
 	volume = Math.min(Math.max(parseFloat(volume), 0), 1);
 
