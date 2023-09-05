@@ -36,17 +36,16 @@ PLAY_MUSIC system for more control over the music.
     - "volume" - The volume to set.  Expects a value from 0.0 to 1.0.
     - "channel" - An optional string parameter.  If specified, the volume is set only for the
 		given channel.  If not specified, the volume is set for ALL channels.
-  - ADD_ON_SOUND_END(callback, channel, runOnce) - Run code when a playing sound reaches its end.
-	Note - This WILL trigger if a sound is looped.  If so, it triggers just before the sound loops.
+  - ADD_ON_SOUND_END(callback, channel) - Run code when a playing sound reaches its end.
+	Note - This WILL trigger if a sound is looped.  If so, it triggers just after the sound loops.
     Note - This will NOT trigger if a sound is interrupted.
 	Note - This returns an object that can be passed to REMOVE_ON_SOUND_END.
-    - "callback" - A JavaScript function containing the code to run.  The function is passed a
-      "name" argument containing the name of the sound that has ended.
-    - "channel" - An optional string parameter that defaults to "main".  Only sounds played on this
-      channel will trigger the given jsFunction.
-    - "runOnce" - An optional boolean parameter that defaults to false.  If true, then only the next
-      sound end will trigger the given jsFunction.  If false, all subsequent sound ends will trigger
-      the given jsFunction.
+    - "callback" - A JavaScript function containing the code to run.  It is passed three argunents:
+      - source - the event containing the sound that was played
+	  - name - the name of the event field containing the sound that was played
+	  - channel - the name of the channel the sound was played on
+    - "channel" - An optional string parameter, defaulting to "main".  Sounds played on this channel
+      will trigger the given jsFunction.
   - REMOVE_ON_SOUND_END(toStop) - Removes code which triggers when sounds end, i.e. code that was
     passed to ADD_ON_SOUND_END().
     - "soundEndToStop" - An object returned from a call to ADD_ON_SOUND_END which represents the
@@ -138,8 +137,8 @@ BipsiPlayback.prototype.playSound = function playSound(sound, channel, looped, s
 		this.soundChannels[channel].audioPlayer.volume = this.defaultSoundVolume;
 	}
 
-	// If request to loop a sound that's already looping, do nothing to avoid resetting the loop
-	if (looped && this.soundChannels[channel] && this.soundChannels[channel].audioPlayer.src === sound && this.soundChannels[channel].audioPlayer.loop) return;
+	// If asked to loop a sound, and already looping that sound, early out.
+	if (looped && this.soundChannels[channel].audioPlayer.src === sound && this.soundChannels[channel].audioPlayer.loop) return;
 
 	// Setup the given sound on the given channel
 	this.soundChannels[channel].audioPlayer.src = sound;
@@ -193,11 +192,41 @@ BipsiPlayback.prototype.setSoundVolume = function setSoundVolume(volume, channel
 	}
 };
 
+SCRIPTING_FUNCTIONS.ADD_ON_SOUND_END = function ADD_ON_SOUND_END(callback, channel) {
+	return this.PLAYBACK.addOnSoundEnd(callback, channel);
+};
+BipsiPlayback.prototype.addOnSoundEnd = function addOnSoundEnd(callback, channel) {
+	channel ||= DEFAULT_SOUND_CHANNEL;
+	if (!this.soundChannels[channel]) {
+		this.soundChannels[channel] = { audioPlayer: document.createElement('audio') };
+	}
+	const result = { channel };
+	result.listenerFnc = () => {
+		callback(this.soundChannels[channel].soundSource, this.soundChannels[channel].soundName, channel);
+	};
+	// trigger for a non-looping sound
+	this.soundChannels[channel].audioPlayer.addEventListener('ended',  result.listenerFnc);
+	// trigger for a looping sound
+	this.soundChannels[channel].audioPlayer.addEventListener('seeked', result.listenerFnc);
+	return result;
+};
+
+SCRIPTING_FUNCTIONS.REMOVE_ON_SOUND_END = function REMOVE_ON_SOUND_END(toStop) {
+	this.PLAYBACK.removeOnSoundEnd(toStop);
+};
+BipsiPlayback.prototype.removeOnSoundEnd = function removeOnSoundEnd(toStop) {
+	if (!toStop || !toStop.channel || !toStop.listenerFnc) {
+		console.error('Invalid toStop argument', toStop);
+	}
+	if (!this.soundChannels[toStop.channel]) return;
+	this.soundChannels[toStop.channel].audioPlayer.removeEventListener('ended', toStop.listenerFnc);
+	this.soundChannels[toStop.channel].audioPlayer.removeEventListener('seeked', toStop.listenerFnc);
+};
+
 wrap.after(window, 'start', () => {
 	window.PLAYBACK.soundChannels = {};
 	window.PLAYBACK.defaultSoundVolume = parseFloat(FIELD(CONFIG, 'default-sound-volume', 'text')) || 0;
 });
-
 
 const BEHAVIOUR_TOUCH_SOUND = `
 const field = oneField(EVENT, 'touch-sound');
