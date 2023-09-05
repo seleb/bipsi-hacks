@@ -236,15 +236,6 @@ if (!field || (field.type != 'file' && field.type != 'text')) {
 if (!field.data) {
 	return;
 }
-/*
-if (field.type == 'text') {
-	const library = findEventById(PLAYBACK.data, PLAYBACK.libraryId);
-	const libField = oneField(library, field.data);
-	if (!libField || !libField.data) {
-		return;
-	}
-}
-*/
 PLAY_SOUND('touch-sound');
 `;
 STANDARD_SCRIPTS.unshift(BEHAVIOUR_TOUCH_SOUND);
