@@ -40,7 +40,7 @@ PLAY_MUSIC system for more control over the music.
 	Note - This WILL trigger if a sound is looped.  If so, it triggers just after the sound loops.
     Note - This will NOT trigger if a sound is interrupted.
 	Note - This returns an object that can be passed to REMOVE_ON_SOUND_END.
-    - "callback" - A JavaScript function containing the code to run.  It is passed three argunents:
+    - "callback" - A JavaScript function containing the code to run.  It is passed three arguments:
       - source - the event containing the sound that was played
 	  - name - the name of the event field containing the sound that was played
 	  - channel - the name of the channel the sound was played on
