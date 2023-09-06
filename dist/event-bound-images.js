@@ -4,7 +4,7 @@
 @summary Display images relative to an event.  If the event moves, the image moves.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.0.0
+@version 8.1.0
 
 
 
@@ -20,7 +20,7 @@ at the same rate as tiles are.  This feature can be useful in conjunction with t
 
 HOW TO USE
 1. Import this plugin into a game.
-2. Create a library event and add an file field to it.  Set the field to an image file.  We'll be binding this image to the avatar.
+2. Create a library event and add a file field to it.  Set the field to an image file.  We'll be binding this image to the avatar.
 3. Add a javascript field named "after" to the avatar event.  Set it to the following code, replacing X with the name of the field of step 2:
   const X = FIELD_OR_LIBRARY("X");
   SHOW_IMAGE("demo", X, 2, 0, 0);

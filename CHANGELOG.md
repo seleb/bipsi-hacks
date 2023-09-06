@@ -1,3 +1,10 @@
+# [8.1.0](https://github.com/seleb/bipsi-hacks/compare/v8.0.0...v8.1.0) (2023-09-06)
+
+
+### Features
+
+* add `one move per press` plugin ([#35](https://github.com/seleb/bipsi-hacks/issues/35)) ([e163ccc](https://github.com/seleb/bipsi-hacks/commit/e163ccc8db88edddcdbbd809f3f19f88ab777f92))
+
 # [8.0.0](https://github.com/seleb/bipsi-hacks/compare/v7.0.1...v8.0.0) (2023-09-06)
 
 
