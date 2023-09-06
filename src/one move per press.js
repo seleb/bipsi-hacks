@@ -1,15 +1,15 @@
 /**
 🦥
 @file one move per press
-@summary Limits movement to a single move per key/button press.
+@summary Limits movement to a single move per key/button press or touch.
 @license MIT
 @author Violgamba (Jon Heard)
 
 
 @description
-Limits movement to a single move per key/button press.  Holding the key or button down no longer
-results in multiple moves.  This is useful when the target player is not skilled with the input
-device they are using.
+Limits movement to a single move per key/button press or touch.  Holding the key or button down no
+longer results in multiple moves and neither does touch-dragging.  This is useful when the target
+player is not skilled with the input device they are using.
 
 For example, my young nieces make games by drawing maps and tiles with my laptop's touch screen.
 However, they are not skilled at the keyboard or a gamepad, so they struggle when playing their
@@ -51,10 +51,25 @@ window.addEventListener(
 	{ capture: true }
 );
 
-// Track pressed keys AND release movement block if all keys are released.
+// Track pressed keys AND release movement block if all keys/touches are released.
 document.addEventListener('keyup', evt => {
 	if (!window.PLAYBACK.oneMovePerPress) return;
 	keysPressed.delete(evt.key);
+	if (keysPressed.size === 0) {
+		blockMovement = false;
+	}
+});
+
+// Track touch
+document.addEventListener('pointerdown', evt => {
+	if (!window.PLAYBACK.oneMovePerPress) return;
+	keysPressed.add('pointer');
+});
+
+// Track touch AND release movement block if all keys/touches are released.
+document.addEventListener('pointerup', evt => {
+	if (!window.PLAYBACK.oneMovePerPress) return;
+	keysPressed.delete('pointer');
 	if (keysPressed.size === 0) {
 		blockMovement = false;
 	}
