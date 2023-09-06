@@ -54,7 +54,7 @@ PLAY_MUSIC system for more control over the music.
 
 HOW TO USE - EVENT TOUCH TRIGGERS AUDIO - SIMPLE:
 1. Import this plugin into your game.
-2. Pick an event to trigger audio from and add an sound file (mp3 or wav) to it as a file field
+2. Pick an event to trigger audio from and add a sound file (mp3 or wav) to it as a file field
    named "touch-sound".
 3. Run the game and touch the event of step 2.  Notice that the sound plays.
 
