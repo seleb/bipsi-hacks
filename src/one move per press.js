@@ -18,14 +18,17 @@ games, often moving the character further than intended.
 
 HOW TO USE - BASIC:
 1. Import this plugin into your game.
-2. Playtest the game, then hold a direction key or button down.  Note that the character only moves one cell per press.
+2. Playtest the game, then hold a direction key or button down.  Note that the character only moves
+   one cell per press.
 
 HOW TO USE - TURN ON/OFF:
 1. Import this plugin into your game.
 2. Make an event that is readily touchable.
-3. Add a touch script (javascript field named 'before', 'after' or 'touch') to the event of step 2.  Set the script to this:
+3. Add a touch script (javascript field named 'before', 'after' or 'touch') to the event of step 2.
+   Set the script to this:
   PLAYBACK.oneMovePerPress = !PLAYBACK.oneMovePerPress;
-4. Playtest the game, then hold a direction key or button down.  Note that the character only moves one cell per press.
+4. Playtest the game, then hold a direction key or button down.  Note that the character only moves
+   one cell per press.
 5. Touch the event of step 2, then hold a direction key or button down.  Note that the character
    movement is normal, i.e. it keeps moving as long as the key/button is held.
 
