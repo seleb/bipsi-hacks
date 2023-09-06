@@ -4,7 +4,7 @@
 @summary Auto-move between "adjacent" rooms by walking to room edges.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 7.0.1
+@version 8.0.0
 
 
 @description

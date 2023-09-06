@@ -22,7 +22,7 @@ A collection of re-usable scripts for [candle](https://twitter.com/ragzouken)'s 
 - 👣 [move animations](/dist/move-animations.js): ANY event can specify a tile for each direction and tiles for moving vs not moving.
 - 🫠 [smooth move](/dist/smooth-move.js): Add smooth movement to the avatar and to walking events.
 - 💬 [sound dialogue](/dist/sound-dialogue.js): Add sound dialogue that plays alongside text dialogue.  Add VO to your game.
-- 🔊 [sounds](/dist/sounds.js): Sound effects from audio files (mp3, wav).  Also adds volume control for sounds and music.
+- 🔊 [sounds](/dist/sounds.js): Sound effects and music from audio files (mp3, wav).
 - 👪 [tall character](/dist/tall-character.js): Make the character taller
 
 ## How to use

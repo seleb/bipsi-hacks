@@ -1,3 +1,15 @@
+# [8.0.0](https://github.com/seleb/bipsi-hacks/compare/v7.0.1...v8.0.0) (2023-09-06)
+
+
+### Features
+
+* **sounds:** allows listening for sound end ([#34](https://github.com/seleb/bipsi-hacks/issues/34)) ([8ff963e](https://github.com/seleb/bipsi-hacks/commit/8ff963e942a9e3d48c4cb95f1464f54e0f176f13))
+
+
+### BREAKING CHANGES
+
+* **sounds:** `sounds` now replaces bipsi's PLAY_MUSIC system instead of working alongside it
+
 ## [7.0.1](https://github.com/seleb/bipsi-hacks/compare/v7.0.0...v7.0.1) (2023-08-18)
 
 

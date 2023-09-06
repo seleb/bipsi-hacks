@@ -4,7 +4,7 @@
 @summary Add smooth movement to the avatar and to walking events.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 7.0.1
+@version 8.0.0
 
 
 @description
