@@ -65,10 +65,6 @@ B - The background color used for a tile portrait.  This is an index into the cu
 O - The border color used for a tile OR image portrait.  This is an index into the current palette
     (1-7).  This defaults to the ui dialogue's back color.  0, will use that default.
 
-// This plugin is run in both the editor and at runtime
-//! CODE_ALL_TYPES
-/*
-
 // The portrait's size
 //!CONFIG scale (json) 4
 
@@ -81,6 +77,9 @@ O - The border color used for a tile OR image portrait.  This is an index into t
 // What color to use as the portrait's border.  If 0, the dialogue-ui's back color is used.
 //!CONFIG default-border-palette-color (json) 0
 */
+
+// This plugin is run in the editor, while debugging and at release (with bits of time-specific code throughout)
+//! CODE_ALL_TYPES
 
 const EMPTY_CHAR_CODE = 1;
 const EMPTY_CHAR = String.fromCharCode(EMPTY_CHAR_CODE);
@@ -499,3 +498,6 @@ wrap.splice(DialoguePlayback.prototype, 'render', original => {
 	}
 });
 // #endregion
+
+// End with a CODE_PLAYBACK section for compatibility with a build-added IIFE wrapper
+//! CODE_PLAYBACK
