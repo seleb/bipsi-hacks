@@ -1,3 +1,10 @@
+## [8.1.1](https://github.com/seleb/bipsi-hacks/compare/v8.1.0...v8.1.1) (2023-10-10)
+
+
+### Bug Fixes
+
+* **editor fields start as tags:** new field defaulting to "tag" type has data of true ([#36](https://github.com/seleb/bipsi-hacks/issues/36)) ([7a26afd](https://github.com/seleb/bipsi-hacks/commit/7a26afdb62af168ad186cb9d9bc13fc78e3d74b4))
+
 # [8.1.0](https://github.com/seleb/bipsi-hacks/compare/v8.0.0...v8.1.0) (2023-09-06)
 
 
