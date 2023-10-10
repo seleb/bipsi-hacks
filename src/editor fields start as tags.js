@@ -21,6 +21,7 @@ function setupEditorPlugin() {
 	wrap.after(EventEditor.prototype, 'addField', () => {
 		const { event } = window.EDITOR.getSelections();
 		event.fields[event.fields.length - 1].type = 'tag';
+		event.fields[event.fields.length - 1].data = true;
 		window.EDITOR.eventEditor.refresh();
 	});
 
