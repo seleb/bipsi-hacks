@@ -1,3 +1,10 @@
+# [8.2.0](https://github.com/seleb/bipsi-hacks/compare/v8.1.1...v8.2.0) (2023-10-10)
+
+
+### Features
+
+* **move animations:** if an event has no move-animation fields, don't manage it's graphic state. ([#37](https://github.com/seleb/bipsi-hacks/issues/37)) ([f7d3292](https://github.com/seleb/bipsi-hacks/commit/f7d3292d52480a6262bb02fe4d7fbd2e5b4f1dec))
+
 ## [8.1.1](https://github.com/seleb/bipsi-hacks/compare/v8.1.0...v8.1.1) (2023-10-10)
 
 

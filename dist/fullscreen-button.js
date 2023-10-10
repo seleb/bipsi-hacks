@@ -4,7 +4,7 @@
 @summary Adds a fullscreen button to the lower-right of the game canvas.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.1.1
+@version 8.2.0
 
 
 

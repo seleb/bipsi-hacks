@@ -4,7 +4,7 @@
 @summary ANY event can specify a tile for each direction and tiles for moving vs not moving.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.1.1
+@version 8.2.0
 
 
 
@@ -147,10 +147,17 @@ const pendingGraphicChanges = {};
 
 // This runs each time an event's move-state is changed
 wrap.after(BipsiPlayback.prototype, 'updateEventsMoveState', function updateEventsMoveState(event) {
-	// Make sure the given event is initialized for move-animation.
+	// If event has no move-animation fields, don't manage it's graphic state.  This is defined below, when calling "initMoveAnimationForEvent()".
+	if (event.moveAnimationUnavailable) return;
+
+	// Confirm the given event is initialized for move-animation.
 	if (!event.moveAnimationInitialized) {
-		this.initMoveAnimationForEvent(event);
-		event.moveAnimationInitialized = true;
+		if (this.initMoveAnimationForEvent(event)) {
+			event.moveAnimationInitialized = true;
+		} else {
+			event.moveAnimationUnavailable = true;
+			return;
+		}
 	}
 	// Determine the new graphic.  If same as old, remove any pending changes to this event's graphic.
 	let newGraphicName;
@@ -187,6 +194,19 @@ BipsiPlayback.prototype.initMoveAnimationForEvent = function initMoveAnimationFo
 	event.usesAltTiles = FIELD(event, USED_TILE_FIELDS_ALTS[0], 'tile');
 	const usedFields = event.usesAltTiles ? USED_TILE_FIELDS_ALTS : USED_TILE_FIELDS;
 	const graphicTile = FIELD(event, 'graphic', 'tile');
+
+	// If event has no move-animation fields, don't add default move-animation fields
+	let hasAnimationFields = false;
+	usedFields.forEach(fieldName => {
+		if (FIELD(event, fieldName, 'tile')) {
+			hasAnimationFields = true;
+		}
+	});
+	if (!hasAnimationFields) {
+		return false;
+	}
+
+	// Fill unspecified animation fields with defaults
 	usedFields.forEach(fieldName => {
 		// Field exists (no default)
 		if (FIELD(event, fieldName, 'tile')) return;
@@ -200,6 +220,8 @@ BipsiPlayback.prototype.initMoveAnimationForEvent = function initMoveAnimationFo
 		// all others default to generic 'graphic' tile field.
 		window.replaceFields(event, fieldName, 'tile', graphicTile);
 	});
+
+	return true;
 };
 
 })();

@@ -4,7 +4,7 @@
 @summary Add character portraits to dialogues
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.1.1
+@version 8.2.0
 
 
 @description
