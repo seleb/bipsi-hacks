@@ -20,15 +20,15 @@ HOW TO USE:
    maintaining a square aspect.
 */
 
-function detectPlatform_mobile() {
-	const toMatch = [ /Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i ];
-	return toMatch.some((toMatchItem) => {
+function detectPlatformMobile() {
+	const toMatch = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
+	return toMatch.some(toMatchItem => {
 		return navigator.userAgent.match(toMatchItem);
 	});
 }
-if (detectPlatform_mobile()) {
+if (detectPlatformMobile()) {
 	// On mobile devices, rewrite this function for maximal screen usage.
-	scaleElementToParent = function(element, margin = 0) {
+	window.scaleElementToParent = function scaleElementToParent(element, margin = 0) {
 		const parent = element.parentElement;
 
 		const [tw, th] = [parent.clientWidth-margin*2, parent.clientHeight-margin*2];
@@ -39,6 +39,6 @@ if (detectPlatform_mobile()) {
 		// if (scale > 1) scale = Math.floor(scale); 
 
 		element.style.setProperty("transform", `translate(-50%, -50%) scale(${scale})`);
-		return scale;
-	}
+		return scale
+	};
 }
