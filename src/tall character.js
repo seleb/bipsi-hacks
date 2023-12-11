@@ -32,8 +32,11 @@ hackOptions.direction = directions[FIELD(CONFIG, 'direction', 'text') || 'up'] |
 
 wrap.before(BipsiPlayback.prototype, 'render', () => {
 	const playback = window.PLAYBACK;
-	const avatar = window.getEventById(playback.data, playback.avatarId);
 	const head = window.findEventByTag(playback.data, 'is-head');
+	if (!head) {
+		return;
+	}
+	const avatar = window.getEventById(playback.data, playback.avatarId);
 	const pos = window.getLocationOfEvent(playback.data, avatar);
 	const newPos = {
 		room: pos.room,
