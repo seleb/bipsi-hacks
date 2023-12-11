@@ -1,3 +1,10 @@
+## [8.2.1](https://github.com/seleb/bipsi-hacks/compare/v8.2.0...v8.2.1) (2023-12-11)
+
+
+### Bug Fixes
+
+* **tall character:** Don't crash when no event has the `is-head` tag ([#39](https://github.com/seleb/bipsi-hacks/issues/39)) ([310d653](https://github.com/seleb/bipsi-hacks/commit/310d653a5041ee4682ecc2bc9e125bd7a8282801))
+
 # [8.2.0](https://github.com/seleb/bipsi-hacks/compare/v8.1.1...v8.2.0) (2023-10-10)
 
 

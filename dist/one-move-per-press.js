@@ -4,7 +4,7 @@
 @summary Limits movement to a single move per key/button press or touch.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.2.0
+@version 8.2.1
 
 
 
