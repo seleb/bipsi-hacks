@@ -7,6 +7,7 @@
 @version 8.2.1
 
 
+
 @description
 Present options to the user via the "say" interface, then react to their choice.  This can be useful
 in a variety of ways, such as for creating dialogue trees or for picking settings.
@@ -123,124 +124,123 @@ HOW TO USE - CUSTOM RESULT-OBJECTS:
 //!CONFIG dialogue-character-width (text) "6"
 */
 (function () {
-	'use strict';
-	
-	
-	
-	const CHOICE_KEYS = FIELD(CONFIG, 'choice-keys', 'json');
-	const CUSTOM_CHOICE_RESULT_HANDLERS = FIELDS(CONFIG, 'custom-choice-results', 'javascript');
-	const PREAMBLE_SEPARATION_COUNT = parseInt(FIELD(CONFIG, 'preamble-separation-count', 'text')?.trim(), 10) ?? 1;
-	const DIALOGUE_LINE_WIDTH = parseInt(FIELD(CONFIG, 'dialogue-line-width', 'text')?.trim(), 10) ?? 192;
-	const DIALOGUE_CHARACTER_WIDTH = parseInt(FIELD(CONFIG, 'dialogue-character-width', 'text')?.trim(), 10) ?? 6;
-	
-	// Method to trigger a choices-dialogue
-	BipsiPlayback.prototype.sayChoices = function sayChoices(preamble, choices, sayStyle = undefined, extraLineCount = 0, event = undefined) {
-		if (choices.length === 0) return undefined;
-	
-		const preambleLineCount = preamble ? this.calculateLineCountOfDialogueText(preamble) + PREAMBLE_SEPARATION_COUNT : 0;
-		const choiceCount = Math.min(choices.length, CHOICE_KEYS.length);
-		const choiceSayStyle = { lines: preambleLineCount + choiceCount + extraLineCount, glyphRevealDelay: 0 };
-		sayStyle = sayStyle ? Object.assign(sayStyle, choiceSayStyle) : choiceSayStyle;
-	
-		let dialogueText = preamble ? `${preamble}\n${'\n'.repeat(PREAMBLE_SEPARATION_COUNT)}` : '';
-		for (let i = 0; i < choiceCount; i++) {
-			const separatorText = i > 0 ? '\n' : '';
-			dialogueText += `${separatorText}${CHOICE_KEYS[i].char} ${choices[i][0]}`;
-		}
-		// Wait for the next frame to set choiceResultOptions.  This prevents any prior keystroke from triggering a choice.
-		setTimeout(() => {
-			this.choiceResultOptions = choices.map(choice => choice[1]);
-		}, 0);
-		this.choicesSourceEvent = event; // This is used in a few places throughout the plugin
-		return this.say(dialogueText, sayStyle);
-	};
-	
-	// Simpler method for use within a javascript field
-	SCRIPTING_FUNCTIONS.SAY_CHOICES = async function SAY_CHOICES(preamble, choices, sayStyle = undefined, extraLineCount = 0, event = this.EVENT) {
-		return this.PLAYBACK.sayChoices(preamble, choices, sayStyle, extraLineCount, event);
-	};
-	
-	// Get how many lines the given text will display as in the dialogue system.
-	BipsiPlayback.prototype.calculateLineCountOfDialogueText = function calculateLineCountOfDialogueText(text) {
-		if (!text?.trim()) return 0;
-		const lines = text.split('\n');
-		let result = 0;
-		lines.forEach(line => {
-			result += Math.floor(line.length / (DIALOGUE_LINE_WIDTH / DIALOGUE_CHARACTER_WIDTH)) + 1;
-		});
-		return result;
-	};
-	
-	// Given an object representing a choice-result, this function determines what to do with it.
-	BipsiPlayback.prototype.runChoice = async function runChoice(choiceResult) {
-		// Start by running custom choice-result handlers.
-		if (CUSTOM_CHOICE_RESULT_HANDLERS.length) {
-			window.CHOICE_RESULT = choiceResult;
-			for (let i = 0; i < CUSTOM_CHOICE_RESULT_HANDLERS.length; i++) {
-				const handler = CUSTOM_CHOICE_RESULT_HANDLERS[i];
-				// eslint-disable-next-line no-await-in-loop
-				if (await this.runJS(this.choicesSourceEvent, handler)) {
-					// If a custom choice-result handler handled the result (i.e. returned truthy) then we're done.
-					delete window.CHOICE_RESULT;
-					return;
-				}
-			}
-			delete window.CHOICE_RESULT;
-		}
-		// If none of the custom choice-result handlers worked, run through the native handlers.
-		switch (typeof choiceResult) {
-			case 'function':
-				choiceResult();
-				break;
-			case 'string':
-				this.say(choiceResult);
-				break;
-			case 'object':
-				// Location object
-				if (choiceResult.room && choiceResult.position) {
-					const event = window.getEventAtLocation(this.data, choiceResult);
-					if (event) {
-						this.touch(event);
-					}
-				}
-				// javascript field
-				else if (choiceResult.key && choiceResult.data && choiceResult.type === 'javascript') {
-					this.runJS(this.choicesSourceEvent, choiceResult.data);
-				}
-				// location field
-				else if (choiceResult.key && choiceResult.data && choiceResult.type === 'location') {
-					this.runChoice(choiceResult.data);
-				}
-				break;
-			default: {
-				console.warn('A choice with an unhandled result type produced no effect:', choiceResult);
-			}
-		}
-	};
-	
-	BipsiPlayback.prototype.handleKeydownForChoices = function handleKeydownForChoices(keyEvent) {
-		if (keyEvent.repeat) return;
-		if (!this.choiceResultOptions) return;
-		for (let i = 0; i < this.choiceResultOptions.length; i++) {
-			if (CHOICE_KEYS[i].codes.includes(keyEvent.key)) {
-				keyEvent.stopPropagation();
-				keyEvent.preventDefault();
-				const choiceResult = this.choiceResultOptions[i];
-				this.choiceResultOptions = null;
-				this.proceed();
-				this.runChoice(choiceResult);
-				break;
-			}
-		}
-	};
-	// Add listener to window, instead of document, to allow overriding bipsi's original 'keydown' listener.
-	window.addEventListener('keydown', evt => window.PLAYBACK.handleKeydownForChoices(evt), { capture: true });
-	
-	// Block dialogue proceeding from keystrokes if there are dialogue choices to choose from
-	wrap.splice(BipsiPlayback.prototype, 'proceed', function proceed(original) {
-		if (this.choiceResultOptions) return null;
-		return original.call(this);
+'use strict';
+
+
+
+const CHOICE_KEYS = FIELD(CONFIG, 'choice-keys', 'json');
+const CUSTOM_CHOICE_RESULT_HANDLERS = FIELDS(CONFIG, 'custom-choice-results', 'javascript');
+const PREAMBLE_SEPARATION_COUNT = parseInt(FIELD(CONFIG, 'preamble-separation-count', 'text')?.trim(), 10) ?? 1;
+const DIALOGUE_LINE_WIDTH = parseInt(FIELD(CONFIG, 'dialogue-line-width', 'text')?.trim(), 10) ?? 192;
+const DIALOGUE_CHARACTER_WIDTH = parseInt(FIELD(CONFIG, 'dialogue-character-width', 'text')?.trim(), 10) ?? 6;
+
+// Method to trigger a choices-dialogue
+BipsiPlayback.prototype.sayChoices = function sayChoices(preamble, choices, sayStyle = undefined, extraLineCount = 0, event = undefined) {
+	if (choices.length === 0) return undefined;
+
+	const preambleLineCount = preamble ? this.calculateLineCountOfDialogueText(preamble) + PREAMBLE_SEPARATION_COUNT : 0;
+	const choiceCount = Math.min(choices.length, CHOICE_KEYS.length);
+	const choiceSayStyle = { lines: preambleLineCount + choiceCount + extraLineCount, glyphRevealDelay: 0 };
+	sayStyle = sayStyle ? Object.assign(sayStyle, choiceSayStyle) : choiceSayStyle;
+
+	let dialogueText = preamble ? `${preamble}\n${'\n'.repeat(PREAMBLE_SEPARATION_COUNT)}` : '';
+	for (let i = 0; i < choiceCount; i++) {
+		const separatorText = i > 0 ? '\n' : '';
+		dialogueText += `${separatorText}${CHOICE_KEYS[i].char} ${choices[i][0]}`;
+	}
+	// Wait for the next frame to set choiceResultOptions.  This prevents any prior keystroke from triggering a choice.
+	setTimeout(() => {
+		this.choiceResultOptions = choices.map(choice => choice[1]);
+	}, 0);
+	this.choicesSourceEvent = event; // This is used in a few places throughout the plugin
+	return this.say(dialogueText, sayStyle);
+};
+
+// Simpler method for use within a javascript field
+SCRIPTING_FUNCTIONS.SAY_CHOICES = async function SAY_CHOICES(preamble, choices, sayStyle = undefined, extraLineCount = 0, event = this.EVENT) {
+	return this.PLAYBACK.sayChoices(preamble, choices, sayStyle, extraLineCount, event);
+};
+
+// Get how many lines the given text will display as in the dialogue system.
+BipsiPlayback.prototype.calculateLineCountOfDialogueText = function calculateLineCountOfDialogueText(text) {
+	if (!text?.trim()) return 0;
+	const lines = text.split('\n');
+	let result = 0;
+	lines.forEach(line => {
+		result += Math.floor(line.length / (DIALOGUE_LINE_WIDTH / DIALOGUE_CHARACTER_WIDTH)) + 1;
 	});
-	
-	})();
-	
+	return result;
+};
+
+// Given an object representing a choice-result, this function determines what to do with it.
+BipsiPlayback.prototype.runChoice = async function runChoice(choiceResult) {
+	// Start by running custom choice-result handlers.
+	if (CUSTOM_CHOICE_RESULT_HANDLERS.length) {
+		window.CHOICE_RESULT = choiceResult;
+		for (let i = 0; i < CUSTOM_CHOICE_RESULT_HANDLERS.length; i++) {
+			const handler = CUSTOM_CHOICE_RESULT_HANDLERS[i];
+			// eslint-disable-next-line no-await-in-loop
+			if (await this.runJS(this.choicesSourceEvent, handler)) {
+				// If a custom choice-result handler handled the result (i.e. returned truthy) then we're done.
+				delete window.CHOICE_RESULT;
+				return;
+			}
+		}
+		delete window.CHOICE_RESULT;
+	}
+	// If none of the custom choice-result handlers worked, run through the native handlers.
+	switch (typeof choiceResult) {
+		case 'function':
+			choiceResult();
+			break;
+		case 'string':
+			this.say(choiceResult);
+			break;
+		case 'object':
+			// Location object
+			if (choiceResult.room && choiceResult.position) {
+				const event = window.getEventAtLocation(this.data, choiceResult);
+				if (event) {
+					this.touch(event);
+				}
+			}
+			// javascript field
+			else if (choiceResult.key && choiceResult.data && choiceResult.type === 'javascript') {
+				this.runJS(this.choicesSourceEvent, choiceResult.data);
+			}
+			// location field
+			else if (choiceResult.key && choiceResult.data && choiceResult.type === 'location') {
+				this.runChoice(choiceResult.data);
+			}
+			break;
+		default: {
+			console.warn('A choice with an unhandled result type produced no effect:', choiceResult);
+		}
+	}
+};
+
+BipsiPlayback.prototype.handleKeydownForChoices = function handleKeydownForChoices(keyEvent) {
+	if (keyEvent.repeat) return;
+	if (!this.choiceResultOptions) return;
+	for (let i = 0; i < this.choiceResultOptions.length; i++) {
+		if (CHOICE_KEYS[i].codes.includes(keyEvent.key)) {
+			keyEvent.stopPropagation();
+			keyEvent.preventDefault();
+			const choiceResult = this.choiceResultOptions[i];
+			this.choiceResultOptions = null;
+			this.proceed();
+			this.runChoice(choiceResult);
+			break;
+		}
+	}
+};
+// Add listener to window, instead of document, to allow overriding bipsi's original 'keydown' listener.
+window.addEventListener('keydown', evt => window.PLAYBACK.handleKeydownForChoices(evt), { capture: true });
+
+// Block dialogue proceeding from keystrokes if there are dialogue choices to choose from
+wrap.splice(BipsiPlayback.prototype, 'proceed', function proceed(original) {
+	if (this.choiceResultOptions) return null;
+	return original.call(this);
+});
+
+})();
