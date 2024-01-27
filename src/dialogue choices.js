@@ -4,8 +4,6 @@
 @summary Present options to the user via the "say" interface, then react to their choice.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.2.1
-
 
 
 @description
@@ -234,8 +232,51 @@ BipsiPlayback.prototype.handleKeydownForChoices = function handleKeydownForChoic
 		}
 	}
 };
+
+BipsiPlayback.prototype.handleSwipeInputForChoices = function handleSwipeInputForChoices(idx) {
+	console.log("handler")
+	if (!this.choiceResultOptions) return
+	// gotta fiddle with idx, keys in different order
+	// this hack is udlr vs bipsi is rdlu
+	const choiceResult = this.choiceResultOptions[[3,1,2,0][idx]]
+	console.log(choiceResult)
+	this.choiceResultOptions = null;
+	this.proceed()
+	this.runChoice(choiceResult)
+}
+
 // Add listener to window, instead of document, to allow overriding bipsi's original 'keydown' listener.
 window.addEventListener('keydown', evt => window.PLAYBACK.handleKeydownForChoices(evt), { capture: true });
+// same as above but for 'pointerdown' 
+window.addEventListener("pointerdown", (event) => {
+	const playCanvas = /** @type {HTMLCanvasElement} */ (ONE("#player-canvas"));
+	const threshold = playCanvas.getBoundingClientRect().width / ROOM_SIZE * 2;
+
+	const drag = ui.drag(event);
+	let [x0, y0] = [drag.downEvent.clientX, drag.downEvent.clientY];
+	window.PLAYBACK.proceed();
+	let done = false
+	drag.addEventListener("move", () => {
+		if(done){
+			return; 
+		}
+		const [x1, y1] = [drag.lastEvent.clientX, drag.lastEvent.clientY];
+		const [dx, dy] = [x1 - x0, y1 - y0];
+
+		const dist = Math.max(Math.abs(dx), Math.abs(dy));
+		const angle = Math.atan2(dy, dx) + Math.PI * 2;
+		const turns = Math.round(angle / (Math.PI * .5)) % 4;
+
+		if (dist >= threshold) {
+			console.log("THRESH")
+			console.log(turns)
+			window.PLAYBACK.handleSwipeInputForChoices(turns);
+			done = true
+			// x0 = x1;
+			// y0 = y1;
+		}
+	});
+}, { capture: true })
 
 // Block dialogue proceeding from keystrokes if there are dialogue choices to choose from
 wrap.splice(BipsiPlayback.prototype, 'proceed', function proceed(original) {
