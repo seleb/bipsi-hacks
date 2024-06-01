@@ -14,17 +14,17 @@ HOW TO USE:
 3. Add to that event a "location" field called "room-overlay" for each desired layer, pointing to the room to draw over this one.
 4. In the rooms to be overlaid, set walls in any place where the layer should be hidden if the player is standing there.
 */
-wrap.after(BipsiPlayback.prototype, "addLayersToScene", async function (scene, dest, frame) {
+wrap.after(BipsiPlayback.prototype, 'addLayersToScene', async function (scene, dest, frame) {
 	if (this.ended) return;
 
 	const avatar = getEventById(this.data, this.avatarId);
 	const room = roomFromEvent(this.data, avatar);
 
-	const overlay = room.events.find(event => IS_TAGGED(event, "room-overlay"));
-	
+	const overlay = room.events.find(event => IS_TAGGED(event, 'room-overlay'));
+
 	if (!overlay) return;
 
-	const locations = FIELDS(overlay, "room-overlay", "location");
+	const locations = FIELDS(overlay, 'room-overlay', 'location');
 	const tileToFrame = makeTileToFrameMap(this.data.tiles, frame);
 
 	function upscaler(func) {
