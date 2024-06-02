@@ -48,4 +48,3 @@ wrap.after(BipsiPlayback.prototype, 'addLayersToScene', async function addLayers
 		}
 	});
 });
-
