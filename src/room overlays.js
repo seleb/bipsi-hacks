@@ -36,15 +36,15 @@ wrap.after(BipsiPlayback.prototype, 'addLayersToScene', async function addLayers
 	}
 
 	locations.forEach(location => {
-		const room = getRoomById(this.data, location.room);
-		const palette = getPaletteById(this.data, room.palette);
+		const room2 = getRoomById(this.data, location.room);
+		const palette = getPaletteById(this.data, room2.palette);
 		const tileset = this.stateManager.resources.get(this.data.tileset);
 
 		const [fx, fy] = avatar.position;
-		const solid = cellIsSolid(room, fx, fy);
+		const solid = cellIsSolid(room2, fx, fy);
 
 		if (!solid) {
-			scene.push({ layer: 2.5, func: upscaler(() => drawTilemapLayer(TEMP_ROOM, tileset, tileToFrame, palette, room)) });
+			scene.push({ layer: 2.5, func: upscaler(() => drawTilemapLayer(TEMP_ROOM, tileset, tileToFrame, palette, room2)) });
 		}
 	});
 });
