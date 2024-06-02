@@ -4,7 +4,7 @@
 @summary Maximize the name column of the field list ui.
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.2.1
+@version 8.3.0
 
 
 @description

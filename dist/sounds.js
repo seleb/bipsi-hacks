@@ -4,7 +4,7 @@
 @summary Sound effects and music from audio files (mp3, wav).
 @license MIT
 @author Violgamba (Jon Heard)
-@version 8.2.1
+@version 8.3.0
 
 
 @description
