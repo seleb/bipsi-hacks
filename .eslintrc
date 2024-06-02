@@ -25,7 +25,17 @@
 		"STANDARD_SCRIPTS": "readonly",
 		"WALK_DIRECTIONS": "readonly",
 		"AsyncFunction": "readonly",
-		"wrap": "readonly"
+		"wrap": "readonly",
+		"IS_TAGGED": "readonly",
+		"TEMP_ROOM": "readonly",
+		"getEventById": "readonly",
+		"roomFromEvent": "readonly",
+		"makeTileToFrameMap": "readonly",
+		"fillRendering2D": "readonly",
+		"cellIsSolid": "readonly",
+		"getPaletteById": "readonly",
+		"getRoomById": "readonly",
+		"drawTilemapLayer": "readonly",
 	},
 	"rules": {
 		"indent": "off", // prettier handles indentation
